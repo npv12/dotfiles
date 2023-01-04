@@ -8,6 +8,7 @@ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | 
 echo "Linking files"
 ln -s ~/dotfiles/gitconfig ~/.gitconfig
 ln -s ~/dotfiles/icons ~/.icons
+ln -s ~/dotfiles/bat ~/.config/bat
 ln -s ~/dotfiles/micro-config ~/.config/micro
 ln -s ~/dotfiles/zsh ~/.config/zsh
 ln -s ~/dotfiles/zshrc ~/.zshrc

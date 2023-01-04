@@ -4,7 +4,10 @@
 # Android
 alias dump="/Study/Coding/Roms/dump"
 alias studio="/Study/Coding/Software/android-studio/bin/studio.sh"
-alias micro="~/dotfiles/micro"
+
+# Bat
+alias bat='bat --theme="Catppuccin-mocha"'
+alias cat="bat"
 
 # DNF
 if command -v dnf &> /dev/null; then
