@@ -1,0 +1,23 @@
+[user]
+	name = Pranav
+	email = npv12@iitbbs.ac.in
+[alias]
+	co = checkout
+	br = branch
+	cm = commit
+	cms = commit -S -s
+	st = status
+	cp = cherry-pick
+	cps = cherry-pick -S -s
+	rmv = remote -v
+	rem = remote
+	unstage = reset HEAD --
+	last = log -1 HEAD
+[core]
+	editor = micro
+[init]
+	defaultBranch = main
+[merge]
+	log = true
+[pull]
+	rebase = false

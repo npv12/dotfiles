@@ -1,4 +1,4 @@
-export ZSH_DIR="${ZDOTDIR}/dotfiles/zsh"
+export ZSH_DIR="${ZDOTDIR}/.config/zsh"
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no'
