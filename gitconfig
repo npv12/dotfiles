@@ -21,3 +21,5 @@
 	log = true
 [pull]
 	rebase = false
+[push]
+	autoSetupRemote = true

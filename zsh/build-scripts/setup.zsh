@@ -2,7 +2,6 @@ export USE_CCACHE=1
 export CCACHE_EXEC="/usr/bin/ccache"
 ccache -M 200G
 ccache -o compression=false
-alias rcp="rclone copy --progress"
 alias tg="telegram-send --config ~/PranavTg.conf"
 alias repo-sync="repo sync -c --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all)"
 

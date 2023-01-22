@@ -19,12 +19,12 @@ zstyle ':z4h:' term-shell-integration 'yes'
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
 # Recursively traverse directories when TAB-completing files.
-zstyle ':z4h:fzf-complete' recurse-dirs 'no'
+zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
 
 # Enable direnv to automatically source .envrc files.
 zstyle ':z4h:direnv'         enable 'yes'
 # Show "loading" and "unloading" notifications from direnv.
-zstyle ':z4h:direnv:success' notify 'yes'
+zstyle ':z4h:direnv:success' notify 'no'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # SSH when connecting to these hosts.
@@ -39,7 +39,7 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
 
 # Clone additional Git repositories from GitHub.
-z4h install hlissner/zsh-autopair || return 
+z4h install hlissner/zsh-autopair || return
 z4h install bigH/git-fuzzy || return
 z4h install MichaelAquilina/zsh-you-should-use || return
 
@@ -62,9 +62,6 @@ done
 # perform network I/O must be done above. Everything else is best done below.
 z4h init || return
 
-# Extend PATH.
-path=(~/bin $path)
-
 # Additional repos
 z4h load hlissner/zsh-autopair
 z4h load bigH/git-fuzzy
@@ -79,21 +76,19 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 # Autoload functions.
 autoload -Uz zmv
 
-# Define aliases.
-alias tree="tree -a -I .git"
-
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt correct_all
 
 z4h source "$ZSH_DIR/controller.zsh"
-z4h source "$ZSH_DIR/.p10k.zsh"
-
-# Cargo
-z4h source "$HOME/.cargo/env"
+z4h source "$ZSH_DIR/p10k.zsh"
 
 # Zoxide rocks
 if command -v zoxide &> /dev/null; then
     eval "$(zoxide init zsh)"
+fi
+
+if command -v vivid &> /dev/null; then
+    export LS_COLORS="$(vivid generate catppuccin-mocha)"
 fi

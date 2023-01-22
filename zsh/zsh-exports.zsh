@@ -13,21 +13,15 @@ export FZF_DEFAULT_OPTS=" \
 --color marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
 --margin '2%,1%,2%,1%'"
 
-# Cargo
-. "$HOME/.cargo/env"
-
 # GPG
 export GPG_TTY=$TTY
 
 # GO
-export PATH="$PATH:~/go/bin"
-export GOPATH="/Study/go"
-
-# Nim
-export PATH="$PATH:~/.nimble/bin"
+export PATH="$PATH:/Coding/go/bin"
+export GOPATH="/Coding/go"
 
 # Fuzzy search
-export PATH="${ZDOTDIR}/.cache/zsh4humans/v5/bigH/git-fuzzy/bin:$PATH"
+export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 
 # Micro
 export "MICRO_TRUECOLOR=1"
