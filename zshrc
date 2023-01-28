@@ -28,6 +28,7 @@ zstyle ':z4h:direnv:success' notify 'no'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # SSH when connecting to these hosts.
+# zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'yes'
 
@@ -39,9 +40,7 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
 
 # Clone additional Git repositories from GitHub.
-z4h install hlissner/zsh-autopair || return
-z4h install bigH/git-fuzzy || return
-z4h install MichaelAquilina/zsh-you-should-use || return
+z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use || return
 
 function zsh_add_file() {
     local filename=$(echo "$1" | sed 's/\(.*\)\..*/\1/') # Strip out any extension
@@ -63,11 +62,16 @@ done
 z4h init || return
 
 # Additional repos
-z4h load hlissner/zsh-autopair
-z4h load bigH/git-fuzzy
+z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer
 z4h source ${Z4H}/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
 
 # Define key bindings.
+z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
+z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
+
+z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
+z4h bindkey redo Alt+/             # redo the last undone command line change
+
 z4h bindkey z4h-cd-back    Alt+Left   # cd into the previous directory
 z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Alt+Up     # cd into the parent directory
@@ -81,14 +85,5 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt correct_all
 
-z4h source "$ZSH_DIR/controller.zsh"
+zsh_add_file "controller"
 z4h source "$ZSH_DIR/p10k.zsh"
-
-# Zoxide rocks
-if command -v zoxide &> /dev/null; then
-    eval "$(zoxide init zsh)"
-fi
-
-if command -v vivid &> /dev/null; then
-    export LS_COLORS="$(vivid generate catppuccin-mocha)"
-fi
