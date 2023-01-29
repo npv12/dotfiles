@@ -2,4 +2,4 @@ history
 icons/Fluent-*
 venv
 .vscode
-.plugin/packer_compiled.lua
+*/plugin/packer_compiled.lua

@@ -69,3 +69,19 @@ keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
+-- Telescope
+keymap("n", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files()<cr>", opts)
+keymap("i", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files()<cr>", opts)
+keymap("v", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+
+keymap("n", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
+keymap("i", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
+keymap("v", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
+
+-- Sidebar 
+keymap("n", "<C-b>", ":NvimTreeToggle<cr>", opts)
+
+-- Spectre
+keymap("n", "<A-r>", "<cmd>lua require('spectre').open()<CR>", opts)
+keymap("n", "<S-r>", "viw:lua require('spectre').open_file_search()<cr>", opts)
+

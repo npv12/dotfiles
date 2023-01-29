@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # Install all deps
-paru -S "fd ripgrep duf exa micro bat bottom zoxide"
+paru -S "fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
 
 echo "Linking files"
