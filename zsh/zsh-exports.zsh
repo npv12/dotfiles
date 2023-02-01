@@ -25,3 +25,6 @@ export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 
 # Micro
 export "MICRO_TRUECOLOR=1"
+
+# Yarn
+export PATH="$(yarn global bin):$PATH"

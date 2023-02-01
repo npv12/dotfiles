@@ -13,8 +13,8 @@ null_ls.setup({
 	sources = {
 		formatting.prettier.with({ extra_args = { '--config-precedence',
 			"prefer-file",
-			"--no-semi", 
-			"--single-quote", 
+			"--no-semi",
+			"--single-quote",
 			"--jsx-single-quote" } }),
 		formatting.black.with({ extra_args = { "--fast" } }),
 		formatting.stylua,

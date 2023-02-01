@@ -40,7 +40,7 @@ keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
 keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 
 -- Insert --
--- Press jk fast to exit insert mode 
+-- Press jk fast to exit insert mode
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "kj", "<ESC>", opts)
 keymap("i", "<S-Tab>", "<C-d>", opts)
@@ -72,16 +72,17 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- Telescope
 keymap("n", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files()<cr>", opts)
 keymap("i", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files()<cr>", opts)
-keymap("v", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+keymap("v", "<C-p>",
+    "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
+    , opts)
 
 keymap("n", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
 keymap("i", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
 keymap("v", "<C-f>", "<cmd>Telescope live_grep<cr>", opts)
 
--- Sidebar 
+-- Sidebar
 keymap("n", "<C-b>", ":NvimTreeToggle<cr>", opts)
 
 -- Spectre
 keymap("n", "<A-r>", "<cmd>lua require('spectre').open()<CR>", opts)
 keymap("n", "<S-r>", "viw:lua require('spectre').open_file_search()<cr>", opts)
-
