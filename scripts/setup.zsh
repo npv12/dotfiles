@@ -15,6 +15,7 @@ ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/zsh ~/.config/zsh
 ln -s ~/dotfiles/zshrc ~/.zshrc
 ln -s ~/dotfiles/zshenv ~/.zshenv
+ln -s /Coding/bins/cargo ~/.cargo
 
 # Installing themes
 ./setup_themes.sh
