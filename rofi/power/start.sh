@@ -105,7 +105,7 @@ run_cmd() {
 		systemctl suspend
 		lock_screen
 	elif [[ $1 == '--logout' ]]; then
-		loginctl terminate-user `whoami`
+		loginctl kill-session self
 	elif [[ $1 == '--lock' ]]; then
 		lock_screen
     fi
