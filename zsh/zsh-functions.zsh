@@ -123,29 +123,6 @@ function load-sdkman() {
     [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 }
 
-# Quriate
-function quriate-deploy() {
-    cd ~/Coding/webdev/frontend
-    git co $1
-    git pull origin $1
-    rm -rf package-lock.json
-    npm install
-    export NODE_OPTIONS="--max-old-space-size=8192"
-    npm run build:$1
-    firebase use $1
-    firebase deploy
-    rm -r ~/Coding/webdev/frontend/build
-    export NODE_OPTIONS=""
-}
-
-function quriate-connect() {
-    if [ $# -eq 0 ]; then
-        psql -d testdb -U postgres
-    else
-        PGPASSWORD=$1 psql -h 34.131.55.59 -U $1user -d $1db
-    fi
-}
-
 
 # Sideload android
 function rom-sideload() {
