@@ -143,6 +143,12 @@ function rom-extract-and-flash() {
     cd extracted_* && rom-flashall
 }
 
+# Wallpapers
+function sync-wallpapers() {
+  rcp /Personal/Wallpapers/Desktop drive:Wallpapers/Desktop --transfers 8
+  rcp /Personal/Wallpapers/Phone drive:Wallpapers/Phone --transfers 8
+}
+
 # YT Download
 function yt-download() {
     yt-dlp -ciwx --audio-format mp3 --audio-quality 0 $1

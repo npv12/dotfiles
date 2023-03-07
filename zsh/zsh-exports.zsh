@@ -26,8 +26,5 @@ export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 # Micro
 export "MICRO_TRUECOLOR=1"
 
-# SSH
-export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-
 # Yarn
 export PATH="$(yarn global bin):$PATH"

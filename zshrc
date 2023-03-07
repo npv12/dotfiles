@@ -40,7 +40,7 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
 
 # Clone additional Git repositories from GitHub.
-z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use || return
+z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use MichaelAquilina/zsh-autoswitch-virtualenv || return
 
 function zsh_add_file() {
     local filename=$(echo "$1" | sed 's/\(.*\)\..*/\1/') # Strip out any extension
@@ -63,7 +63,8 @@ z4h init || return
 
 # Additional repos
 z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer
-z4h source ${Z4H}/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
+z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
+z4h source $Z4H/MichaelAquilina/zsh-autoswitch-virtualenv/autoswitch_virtualenv.plugin.zsh
 
 # Define key bindings.
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
