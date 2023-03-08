@@ -1,6 +1,6 @@
 #! /usr/bin/zsh
 
-paru -S lightly-qt latte-dock-git kwalletmanager ksshaskpass plasma-wayland-session plasma-workspace-agent-ssh
+paru -S lightly-qt latte-dock-git kwalletmanager ksshaskpass plasma-wayland-session plasma-workspace-agent-ssh libdbusmenu-glib
 git clone https://github.com/npv12/kde catppuccin-kde && cd catppuccin-kde && ./install.sh
 
 # Required by ssh agent to work well
