@@ -17,9 +17,23 @@ ln -s ~/dotfiles/zshrc ~/.zshrc
 ln -s ~/dotfiles/zshenv ~/.zshenv
 ln -s /Coding/bins/cargo ~/.cargo
 
-# Installing themes
-./setup_themes.sh
-
-# Hyprland deps
-paru -S hyprland-nvidia rofi-lbonn-wayland hyprpaper-git wl-clipboard wl-clipboard-history-git xdg-desktop-portal-hyprland-git avizo
-paru -S swayidle swaylock-effects grim slurp wf-recorder eww-wayland
+PS3='Choose your distro: '
+options=("Gnome" "KDE" "hyprland" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Gnome")
+            ./gnome.sh
+            ;;
+        "KDE")
+            ./kde.sh
+            ;;
+        "hyprland")
+            ./hyprland.sh
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done

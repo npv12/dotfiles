@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=ssh-add -q .ssh/id_git .ssh/id_sf .ssh/azure-pranav
+Name=ssh-add
+Type=Application
