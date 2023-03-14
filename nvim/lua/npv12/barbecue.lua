@@ -7,5 +7,5 @@ end
 vim.opt.updatetime = 200
 
 barbecue.setup({
-    theme = "catppuccin",
+    theme = "catppuccin"
 })
