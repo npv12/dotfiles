@@ -1,0 +1,23 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "juno.ngx@gmail.com",
+                "Name": "Juno Nguyen"
+            }
+        ],
+        "Category": "Multimedia",
+        "Description": "A minimal way to display the currently playing media info.",
+        "Icon": "preferences-media-playback-amarok",
+        "Id": "com.junongx.kde.currentlyplaying",
+        "License": "MIT License",
+        "Name": "Currently Playing",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "1.0",
+        "Website": "https://github.com/JunoNgx/kde-currently-playing"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}
