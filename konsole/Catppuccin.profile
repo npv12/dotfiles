@@ -11,3 +11,6 @@ CursorShape=2
 [General]
 Name=Catppuccin
 Parent=FALLBACK/
+
+[Keyboard]
+KeyBindings=linux
