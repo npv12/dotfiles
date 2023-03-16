@@ -1,13 +1,14 @@
 #!/usr/bin/env zsh
 
 export DIR=~/dotfiles/
+
 # Install all deps
-# paru -S fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright
-# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
+paru -S fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
 
 echo "Removing previous symlinks"
 rm -rf ~/.gitconfig ~/.icons ~/.config/bat ~/.config/bottom ~/.config/gdu ~/.config/micro \
-    ~/.config/nvim ~/.config/zsh ~/.zshrc ~/.zshenv ~/.cargo ~/.virtualenvs ~/.local/share/blackbox
+    ~/.config/nvim ~/.config/zsh ~/.zshrc ~/.zshenv ~/.cargo ~/.virtualenvs ~/.local/share/blackbox ~/.config/mimeapps.list
 
 echo "Linking files"
 ln -s ${DIR}/gitconfig ~/.gitconfig
@@ -24,5 +25,6 @@ ln -s ${DIR}/zshenv ~/.zshenv
 ln -s /Coding/bins/cargo ~/.cargo
 ln -s /Coding/bins/virtualenvs ~/.virtualenvs
 ln -s ${DIR}/blackbox ~/.local/share/blackbox
+ln -s ${DIR}/mimeapps.list ~/.config/mimeapps.list
 
 bash ${DIR}/scripts/select_distro.sh
