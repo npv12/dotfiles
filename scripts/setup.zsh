@@ -24,6 +24,7 @@ ln -s ${DIR}/zshrc ~/.zshrc
 ln -s ${DIR}/zshenv ~/.zshenv
 ln -s /Coding/bins/cargo ~/.cargo
 ln -s /Coding/bins/virtualenvs ~/.virtualenvs
+ln -s /Coding/bins/nvm .nvm
 ln -s ${DIR}/blackbox ~/.local/share/blackbox
 ln -s ${DIR}/mimeapps.list ~/.config/mimeapps.list
 
