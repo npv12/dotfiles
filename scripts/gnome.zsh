@@ -14,3 +14,7 @@ cd Fluent
 ./install.sh red -r -d ~/.icons
 cd ../..
 rm -rf temporary # Clean up after us
+
+# Gnome specific symlinks
+rm ~/.config/user-dirs.dirs
+ln -s ~/dotfiles/user-dirs.dirs ~/.config/user-dirs.dirs
