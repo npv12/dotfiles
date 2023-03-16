@@ -1,26 +1,28 @@
 #!/usr/bin/env zsh
 
-export DIR=~/dotfiles/scripts/
+export DIR=~/dotfiles/
 # Install all deps
 # paru -S fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
 
 echo "Removing previous symlinks"
-rm -rf ~/.gitconfig ~/.icons ~/.config/bat ~/.config/bottom ~/.config/gdu ~/.config/micro ~/.config/nvim ~/.config/zsh ~/.zshrc ~/.zshenv ~/.cargo ~/.virtualenvs
+rm -rf ~/.gitconfig ~/.icons ~/.config/bat ~/.config/bottom ~/.config/gdu ~/.config/micro \
+    ~/.config/nvim ~/.config/zsh ~/.zshrc ~/.zshenv ~/.cargo ~/.virtualenvs ~/.local/share/blackbox
 
 echo "Linking files"
-ln -s ~/dotfiles/gitconfig ~/.gitconfig
-ln -s ~/dotfiles/icons ~/.icons
-ln -s ~/dotfiles/bat ~/.config/bat
-ln -s ~/dotfiles/bottom ~/.config/bottom
+ln -s ${DIR}/gitconfig ~/.gitconfig
+ln -s ${DIR}/icons ~/.icons
+ln -s ${DIR}/bat ~/.config/bat
+ln -s ${DIR}/bottom ~/.config/bottom
 mkdir -p ~/.config/gdu
-ln -s ~/dotfiles/gdu.yaml ~/.config/gdu/gdu.yaml
-ln -s ~/dotfiles/micro ~/.config/micro
-ln -s ~/dotfiles/nvim ~/.config/nvim
-ln -s ~/dotfiles/zsh ~/.config/zsh
-ln -s ~/dotfiles/zshrc ~/.zshrc
-ln -s ~/dotfiles/zshenv ~/.zshenv
+ln -s ${DIR}/gdu.yaml ~/.config/gdu/gdu.yaml
+ln -s ${DIR}/micro ~/.config/micro
+ln -s ${DIR}/nvim ~/.config/nvim
+ln -s ${DIR}/zsh ~/.config/zsh
+ln -s ${DIR}/zshrc ~/.zshrc
+ln -s ${DIR}/zshenv ~/.zshenv
 ln -s /Coding/bins/cargo ~/.cargo
 ln -s /Coding/bins/virtualenvs ~/.virtualenvs
+ln -s ${DIR}/blackbox ~/.local/share/blackbox
 
-bash ${DIR}/select_distro.sh
+bash ${DIR}/scripts/select_distro.sh

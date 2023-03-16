@@ -6,15 +6,15 @@ select opt in "${options[@]}"
 do
     case $opt in
         "Gnome")
-            ${DIR}/gnome.zsh
+            ${DIR}/scripts/gnome.zsh
             break
             ;;
         "KDE")
-            ${DIR}/kde.zsh
+            ${DIR}/scripts/kde.zsh
             break
             ;;
         "hyprland")
-            ${DIR}/hyprland.zsh
+            ${DIR}/scripts/hyprland.zsh
             break
             ;;
         "Quit")
