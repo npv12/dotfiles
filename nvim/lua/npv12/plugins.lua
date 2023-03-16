@@ -138,23 +138,19 @@ return packer.startup(function(use)
     -- LSP
     use {
         "neovim/nvim-lspconfig",
-        commit = "f11fdff7e8b5b415e5ef1837bdcdd37ea6764dda"
+        tag = "v0.1.6"
     } -- enable LSP
     use {
-        "williamboman/mason.nvim",
-        commit = "c2002d7a6b5a72ba02388548cfaf420b864fbc12"
+        "williamboman/mason.nvim"
     } -- simple to use language server installer
     use {
-        "williamboman/mason-lspconfig.nvim",
-        commit = "0051870dd728f4988110a1b2d47f4a4510213e31"
+        "williamboman/mason-lspconfig.nvim"
     }
     use {
-        "jose-elias-alvarez/null-ls.nvim",
-        commit = "c0c19f32b614b3921e17886c541c13a72748d450"
+        "jose-elias-alvarez/null-ls.nvim"
     } -- for formatters and linters
     use {
-        "RRethy/vim-illuminate",
-        commit = "a2e8476af3f3e993bb0d6477438aad3096512e42"
+        "RRethy/vim-illuminate"
     }
 
     -- Rust
@@ -170,11 +166,10 @@ return packer.startup(function(use)
     -- Snippets
     use {
         "L3MON4D3/LuaSnip",
-        commit = "8f8d493e7836f2697df878ef9c128337cbf2bb84"
+        tag = "v1.2.1"
     } -- snippet engine
     use {
-        "rafamadriz/friendly-snippets",
-        commit = "2be79d8a9b03d4175ba6b3d14b082680de1b31b1"
+        "rafamadriz/friendly-snippets"
     } -- a bunch of snippets to use
 
     -- Spectre (find and replace)
@@ -182,21 +177,19 @@ return packer.startup(function(use)
 
     -- Statusline aka bottom bar
     use {
-        "nvim-lualine/lualine.nvim",
-        commit = "a52f078026b27694d2290e34efa61a6e4a690621"
+        "nvim-lualine/lualine.nvim"
     }
 
     -- Telescope
     use {
-        "nvim-telescope/telescope.nvim",
-        commit = "76ea9a898d3307244dce3573392dcf2cc38f340f"
+        "nvim-telescope/telescope.nvim"
     }
     use {"nvim-telescope/telescope-media-files.nvim"}
 
     -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
-        commit = "8e763332b7bf7b3a426fd8707b7f5aa85823a5ac"
+        tag = "v0.8.5.2"
     }
 
     -- Winbar
