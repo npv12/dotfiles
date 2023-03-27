@@ -5,9 +5,6 @@
 alias dump="/Coding/Software/dump"
 alias studio="/Study/Coding/Software/android-studio/bin/studio.sh"
 
-# Bat
-alias bat="bat --theme='Catppuccin-mocha'"
-
 # DNF
 if command -v dnf &> /dev/null; then
     alias pkg-clean="sudo dnf clean all"    # Cleans the cache.
