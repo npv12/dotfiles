@@ -145,8 +145,14 @@ function rom-extract-and-flash() {
 
 # Wallpapers
 function sync-wallpapers() {
-  rcp /Personal/Wallpapers/Desktop drive:Wallpapers/Desktop --transfers 8
-  rcp /Personal/Wallpapers/Phone drive:Wallpapers/Phone --transfers 8
+  rcp /Personal/Wallpapers/Desktop drive:Backup/Wallpapers/Desktop --transfers 8
+  rcp /Personal/Wallpapers/Phone drive:Backup/Wallpapers/Phone --transfers 8
+}
+
+function sync-pics() {
+    PWD=$(pwd)
+    cd /Personal/Camera && rcp . "drive:Backup/camera"
+    cd "$PWD"
 }
 
 # YT Download

@@ -20,6 +20,11 @@ if command -v dnf &> /dev/null; then
     alias os-upgrade="sudo dnf upgrade"      # Upgrades packages.
 fi
 
+# If yay exists, treat it as paru
+if command -v yay &> /dev/null; then
+    alias paru=yay
+fi
+
 # Paru for arch
 if command -v paru &> /dev/null; then
     alias pkg-clean="paru --clean"    # Cleans the pkgs.
@@ -34,11 +39,12 @@ fi
 # Exa
 if command -v exa &> /dev/null; then
     alias ls="exa --group-directories-first --icons"
-    alias ll="ls -lh --git"
-    alias la="ll -a"
-    alias tree="ll --tree --level=2"
-    alias lh="la -h"
 fi
+
+alias ll="ls -lh --git"
+alias la="ll -a"
+alias tree="ll --tree --level=2"
+alias lh="la -h"
 
 # Flutter
 alias fl="flutter"
@@ -72,7 +78,7 @@ alias gcmn="git commit -s -S -v --no-edit"
 alias gcmn!="git commit -s -S -v --no-edit --amend"
 alias gco="git checkout"
 alias gcor="git checkout --recurse-submodules"
-alias gcp="git cherry-pick -s"
+alias gcp="git cherry-pick -s -S"
 alias gcpa="git cherry-pick --abort"
 alias gcpc="git cherry-pick --continue"
 alias gcps="git cherry-pick --skip"
