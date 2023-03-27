@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=The Witcher 3: Wild Hunt
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/292030
+Icon=/home/npv12/dotfiles/icons/custom/the-witcher-3.svg
+Terminal=false
+Type=Application
+Categories=Game;
+PrefersNonDefaultGPU=true

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Left 4 Dead 2
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/550
+Icon=/home/npv12/dotfiles/icons/custom/l4d2.svg
+Terminal=false
+Type=Application
+Categories=Game;
+PrefersNonDefaultGPU=true
