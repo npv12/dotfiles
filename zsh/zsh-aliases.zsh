@@ -24,13 +24,13 @@ fi
 
 # Paru for arch
 if command -v paru &> /dev/null; then
-    alias pkg-clean="paru --clean"    # Cleans the pkgs.
+    alias pkg-clean="paru -Y --clean"    # Cleans the pkgs.
     alias pkg-install="paru -S"      # Installs package(s).
     alias pkg-list="paru -Q"    # Lists installed packages.
     alias pkg-remove="paru -Rns"       # Removes package(s).
     alias pkg-search="paru -Ss"            # Searches for a package.
-    alias os-update="paru"       # Updates packages.
-    alias os-upgrade="paru && pkg-clean"      # Upgrades packages.
+    alias os-update="paru && flatpak update"       # Updates packages.
+    alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
 fi
 
 # Exa
@@ -103,6 +103,9 @@ alias pygrep="grep -nr --include='*.py'"
 # GPG
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify" # verify signature for isos
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys" # receive the key of a developer
+
+# Light novel
+alias novel="~/dotfiles/lightnovel.sh/lightnovel.sh"
 
 # Misc
 alias cp="cp -i"
