@@ -22,10 +22,13 @@ ln -s ${DIR}/nvim ~/.config/nvim
 ln -s ${DIR}/zsh ~/.config/zsh
 ln -s ${DIR}/zshrc ~/.zshrc
 ln -s ${DIR}/zshenv ~/.zshenv
+ln -s ${DIR}/blackbox ~/.local/share/blackbox
+ln -s ${DIR}/mimeapps.list ~/.config/mimeapps.list
+
+echo "Linking bins"
 ln -s /Coding/bins/cargo ~/.cargo
 ln -s /Coding/bins/virtualenvs ~/.virtualenvs
 ln -s /Coding/bins/nvm .nvm
-ln -s ${DIR}/blackbox ~/.local/share/blackbox
-ln -s ${DIR}/mimeapps.list ~/.config/mimeapps.list
+ln -s /Coding/bins/yarn .yarn/bin
 
 bash ${DIR}/scripts/select_distro.sh
