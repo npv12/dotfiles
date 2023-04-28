@@ -3,7 +3,7 @@
 # Stores varies aliases we use
 # Android
 alias dump="/Coding/Software/dump"
-alias studio="/Study/Coding/Software/android-studio/bin/studio.sh"
+alias studio="/Coding/Software/android-studio/bin/studio.sh"
 
 # DNF
 if command -v dnf &> /dev/null; then
@@ -20,6 +20,7 @@ fi
 # If yay exists, treat it as paru
 if command -v yay &> /dev/null; then
     alias paru=yay
+    alias install-apps="yay -Slq | fzf --multi --preview 'yay -Si {1}' | xargs -ro yay -S"
 fi
 
 # Paru for arch
