@@ -2197,5 +2197,5 @@ map shift+cmd+/ open_url https://sw.kovidgoyal.net/kitty/
 
 # BEGIN_KITTY_THEME
 # Catppuccin-Mocha
-include current-theme.conf
+include catppuccin-mocha.conf
 # END_KITTY_THEME
