@@ -21,6 +21,7 @@ fi
 if command -v yay &> /dev/null; then
     alias paru=yay
     alias install-apps="yay -Slq | fzf --multi --preview 'yay -Si {1}' | xargs -ro yay -S"
+    alias view-apps="yay -Qq | fzf --preview 'yay -Qil {}' --layout=reverse --bind 'enter:execute(yay -Qil {} | less)'"
 fi
 
 # Paru for arch
