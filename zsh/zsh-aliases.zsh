@@ -5,6 +5,9 @@
 alias dump="/Coding/Software/dump"
 alias studio="/Coding/Software/android-studio/bin/studio.sh"
 
+# Code
+alias code="code-insiders"
+
 # DNF
 if command -v dnf &> /dev/null; then
     alias pkg-clean="sudo dnf clean all"    # Cleans the cache.
