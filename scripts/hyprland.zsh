@@ -8,3 +8,6 @@ paru -S swayidle swaylock-effects grim slurp wf-recorder foot dunst hyprland-nvi
     bc blueberry dunst gojq light networkmanagerapplet plasma-browser-integration playerctl socat udev \
     wlogout wofi libqalculate sox nlohmann-json boost-libs \
     rofi-lbonn-wayland hyprpaper-git wl-clipboard wl-clipboard-history-git xdg-desktop-portal-hyprland-git bison
+
+paru -S eww-wayland hyprland-nvidia gtklock swaync hyprshot hyprpicker rofi-lbonn-wayland bison  playerctl \
+    brightnessctl pavucontrol wl-gammactl wl-clipboard socat jq waybar blueberry gjs kitty polkit-gnome

@@ -7,7 +7,7 @@ function strength {
 
 function wifi_icon {
     CONNECTIVITY=$(nmcli networking connectivity)
-    WIFI_STATUS=$(nmcli device | grep wlp3s0 | awk '{print $3}')
+    WIFI_STATUS=$(nmcli device | grep wlan0 | awk '{print $3}' | head -1)
     WIFI_STRENGTH=$(strength)
 
     if [[ $WIFI_STATUS != 'connected' ]]; then echo '󰤮'; return; fi
