@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-pkill eww
-eww daemon
-
-eww open bar0
-eww update main_monitor=0
-
-eww update wallpaper=$(gsettings get org.gnome.desktop.background picture-uri)
