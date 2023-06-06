@@ -86,7 +86,8 @@
     "format-wifi": "󪥈 {essid}",
     "format-ethernet": "󪥈 wired",
     "tooltip": false,
-    "format-disconnected": ""
+    "format-disconnected": "",
+    "onclick": "bash ~/.config/rofi/wifi/rofi-wifi-menu.sh"
   },
   "pulseaudio": {
     "format": "{icon}",
