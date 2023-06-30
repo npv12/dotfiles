@@ -2,7 +2,7 @@
   "include": "~/.config/waybar/configs/custom_modules/privacy_container",
   "custom/launcher": {
     "format": " 󪤆 ",
-    "on-click": "~/.config/rofi/launchers/type-1/launcher.sh",
+    "on-click": "~/.config/rofi/launcher/start.sh",
     "tooltip": false
   },
   "custom/dot": {

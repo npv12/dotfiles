@@ -15,11 +15,7 @@
     "custom/app-name"
   ],
   "modules-center": [
-    "custom/left",
-    "custom/priv-cam",
-    "custom/priv-speaker",
-    "custom/priv-mic",
-    "custom/right"
+    "clock"
   ],
   "modules-right": [
     "memory",
@@ -34,8 +30,11 @@
     "pulseaudio#text",
     "backlight",
     "backlight#text",
-    "custom/dot-alt",
-    "clock"
+    "custom/left",
+    "custom/priv-cam",
+    "custom/priv-speaker",
+    "custom/priv-mic",
+    "custom/right"
   ],
   "wlr/workspaces": {
     "all-outputs": false,
@@ -86,21 +85,21 @@
     "format-wifi": "󪥈 {essid}",
     "format-ethernet": "󪥈 wired",
     "tooltip": false,
-    "format-disconnected": "",
-    "onclick": "bash ~/.config/rofi/wifi/rofi-wifi-menu.sh"
+    "format-disconnected": "Disconnected",
+    "onclick": "exec ~/.config/rofi/wifi/rofi-wifi-menu.sh"
   },
   "pulseaudio": {
     "format": "{icon}",
     "format-bluetooth": " ",
     "format-bluetooth-muted": " ",
     "tooltip": false,
-    "format-muted": "󯤰",
+    "format-muted": "󰝟",
     "format-icons": {
       "headphone": "󪥆",
       "hands-free": "󪤥",
       "headset": "󪥆",
       "phone": "󪤥",
-      "portable": "",
+      "portable": "󪥆",
       "car": "",
       "default": [
         "󪤦",

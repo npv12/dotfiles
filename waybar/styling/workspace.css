@@ -7,8 +7,8 @@
 }
 
 box#workspaces {
-  margin-top: 7px;
-  margin-bottom: 7px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-radius: 13px;
   background-color: @secondary-container;
 }
@@ -26,7 +26,6 @@ box#workspaces {
 #workspaces button:hover {
   /* cursor: pointer; */
   background: alpha(@background, 0.15);
-  box-shadow: inset 0 -3px @primary;
 }
 
 #workspaces button.focused {

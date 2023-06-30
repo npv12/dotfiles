@@ -8,7 +8,7 @@ label#network {
   margin-top: 6px;
   margin-bottom: 6px;
   border-radius: 13px;
-  background-color: @background;
+  background-color: @base;
 }
 
 #memory,
@@ -20,13 +20,13 @@ label#network {
 #idle_inhibitor {
   padding: 0 0px;
   color: @on-background;
-  background-color: @background;
+  background-color: @base;
 }
 
 #window {
   margin: 0 0px;
   border-radius: 0px;
-  background-color: @background;
+  background-color: @base;
 }
 
 #cpu {
@@ -35,7 +35,7 @@ label#network {
 }
 
 #memory {
-  color: @primary;
+  color: @green;
 }
 
 #network {
