@@ -15,12 +15,13 @@ configuration {
 /*****----- Global Properties -----*****/
 * {
     font:                        "JetBrains Mono Nerd Font 10";
-    background:                  #2D1B14;
-    background-alt:              #462D23;
+    background:                  #1e1e2e;
+    background-alt:              #1e1e2e;
     foreground:                  #FFFFFF;
-    selected:                    #E25F3E;
-    active:                      #716251;
-    urgent:                      #934A1C;
+    selected:                    #89b4fa;
+    active:                      #a6e3a1;
+    urgent:                      #f38ba8;
+    darktext:                    #11111b;
 }
 
 /*
@@ -57,7 +58,7 @@ imagebox {
     spacing:                     20px;
     padding:                     20px;
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/d.png", height);
+    background-image:            url("~/.config/rofi/image.png", height);
     children:                    [ "inputbar", "dummy", "message" ];
 }
 
@@ -76,7 +77,7 @@ inputbar {
     padding:                     15px;
     border-radius:               100%;
     background-color:            @urgent;
-    text-color:                  @foreground;
+    text-color:                  @darktext;
     children:                    [ "dummy", "prompt", "dummy"];
 }
 
@@ -96,7 +97,7 @@ message {
     padding:                     15px;
     border-radius:               100%;
     background-color:            @active;
-    text-color:                  @foreground;
+    text-color:                  @darktext;
 }
 textbox {
     background-color:            inherit;
