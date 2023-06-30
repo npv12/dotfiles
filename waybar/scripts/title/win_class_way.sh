@@ -5,11 +5,10 @@ declare -A PKGS=(
   ["Code"]="VsCode"
   ["Alacritty"]="Alacritty"
   ["jetbrains-studio"]="Android Studio"
-  ["jetbrains-idea"]="Idea"
-  ["uget-gtk"]="Uget"
   ["org.gnome.Nautilus"]="File Manager"
   ["thunar"]="File Manager"
   ["org.telegram.desktop"]="Telegram"
+  ["Microsoft-edge"]="Edge"
   ["Google-Chrome"]="Chrome"
   ["firefox"]="Firefox"
 )

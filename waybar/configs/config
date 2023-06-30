@@ -8,11 +8,13 @@
   "margin-right": 0,
   "spacing": 0,
   "modules-left": [
-    "custom/launcher",
-    "wlr/workspaces",
-    "custom/arrow-dec",
     "custom/app-title-icon",
-    "custom/app-name"
+    "custom/app-name",
+    "wlr/workspaces",
+    "custom/music#text",
+    "custom/music#previous",
+    "custom/music#playpause",
+    "custom/music#next",
   ],
   "modules-center": [
     "clock",
@@ -23,7 +25,6 @@
     "custom/right"
   ],
   "modules-right": [
-    "keyboard-state",
     "memory",
     "custom/dot",
     "network",
@@ -46,9 +47,9 @@
     "on-scroll-up": "hyprctl dispatch workspace e+1",
     "on-scroll-down": "hyprctl dispatch workspace e-1",
     "format-icons": {
-      "1": "󪤍",
-      "2": "󪤕",
-      "3": "󪥌",
+      "1": "󪥌",
+      "2": "󪤍",
+      "3": "󪤕",
       "4": "󪥅",
       "5": "󪤄",
       "6": "󪤋",
@@ -92,7 +93,7 @@
   },
   "pulseaudio": {
     "format": "{icon}",
-    "format-bluetooth": " ",
+    "format-bluetooth": " ",
     "format-bluetooth-muted": " ",
     "tooltip": false,
     "format-muted": "󰝟",

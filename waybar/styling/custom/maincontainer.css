@@ -1,17 +1,13 @@
 @import "../colors-waybar.css";
 
 #backlight,
+#pulseaudio
 #custom-pacman-update {
   font-size: 18px;
   color: @primary;
 }
 
-#pulseaudio {
-  font-size: 22px;
-  color: @primary;
-}
-
-##bluetooth {
+#bluetooth {
   font-size: 16px;
   color: @primary;
 }

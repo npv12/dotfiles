@@ -1,0 +1,24 @@
+@import "../colors-waybar.css";
+
+#custom-music.playpause {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 20px;
+    color: @green;
+}
+
+#custom-music.text {
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: 14px;
+    color: @primary;
+}
+
+#custom-music.previous,
+#custom-music.next {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    color: @primary;
+}
+  

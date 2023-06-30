@@ -46,5 +46,39 @@
     "interval": 15,
     "exec": "~/.config/waybar/scripts/pacman-update-icon.sh",
     "tooltip": false
+  },
+  "custom/music#text": {
+    "format": "{}",
+    "tooltip": false,
+    "interval": 1,
+    "max-length": 50,
+    "exec": "~/.config/waybar/scripts/custom/music-text.sh"
+  },
+  "custom/music#playpause": {
+    "format": "{icon}{}",
+    "return-type": "json",
+    "format-icons": {
+      "Playing": "󪤖",
+      "Paused": "󪤷"
+    },
+    "exec": "playerctl -a metadata --format '{\"alt\": \"{{status}}\"}' -F",
+    "on-click": "playerctl play-pause"
+  },
+  "custom/music#next": {
+    "format": "󪥇",
+    "return-type": "json",
+    "on-click": "playerctl next"
+  },
+  "custom/music#previous": {
+    "format": "󪥘",
+    "return-type": "json",
+    "on-click": "playerctl next"
+  },
+  "custom/mic": {
+    "format": "{}",
+    "interval": 1,
+    "exec": "~/.config/waybar/scripts/custom/mic.sh",
+    "on-click": "~/.config/waybar/scripts/custom/mic.sh --toggle &",
+    "tooltip": false
   }
 }
