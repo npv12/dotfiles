@@ -8,6 +8,7 @@ export BROWSER=microsoft-edge-stable
 export XDG_CURRENT_DESKTOP=Hyprland
 export XDG_SESSION_TYPE=wayland
 export XDG_SESSION_DESKTOP=Hyprland
+export XDG_DATA_DIRS=/home/npv12/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share
 
 # GTK themes
 export GTK_THEME=Lavanda-Dark-Compact-dark
