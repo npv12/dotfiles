@@ -15,9 +15,15 @@
     "custom/app-name"
   ],
   "modules-center": [
-    "clock"
+    "clock",
+    "custom/left",
+    "custom/priv-cam",
+    "custom/priv-speaker",
+    "custom/priv-mic",
+    "custom/right"
   ],
   "modules-right": [
+    "keyboard-state",
     "memory",
     "custom/dot",
     "network",
@@ -28,13 +34,9 @@
     "custom/pacman-update#text",
     "pulseaudio",
     "pulseaudio#text",
+    "bluetooth",
     "backlight",
-    "backlight#text",
-    "custom/left",
-    "custom/priv-cam",
-    "custom/priv-speaker",
-    "custom/priv-mic",
-    "custom/right"
+    "backlight#text"
   ],
   "wlr/workspaces": {
     "all-outputs": false,
@@ -86,7 +88,7 @@
     "format-ethernet": "󪥈 wired",
     "tooltip": false,
     "format-disconnected": "Disconnected",
-    "onclick": "exec ~/.config/rofi/wifi/rofi-wifi-menu.sh"
+    "on-click": "bash ~/.config/rofi/wifi/start.sh"
   },
   "pulseaudio": {
     "format": "{icon}",
@@ -113,6 +115,18 @@
     "tooltip": false,
     "format": "<b>{volume}</b>",
     "format-bluetooth": "{volume}"
+  },
+  "bluetooth": {
+    "format": " {status}",
+    "format-disabled": " disabled",
+    "format-connected": " {device_alias}",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+    "on-click": "bash ~/.config/rofi/bluetooth/start.sh",
+    "on-click-right": "blueman-manager"
   },
   "battery": {
     "bat": "BAT1",
@@ -166,5 +180,17 @@
     "interval": 15,
     "exec": "",
     "tooltip": false
+  },
+  "keyboard-state": {
+    "numlock": true,
+    "capslock": true,
+    "format": {
+      "numlock": "N {icon}",
+      "capslock": "C {icon}"
+    },
+    "format-icons": {
+      "locked": "",
+      "unlocked": ""
+    }
   }
 }
