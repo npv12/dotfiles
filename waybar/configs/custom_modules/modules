@@ -58,21 +58,31 @@
     "format": "{icon}{}",
     "return-type": "json",
     "format-icons": {
-      "Playing": "󪤖",
-      "Paused": "󪤷"
+      "Playing": "󪤷",
+      "Paused": "󪤖"
     },
     "exec": "playerctl -a metadata --format '{\"alt\": \"{{status}}\"}' -F",
     "on-click": "playerctl play-pause"
   },
   "custom/music#next": {
-    "format": "󪥇",
+    "format": "{icon}{}",
+    "format-icons": {
+      "Playing": "󪥇",
+      "Paused": "󪥇"
+    },
+    "exec": "playerctl -a metadata --format '{\"alt\": \"{{status}}\"}' -F",
     "return-type": "json",
     "on-click": "playerctl next"
   },
   "custom/music#previous": {
-    "format": "󪥘",
+    "format": "{icon}{}",
+    "format-icons": {
+      "Playing": "󪥘",
+      "Paused": "󪥘"
+    },
     "return-type": "json",
-    "on-click": "playerctl next"
+    "exec": "playerctl -a metadata --format '{\"alt\": \"{{status}}\"}' -F",
+    "on-click": "playerctl previous"
   },
   "custom/mic": {
     "format": "{}",
