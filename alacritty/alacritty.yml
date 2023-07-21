@@ -1,9 +1,11 @@
-env:
-  TERM: xterm-256color
-
 import:
   - ~/.config/alacritty/catppuccin/mocha.yml
+  - ~/.config/alacritty/fonts.yml
 
+## Set environment variables
+env:
+  TERM: xterm-256color
+  WINIT_X11_SCALE_FACTOR: '1.0'
 
 window:
   # Window dimensions (changes require restart)
@@ -256,13 +258,14 @@ cursor:
   #   - _ Underline
   #   - | Beam
   style: Underline
+  blinking: On
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
-  #unfocused_hollow: true
+  unfocused_hollow: false
 
 # Live config reload (changes require restart)
-#live_config_reload: true
+live_config_reload: true
 
 # Shell
 #
