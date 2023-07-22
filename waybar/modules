@@ -79,8 +79,8 @@
   "custom/menu": {
     "format": "󪤆",
     "tooltip": false,
-    "on-click": "$HOME/.config/hypr/scripts/rofi_launcher",
-    "on-click-right": "$HOME/.config/hypr/scripts/rofi_runner"
+    "on-click": "$HOME/.config/rofi/launcher/start.sh",
+    "on-click-right": "$HOME/.config/hypr/scripts/run.sh"
   },
   "custom/power": {
     "format": "襤",
