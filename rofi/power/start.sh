@@ -4,6 +4,7 @@
 
 # Import Current Theme
 DIR="$HOME/.config/rofi/power"
+HYPR="$HOME/.config/hypr"
 RASI="$DIR/style.rasi"
 CNFR="$DIR/confirm.rasi"
 
@@ -77,11 +78,11 @@ confirm_run () {
 # Execute Command
 run_cmd() {
 	if [[ "$1" == '--opt1' ]]; then
-		"$DIR"/scripts/lockscreen
+		"$HYPR"/scripts/lockscreen
 	elif [[ "$1" == '--opt2' ]]; then
 		confirm_run 'hyprctl dispatch exit 0'
 	elif [[ "$1" == '--opt3' ]]; then
-		confirm_run 'mpc -q pause' 'pulsemixer --mute' "$DIR/scripts/lockscreen" 'systemctl suspend'
+		confirm_run 'mpc -q pause' 'pulsemixer --mute' "$HYPR/scripts/lockscreen" 'systemctl suspend'
 	elif [[ "$1" == '--opt4' ]]; then
 		confirm_run 'systemctl suspend'
 	elif [[ "$1" == '--opt5' ]]; then
