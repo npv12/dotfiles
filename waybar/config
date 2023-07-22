@@ -27,7 +27,6 @@
         "clock"
     ],
     "modules-right": [
-        "keyboard-state",
         "tray",
         "idle_inhibitor",
         "cpu", 
