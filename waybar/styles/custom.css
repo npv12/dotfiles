@@ -1,0 +1,21 @@
+@import "./colors.css";
+
+#custom-themes, #custom-menu {
+	border-radius: 12px;
+	margin: 6px 0px;
+	padding: 2px 10px;
+}
+
+#custom-themes {
+	background-color: @base;
+	color: @yellow;
+	font-size: 12px;
+	padding: 2px 8px;
+}
+
+#custom-menu {
+	color: @sapphire;
+	margin-left: 6px;
+	padding: 2px 6px;
+	font-size: 16px;
+}

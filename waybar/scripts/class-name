@@ -2,7 +2,7 @@
 
 # Define the mapping
 declare -A PKGS=(
-  ["Code"]="VsCode"
+  ["Code"]="Code"
   ["Alacritty"]="Alacritty"
   ["jetbrains-studio"]="Android Studio"
   ["org.gnome.Nautilus"]="File Manager"

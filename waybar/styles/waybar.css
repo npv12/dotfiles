@@ -1,0 +1,14 @@
+@import "./colors.css";
+
+window#waybar {
+    background-color: @base;
+	color: @text;
+    border-bottom: 0px solid @mantle;
+	border-radius: 0px 0px 0px 0px;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.5;
+}

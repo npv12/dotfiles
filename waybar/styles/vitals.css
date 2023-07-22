@@ -1,0 +1,19 @@
+@import "./colors.css";
+
+
+#cpu,
+#memory,
+#disk,
+#idle_inhibitor {
+	color: @text;
+    font-size: 14px;
+    margin: 8px 8px;
+}
+
+
+#idle_inhibitor {
+	color: @green;
+}
+#idle_inhibitor.deactivated {
+    color: @red;
+}

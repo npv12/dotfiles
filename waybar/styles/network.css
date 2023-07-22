@@ -1,0 +1,21 @@
+@import "./colors.css";
+
+#network {
+	background-color: @surface-1;
+    color: @subtext-1;
+    border-radius: 0px 0px 0px 0px;
+    padding: 0px 8px 0px 8px;
+    margin: 0px;
+    font-size: 12px;
+}
+
+#network.disconnected,#network.disabled {
+	background-color: @background-alt1;
+	color: @foreground;
+}
+#network.linked {
+}
+#network.ethernet {
+}
+#network.wifi {
+}

@@ -1,0 +1,30 @@
+@import "./colors.css";
+
+#pulseaudio {
+	background-color: @surface-1;
+	color: @subtext-1;
+    
+    padding: 0px 8px 0px 8px;
+    font-size: 14px;
+}
+
+#pulseaudio.input {
+    padding: 0px 8px 0px 8px;
+}
+
+#pulseaudio.output {
+    border-radius: 20px 0px 0px 20px;
+    padding: 0px 8px 0px 16px;
+}
+
+#pulseaudio.input.source-muted {
+	color: @red;
+  }
+  
+  #pulseaudio.output.muted {
+	color: @red;
+  }
+
+#pulseaudio.bluetooth {
+	background-color: @yellow;
+}
