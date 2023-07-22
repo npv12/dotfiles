@@ -1,7 +1,9 @@
+DIR="$HOME/.config/rofi/bluetooth"
+RASI="$DIR/theme.rasi"
+
 # Constants
 divider="---------"
 goback="Back"
-dir="$HOME/.config/rofi/launcher/"
 
 # Checks if bluetooth controller is powered on
 power_on() {
@@ -166,7 +168,7 @@ toggle_trust() {
 # Useful for status bars like polybar, etc.
 print_status() {
     if power_on; then
-        printf ''
+        printf '󰂯'
 
         paired_devices_cmd="devices Paired"
         # Check if an outdated version of bluetoothctl is used to preserve backwards compatibility
@@ -192,7 +194,7 @@ print_status() {
         done
         printf "\n"
     else
-        echo ""
+        echo "󰂲"
     fi
 }
 
@@ -288,7 +290,7 @@ show_menu() {
 }
 
 # Rofi command to pipe into, can add any options here
-rofi_command="rofi -dmenu $* -p -theme ${dir}/style.rasi"
+rofi_command="rofi -theme ${RASI} -dmenu $* -p"
 
 case "$1" in
     --status)

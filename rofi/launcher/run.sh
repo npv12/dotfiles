@@ -2,5 +2,5 @@ dir="$HOME/.config/rofi/launcher/"
 
 ## Run
 rofi \
-    -show drun \
+    -show run \
     -theme ${dir}/style.rasi

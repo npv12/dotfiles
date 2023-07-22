@@ -1,10 +1,5 @@
 /**
- *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Rofi Theme File
- * Rofi Version: 1.7.3
+ * Copyright (C) 2020-2023 Aditya Shakya <adi1090x@gmail.com>
  **/
 
 /*****----- Configuration -----*****/
@@ -13,15 +8,8 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-* {
-    font:                        "JetBrains Mono Nerd Font 10";
-    background:                  #11092D;
-    background-alt:              #281657;
-    foreground:                  #FFFFFF;
-    selected:                    #DF5296;
-    active:                      #6E77FF;
-    urgent:                      #8E3596;
-}
+@import                          "../shared/colors.rasi"
+@import                          "../shared/fonts.rasi"
 
 /*
 USE_ICON=YES
@@ -33,14 +21,14 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       800px;
+    width:                       680px;
     x-offset:                    0px;
     y-offset:                    0px;
     margin:                      0px;
     padding:                     0px;
-    border:                      0px solid;
-    border-radius:               0px;
-    border-color:                @selected;
+    border:                      4px solid;
+    border-radius:               12px;
+    border-color:                @background-alt;
     cursor:                      "default";
     background-color:            @background;
 }
@@ -50,7 +38,7 @@ mainbox {
     enabled:                     true;
     spacing:                     20px;
     margin:                      0px;
-    padding:                     20px;
+    padding:                     60px;
     background-color:            transparent;
     children:                    [ "inputbar", "message", "listview" ];
 }
@@ -58,34 +46,30 @@ mainbox {
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
-    spacing:                     25px;
-    padding:                     100px 50px;
+    spacing:                     10px;
+    padding:                     0px;
     border:                      0px;
     border-radius:               0px;
     border-color:                @selected;
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/a.png", width);
     text-color:                  @foreground;
     children:                    [ "textbox-prompt-colon", "prompt"];
 }
 
-dummy{
-    background-color:            transparent;
-}
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         "";
-    padding:                     10px 13px;
-    border-radius:               0px;
-    background-color:            @urgent;
+    str:                         "";
+    padding:                     10px 12px;
+    border-radius:               12px;
+    background-color:            var(urgent);
     text-color:                  @background;
 }
 prompt {
     enabled:                     true;
     padding:                     10px;
-    border-radius:               0px;
-    background-color:            @active;
+    border-radius:               12px;
+    background-color:            var(active);
     text-color:                  @background;
 }
 
@@ -95,7 +79,7 @@ message {
     margin:                      0px;
     padding:                     10px;
     border:                      0px solid;
-    border-radius:               0px;
+    border-radius:               12px;
     border-color:                @selected;
     background-color:            @background-alt;
     text-color:                  @foreground;
@@ -104,7 +88,7 @@ textbox {
     background-color:            inherit;
     text-color:                  inherit;
     vertical-align:              0.5;
-    horizontal-align:            0.5;
+    horizontal-align:            0.0;
 }
 
 /*****----- Listview -----*****/
@@ -124,9 +108,9 @@ listview {
 /*****----- Elements -----*****/
 element {
     enabled:                     true;
-    padding:                     30px 10px;
+    padding:                     20px;
     border:                      0px solid;
-    border-radius:               0px;
+    border-radius:               30px;
     border-color:                @selected;
     background-color:            transparent;
     text-color:                  @foreground;

@@ -8,8 +8,8 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "../shared/colors.rasi"
-@import                          "../shared/fonts.rasi"
+@import                          "shared/colors.rasi"
+@import                          "shared/fonts.rasi"
 
 /*
 USE_ICON=YES
@@ -21,7 +21,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       800px;
+    width:                       350px;
     x-offset:                    0px;
     y-offset:                    0px;
     margin:                      0px;
@@ -40,7 +40,7 @@ mainbox {
     margin:                      0px;
     padding:                     60px;
     background-color:            transparent;
-    children:                    [ "inputbar", "message", "listview" ];
+    children:                    [ "message", "listview" ];
 }
 
 /*****----- Inputbar -----*****/
@@ -88,7 +88,7 @@ textbox {
     background-color:            inherit;
     text-color:                  inherit;
     vertical-align:              0.5;
-    horizontal-align:            0.0;
+    horizontal-align:            0.5;
 }
 
 /*****----- Listview -----*****/
