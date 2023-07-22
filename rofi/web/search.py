@@ -118,9 +118,31 @@ def fetch_suggestions(search_string):
         reply_data = json.loads(re.match(r'autocompleteCallback\((.*)\);', reply_data).group(1))
         return [ cleanhtml(res['phrase']).strip() for res in reply_data ]
 
+def find_if_web_address(search_string):
+    website_ends = [
+        '.com',
+        '.it',
+        '.app',
+        '.tech',
+        '.org',
+        '.net',
+        '.io',
+        '.co',
+        '.edu',
+        '.gov',
+        '.mil',
+        '.biz',
+        '.info',
+        '.me',
+    ]
+    if search_string.startswith('http://') or search_string.startswith('https://'):
+        return True
+    if any([end in search_string for end in website_ends]):
+        return True
+    return False
+
 def main():
     search_string = html.unescape((' '.join(sys.argv[1:])).strip())
-
     if search_string.endswith('!'):
         search_string = search_string.rstrip('!').strip()
         results = fetch_suggestions(search_string)
@@ -130,8 +152,12 @@ def main():
         print('!!-- Type something and search it with %s' % CONFIG['SEARCH_ENGINE_NAME'][SEARCH_ENGINE])
         print('!!-- Close your search string with "!" to get search suggestions')
     else:
+        if(find_if_web_address(search_string)):
+            sp.Popen(CONFIG['BROWSER_PATH'][BROWSER] + [search_string], stdout=sp.DEVNULL, stderr=sp.DEVNULL, shell=False)
+            sys.exit(0)
         url = CONFIG['SEARCH_URL'][SEARCH_ENGINE] + urllib.parse.quote_plus(search_string)
         sp.Popen(CONFIG['BROWSER_PATH'][BROWSER] + [url], stdout=sp.DEVNULL, stderr=sp.DEVNULL, shell=False)
+        sys.exit(0)
 
 def validate_config(c):
     if type(c) != dict:
@@ -153,30 +179,10 @@ def validate_config(c):
             sys.exit(1)
 
 if __name__ == "__main__":
-    try:
-        fname = os.path.expanduser('~/.config/rofi-web-search/config.json')
-        if os.path.exists(fname):
-            try:
-                config = json.loads(open(fname, 'r').read())
-            except json.JSONDecodeError:
-                print('Configuration file %s is not a valid JSON' % fname, file=sys.stderr)
-                sys.exit(1)
-            validate_config(config)
-            SEARCH_ENGINE = config['SEARCH_ENGINE']
-            BROWSER = config['BROWSER']
-            TERMINAL = config['TERMINAL']
-        else:
-            # Create default config
-            config = {
-                    'SEARCH_ENGINE' : SEARCH_ENGINE,
-                    'BROWSER' : BROWSER,
-                    'TERMINAL' : TERMINAL
-                }
-            os.makedirs(os.path.dirname(fname))
-            f = open(fname, 'w')
-            f.write(json.dumps(config, indent=4))
-            f.write('\n')
-            f.close()
-        main()
-    except:
-        sys.exit(1)
+    # Create default config
+    config = {
+            'SEARCH_ENGINE' : SEARCH_ENGINE,
+            'BROWSER' : BROWSER,
+            'TERMINAL' : TERMINAL
+        }
+    main()
