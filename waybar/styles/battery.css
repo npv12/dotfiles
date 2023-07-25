@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 #battery {
-	background-color: @surface-1;
+	background-color: @surface-0;
     color: @subtext-1;
     border-radius: 0px 20px 20px 0px;
     padding: 0px 16px 0px 8px;

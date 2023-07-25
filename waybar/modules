@@ -68,13 +68,21 @@
   },
   "cpu": {
     "interval": 5,
-    "format": "󪤔 {usage}%"
+    "format": "{usage}%"
+  },
+  "custom/agenda": {
+    "format": "{}",
+    "exec": "i3-agenda -c ~/.config/google-calendar/secrets.json --limchar 25",
+    "interval": 300
   },
   "custom/app-name": {
     "format": "{}",
     "interval": 1,
     "exec": "~/.config/waybar/scripts/class-name",
     "tooltip": false
+  },
+  "custom/cpu": {
+    "format": "󪤔"
   },
   "custom/menu": {
     "format": "󪤆",
@@ -92,6 +100,11 @@
     "tooltip": false,
     "on-click": "$HOME/.config/hypr/theme/theme.sh --pywal",
     "on-click-right": "$HOME/.config/hypr/theme/theme.sh --default"
+  },
+  "custom/weather": {
+    "format": "{}",
+    "exec": "$HOME/.config/waybar/scripts/weather",
+    "interval": 300
   },
   "disk": {
     "interval": 30,

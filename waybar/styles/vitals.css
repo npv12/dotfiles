@@ -1,11 +1,9 @@
 @import "./colors.css";
 
 
-#cpu,
 #memory,
 #disk,
 #idle_inhibitor {
-	color: @text;
     font-size: 14px;
     margin: 8px 8px;
 }
@@ -16,4 +14,20 @@
 }
 #idle_inhibitor.deactivated {
     color: @red;
+}
+#disk {
+    color: @yellow;
+}
+#cpu {
+    color: @teal;
+    font-size: 14px;
+    margin: 0px 8px 0px 0px;
+}
+#memory {
+    color: @mauve;
+}
+#custom-cpu{
+    font-size: 17px;
+    margin: 0px 8px;
+    color: @teal;
 }

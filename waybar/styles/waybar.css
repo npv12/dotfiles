@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 window#waybar {
-    background-color: @base;
+    background-color: @mantle;
 	color: @text;
     border-bottom: 0px solid @mantle;
 	border-radius: 0px 0px 0px 0px;

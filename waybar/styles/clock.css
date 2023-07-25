@@ -1,8 +1,13 @@
 @import "./colors.css";
 
-#clock {
-    color: @subtext-1;
+#clock,
+#custom-weather {
+    color: @rosewater;
     font-size: 14px;
     padding: 0px 10px;
     border-radius: 20px;
+}
+
+#custom-weather {
+    color: @flamingo
 }

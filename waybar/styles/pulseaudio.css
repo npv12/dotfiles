@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 #pulseaudio {
-	background-color: @surface-1;
+	background-color: @surface-0;
 	color: @subtext-1;
     
     padding: 0px 8px 0px 8px;

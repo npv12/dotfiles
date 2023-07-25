@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 #workspaces {
-	background-color: @surface-1;
+	background-color: @surface-0;
 	border-radius: 15px;
 	margin: 0px 0px;
 	padding: 0px 0px;

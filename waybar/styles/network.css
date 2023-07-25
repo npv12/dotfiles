@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 #network {
-	background-color: @surface-1;
+	background-color: @surface-0;
     color: @subtext-1;
     border-radius: 0px 0px 0px 0px;
     padding: 0px 8px 0px 8px;
@@ -10,8 +10,7 @@
 }
 
 #network.disconnected,#network.disabled {
-	background-color: @background-alt1;
-	color: @foreground;
+	color: @maroon;
 }
 #network.linked {
 }

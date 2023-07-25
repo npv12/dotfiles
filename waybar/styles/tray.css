@@ -1,5 +1,4 @@
 #tray {
-	background-color: @base;
 	padding: 8px 8px;
 }
 #tray > .passive {

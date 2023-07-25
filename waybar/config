@@ -21,14 +21,17 @@
         "custom/menu",
         "custom/app-name",
         "wlr/workspaces",
-        "custom/spotify"
+        "custom/spotify",
+        "custom/agenda"
     ],
     "modules-center": [
-        "clock"
+        "clock",
+        "custom/weather"
     ],
     "modules-right": [
         "tray",
         "idle_inhibitor",
+        "custom/cpu",
         "cpu", 
         "memory", 
         "disk", 

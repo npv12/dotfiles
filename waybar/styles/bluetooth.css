@@ -1,7 +1,7 @@
 @import "./colors.css";
 
 #bluetooth {
-	background-color: @surface-1;
+	background-color: @surface-0;
     padding: 0px 8px 0px 8px;
 	color: @green;
     font-size: 14px;
