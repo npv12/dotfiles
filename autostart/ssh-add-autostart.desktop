@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=ssh-add -q /home/npv12/.ssh/id_git /home/npv12/.ssh/id_sf /home/npv12/.ssh/azure-pranav
+Name=ssh-add
+Type=Application
