@@ -4,6 +4,9 @@ export DIR=~/dotfiles/
 
 # Install all deps
 paru -S fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright
+
+# Fonts
+paru -S adobe-source-code-pro-fonts noto-fonts terminus-font
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
 
 echo "Removing previous symlinks"
