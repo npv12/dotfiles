@@ -48,12 +48,14 @@ function zsh_add_file() {
 }
 
 # If on rom server
-hosts=($(echo $(hostname -i) | tr " " "\n"))
-for host in "${hosts[@]}"; do
-    if [ "$host" = "65.108.202.40" ]; then
-        zsh_add_file "build-scripts/setup"
-    fi
-done
+if command -v hostname &> /dev/null; then
+    hosts=($(echo $(hostname -i) | tr " " "\n"))
+    for host in "${hosts[@]}"; do
+        if [ "$host" = "65.108.202.40" ]; then
+            zsh_add_file "build-scripts/setup"
+        fi
+    done
+fi
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 # initialize Zsh. After this point console I/O is unavailable until Zsh
