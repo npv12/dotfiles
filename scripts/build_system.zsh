@@ -25,3 +25,5 @@ done
 # Install adb and associated udev rules
 echo '[4/4] Installing adb convenience tools'
 sudo pacman -S --noconfirm --needed android-tools android-udev
+
+echo 'Done!'
