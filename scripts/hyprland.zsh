@@ -1,9 +1,10 @@
-paru -S bison # Deps
-paru -S hyprland-nvidia gtklock rofi-lbonn-wayland playerctl grim slurp wf-recorder brightnessctl \
-    pavucontrol wl-clipboard socat jq waybar blueberry alacritty polkit-gnome swayosd \
-    wl-clipboard wl-clipboard-history-git xdg-desktop-portal-hyprland-git dunst
-paru -Rns bison
+yay -S bison # Deps
+yay -S --mflags "--nocheck" rofi-lbonn-wayland
+yay -S hyprland-nvidia swaylock grim slurp wf-recorder brightnessctl \
+    pavucontrol waybar xdg-desktop-portal-hyprland-git mako swayidle
+yay -Rns bison
 ln -s ~/dotfiles/hypr ~/.config/hypr
 ln -s ~/dotfiles/rofi ~/.config/rofi
-ln -s ~/dotfiles/dunst ~/.config/dunst
+ln -s ~/dotfiles/mako ~/.config/mako
 ln -s ~/dotfiles/waybar ~/.config/waybar
+ln -s ~/dotfiles/autostart ~/.config/autostart
