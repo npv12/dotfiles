@@ -43,7 +43,7 @@ if command -v exa &> /dev/null; then
     alias ls="exa --group-directories-first --icons"
 fi
 
-alias ll="ls -lh --git"
+alias ll="ls -lh"
 alias la="ll -a"
 alias tree="ll --tree --level=2"
 alias lh="la -h"
@@ -104,6 +104,10 @@ alias glast="git log -1 HEAD"
 
 # Grep
 alias pygrep="grep -nr --include='*.py'"
+
+# Alias for some common application that ubuntu fucks up
+alias fd=fdfind
+alias bat=batcat
 
 # GPG
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify" # verify signature for isos
