@@ -117,8 +117,8 @@ alias glast="git log -1 HEAD"
 alias pygrep="grep -nr --include='*.py'"
 
 # Alias for some common application that ubuntu fucks up
-alias fd=fdfind
-alias bat=batcat
+# alias fd=fdfind
+# alias bat=batcat
 
 # GPG
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify" # verify signature for isos
