@@ -90,4 +90,3 @@ setopt correct_all
 
 zsh_add_file "controller"
 z4h source "$ZSH_DIR/p10k.zsh"
-

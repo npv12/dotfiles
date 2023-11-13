@@ -38,9 +38,9 @@ if command -v paru &> /dev/null; then
     alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
 fi
 
-# Exa
-if command -v exa &> /dev/null; then
-    alias ls="exa --group-directories-first --icons"
+# Eza
+if command -v eza &> /dev/null; then
+    alias ls="eza --group-directories-first --icons"
 fi
 
 alias ll="ls -lh"

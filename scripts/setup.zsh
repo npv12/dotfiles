@@ -3,7 +3,7 @@
 export DIR=~/dotfiles/
 
 # Install all deps
-paru -S fd ripgrep duf exa micro bat bottom zoxide ueberzug neovim pyright
+paru -S fd ripgrep duf eza micro bat bottom zoxide ueberzug neovim pyright
 
 # Fonts
 paru -S adobe-source-code-pro-fonts noto-fonts terminus-font
