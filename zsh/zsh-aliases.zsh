@@ -38,6 +38,17 @@ if command -v paru &> /dev/null; then
     alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
 fi
 
+# Zypper for arch
+if command -v zypper &> /dev/null; then
+    alias pkg-clean="paru -Y --clean"    # Cleans the pkgs.
+    alias pkg-install="sudo zypper install"      # Installs package(s).
+    alias pkg-list="zypper list"    # Lists installed packages.
+    alias pkg-remove="zypper remove"       # Removes package(s).
+    alias pkg-search="zypper search"            # Searches for a package.
+    alias os-update="sudo zypper duf"       # Updates packages.
+    alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
+fi
+
 # Eza
 if command -v eza &> /dev/null; then
     alias ls="eza --group-directories-first --icons"
