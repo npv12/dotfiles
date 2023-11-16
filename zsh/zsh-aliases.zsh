@@ -40,12 +40,12 @@ fi
 
 # Zypper for arch
 if command -v zypper &> /dev/null; then
-    alias pkg-clean="paru -Y --clean"    # Cleans the pkgs.
+    alias pkg-clean="sudo zypper clean && sudo zypper -q pa --orphaned | awk '{ print $5 }' | grep -v Name | xargs sudo zypper rm"    # Cleans the pkgs.
     alias pkg-install="sudo zypper install"      # Installs package(s).
     alias pkg-list="zypper list"    # Lists installed packages.
     alias pkg-remove="zypper remove"       # Removes package(s).
     alias pkg-search="zypper search"            # Searches for a package.
-    alias os-update="sudo zypper duf"       # Updates packages.
+    alias os-update="sudo zypper dup"       # Updates packages.
     alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
 fi
 
