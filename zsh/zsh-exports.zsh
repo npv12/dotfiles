@@ -26,5 +26,10 @@ export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 # Micro
 export "MICRO_TRUECOLOR=1"
 
+# Vivid
+if command -v vivid &> /dev/null; then
+    export LS_COLORS="$(vivid generate catppuccin-mocha)"
+fi
+
 # Yarn
 export PATH="~/.yarn/bin:$PATH"
