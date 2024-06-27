@@ -1,7 +1,7 @@
 export ZSH_DIR="${ZDOTDIR}/.config/zsh"
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
-zstyle ':z4h:' auto-update      'no'
+zstyle ':z4h:' auto-update      'ask'
 # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
 zstyle ':z4h:' auto-update-days '28'
 
