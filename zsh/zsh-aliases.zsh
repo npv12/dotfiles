@@ -51,7 +51,7 @@ fi
 
 # Eza
 if command -v eza &> /dev/null; then
-    alias ls="eza --group-directories-first --icons"
+    alias ls="eza --group-directories-first --icons=always"
 fi
 
 alias ll="ls -lh"
