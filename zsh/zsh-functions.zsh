@@ -160,6 +160,60 @@ function yt-download() {
     yt-dlp -ciwx --audio-format mp3 --audio-quality 0 $1
 }
 
-timezsh() {
+# Just used for testing
+function timezsh() {
     for i in $(seq 1 10); do time zsh -i -c exit; done
 }
+
+# If mkvenv is not already defined
+if ! command -v mkvenv &> /dev/null; then
+    function mkvenv() {
+        # If -p is used as an argument where -p could be anywhere
+        python_version="python3"
+        if [[ "$@" == *"-p"* ]]; then
+        echo "Python version provided"
+            python_version=$(echo $@ | grep -oP '(-p|--python) \K([\w.]+)')
+        fi
+        echo "Python version: $python_version"
+        
+        venv_name=$(basename $PWD)-$(openssl rand -hex 2)
+
+        # Split out non arg parts
+        iter_count=0
+        for arg in "$@"; do
+            iter_count=$((iter_count + 1))
+            if [[ $((iter_count % 2)) -eq 1 && ! $arg =~ ^- ]]; then
+                venv_name=$arg
+                break
+            fi
+        done
+        echo "Creating Python environment named: $venv_name"
+
+        # Create the virtual environment
+        mkvirtualenv -p $python_version $venv_name
+
+        # Store it in .venv to be automatically enabled
+        echo $venv_name > .venv
+
+        # This is a hack to get the virtualenv to work and start to detect automatically
+        deactivate
+        current_dir=$(basename $PWD)
+        cd ..
+        cd $current_dir
+    }
+fi
+
+if ! command -v rmvenv &> /dev/null; then
+    function rmvenv() {
+        # Check if .venv exists
+        if [ -f .venv ]; then
+            virtual_env_name=$(cat .venv)
+            echo "Deactivating and removing Python environment named: $virtual_env_name" 
+            deactivate
+            rmvirtualenv $virtual_env_name
+            rm -f .venv
+        else
+            echo "No virtual environment found"
+        fi
+    }
+fi
