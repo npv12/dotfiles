@@ -200,6 +200,15 @@ if ! command -v mkvenv &> /dev/null; then
         current_dir=$(basename $PWD)
         cd ..
         cd $current_dir
+
+        # Check if requirements.txt exists
+        if [ -f requirements.txt ]; then
+            echo "Do you want to install the requirements? (y/n)"
+            read install_req
+            if [ "$install_req" = "y" ]; then
+                pip install -r requirements.txt
+            fi
+        fi
     }
 fi
 
