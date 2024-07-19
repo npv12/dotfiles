@@ -165,6 +165,7 @@ function timezsh() {
     for i in $(seq 1 10); do time zsh -i -c exit; done
 }
 
+# Python
 # If mkvenv is not already defined
 if ! command -v mkvenv &> /dev/null; then
     function mkvenv() {
