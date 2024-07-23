@@ -172,10 +172,8 @@ if ! command -v mkvenv &> /dev/null; then
         # If -p is used as an argument where -p could be anywhere
         python_version="python3"
         if [[ "$@" == *"-p"* ]]; then
-        echo "Python version provided"
             python_version=$(echo $@ | grep -oP '(-p|--python) \K([\w.]+)')
         fi
-        echo "Python version: $python_version"
         
         venv_name=$(basename $PWD)-$(openssl rand -hex 2)
 
@@ -188,7 +186,6 @@ if ! command -v mkvenv &> /dev/null; then
                 break
             fi
         done
-        echo "Creating Python environment named: $venv_name"
 
         # Create the virtual environment
         mkvirtualenv -p $python_version $venv_name
