@@ -136,7 +136,6 @@ alias btrdu="btrfs filesystem du -s"
 
 # Python
 alias python="python3"
-alias pyenv="source venv/bin/activate"
 
 # Rclone
 alias rcp="rclone copy --progress"
