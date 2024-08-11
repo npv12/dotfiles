@@ -46,6 +46,7 @@ ln -s ${DIR}/zshenv ~/.zshenv
 ln -s ${DIR}/blackbox ~/.local/share/blackbox
 ln -s ${DIR}/mimeapps.list ~/.config/mimeapps.list
 ln -s ${DIR}/fonts ~/.local/share/fonts
+ln -s ${DIR}/tmux.conf .tmux.conf
 
 # Not required for wsl
 # echo "Linking bins"
