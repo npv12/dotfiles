@@ -9,7 +9,7 @@ zsh_add_file "zsh-functions"
 zsh_add_file "zsh-expand-dot-dir"
 
 if command -v keychain &> /dev/null; then
-    eval `keychain -q --eval /home/pranav/.ssh/id_git`
+    eval `keychain -q --eval /home/npv12/.ssh/id_git`
 fi
 
 # Zoxide rocks
