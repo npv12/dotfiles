@@ -39,9 +39,6 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 # FZF
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
 
-# example. If you don't plan to use Oh My Zsh, delete this line.
-z4h install ohmyzsh/ohmyzsh || return
-
 # Clone additional Git repositories from GitHub.
 z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use || return
 
@@ -67,7 +64,7 @@ fi
 z4h init || return
 
 # Additional repos
-z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer ohmyzsh/ohmyzsh/plugins/virtualenvwrapper
+z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer
 z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
 
 # Define key bindings.
