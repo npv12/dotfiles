@@ -170,7 +170,7 @@ function timezsh() {
 if ! command -v mkvenv &> /dev/null; then
     function mkvenv() {
         # If -p is used as an argument where -p could be anywhere
-        python_version="python3"
+        python_version="3.11" # Current py version
         if [[ "$@" == *"-p"* ]]; then
             python_version=$(echo $@ | grep -oP '(-p|--python) \K([\w.]+)')
         fi
@@ -188,16 +188,10 @@ if ! command -v mkvenv &> /dev/null; then
         done
 
         # Create the virtual environment
-        mkvirtualenv -p $python_version $venv_name
+        pyenv virtualenv $python_version $venv_name 
 
         # Store it in .venv to be automatically enabled
-        echo $venv_name > .venv
-
-        # This is a hack to get the virtualenv to work and start to detect automatically
-        deactivate
-        current_dir=$(basename $PWD)
-        cd ..
-        cd $current_dir
+        pyenv local $venv_name
 
         # Check if requirements.txt exists
         if [ -f requirements.txt ]; then
@@ -213,12 +207,12 @@ fi
 if ! command -v rmvenv &> /dev/null; then
     function rmvenv() {
         # Check if .venv exists
-        if [ -f .venv ]; then
-            virtual_env_name=$(cat .venv)
+        if [ -f .python-version ]; then
+            virtual_env_name=$(cat .python-version)
             echo "Deactivating and removing Python environment named: $virtual_env_name" 
-            deactivate
-            rmvirtualenv $virtual_env_name
-            rm -f .venv
+            pyenv deactivate
+            rm .python-version
+            pyenv virtualenv-delete $virtual_env_name
         else
             echo "No virtual environment found"
         fi
