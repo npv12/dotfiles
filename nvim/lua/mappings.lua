@@ -1,38 +1,35 @@
----@type MappingsTable
-local M = {}
-local opts = {
-  noremap = true,
-  silent = true
-}
+require "nvchad.mappings"
 
-M.general = {
-  n = {
-    [";"] = { ":", "enter command mode", opts = { nowait = true } },
-    ["<C-Down"] = { ":resize +2<CR>", "resize window down", opts },
-    ["<C-Up>"] = { ":resize -2<CR>", "resize window up", opts },
-    ["<C-Right>"] = { ":vertical resize -2<CR>", "resize window right", opts },
-    ["<C-Left>"] = { ":vertical resize +2<CR>", "resize window left", opts },
-    ["<A-j>"] = {"<Esc>:m .+1<CR>==gi", "Move line up", opts},
-    ["<A-k>"] = {"<Esc>:m .-2<CR>==gi", "Move line down", opts},
-    ["<C-s>"] = { ":w<CR>", "save file", opts },
-    ["<C-q>"] = { ":q<CR>", "quit file", opts },
-    ["<C-x>"] = { ":x<CR>", "save and quit file", opts },
-    ["<C-p>"] = { ":Telescope find_files<CR>", "find files", opts },
-    ["<C-f>"] = { ":Telescope live_grep<CR>", "find in files", opts },
-    ["<C-h>"] = { ":Telescope help_tags<CR>", "find help tags", opts },
-    ["<C-b>"] = {":NvimTreeToggle<cr>", "Toggle the treesitter", opts},
-    ["<A-r>"] = {"<cmd>lua require('spectre').open()<CR>", "Open spectre", opts},
-    ["<S-r>"] = {"viw:lua require('spectre').open_file_search()<cr>", "Search using spectre", opts},
-  },
-  i = {
-    ["<C-p>"] = { ":Telescope find_files<CR>", "find files", opts },
-    ["<C-f>"] = { ":Telescope live_grep<CR>", "find in files", opts },
-    ["<C-h>"] = { ":Telescope help_tags<CR>", "find help tags", opts },
-  },
-  v = {
-    ["<C-p>"] = { ":Telescope find_files<CR>", "find files", opts },
-    ["<C-f>"] = { ":Telescope live_grep<CR>", "find in files", opts },
-    ["<C-h>"] = { ":Telescope help_tags<CR>", "find help tags", opts },
-  }
-}
-return M
+local map = vim.keymap.set
+
+map("n", ";", ":", { desc = "CMD enter command mode" })
+map("i", "jk", "<ESC>")
+
+-- Custom ones
+-- Normal mode mappings
+map("n", ";", ":", { desc = "enter command mode", nowait = true })
+map("n", "<C-Down>", ":resize +2<CR>", { desc = "resize window down" })
+map("n", "<C-Up>", ":resize -2<CR>", { desc = "resize window up" })
+map("n", "<C-Right>", ":vertical resize -2<CR>", { desc = "resize window right" })
+map("n", "<C-Left>", ":vertical resize +2<CR>", { desc = "resize window left" })
+map("n", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move line up" })
+map("n", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move line down" })
+map("n", "<C-s>", ":w<CR>", { desc = "save file" })
+map("n", "<C-q>", ":q<CR>", { desc = "quit file" })
+map("n", "<C-x>", ":x<CR>", { desc = "save and quit file" })
+map("n", "<C-p>", ":Telescope find_files<CR>", { desc = "find files" })
+map("n", "<C-f>", ":Telescope live_grep<CR>", { desc = "find in files" })
+map("n", "<C-h>", ":Telescope help_tags<CR>", { desc = "find help tags" })
+map("n", "<C-b>", ":NvimTreeToggle<CR>", { desc = "Toggle the treesitter" })
+map("n", "<A-r>", "<cmd>lua require('spectre').open()<CR>", { desc = "Open spectre" })
+map("n", "<S-r>", "viw:lua require('spectre').open_file_search()<CR>", { desc = "Search using spectre" })
+
+-- Insert mode mappings
+map("i", "<C-p>", ":Telescope find_files<CR>", { desc = "find files" })
+map("i", "<C-f>", ":Telescope live_grep<CR>", { desc = "find in files" })
+map("i", "<C-h>", ":Telescope help_tags<CR>", { desc = "find help tags" })
+
+-- Visual mode mappings
+map("v", "<C-p>", ":Telescope find_files<CR>", { desc = "find files" })
+map("v", "<C-f>", ":Telescope live_grep<CR>", { desc = "find in files" })
+map("v", "<C-h>", ":Telescope help_tags<CR>", { desc = "find help tags" })
