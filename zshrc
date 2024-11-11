@@ -9,7 +9,7 @@ zstyle ':z4h:' auto-update-days '28'
 zstyle ':z4h:bindkey' keyboard  'pc'
 
 # Start tmux automatically
-zstyle ':z4h:' start-tmux command tmux -u new -A -D -t main
+zstyle ':z4h:' start-tmux command tmux -u new -A -D -t z4h
 
 # Mark up shell's output with semantic information.
 zstyle ':z4h:' term-shell-integration 'yes'
