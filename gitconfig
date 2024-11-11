@@ -23,3 +23,5 @@
 	rebase = false
 [push]
 	autoSetupRemote = true
+[gpg]
+	program = /opt/homebrew/bin/gpg
