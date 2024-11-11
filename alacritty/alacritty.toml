@@ -1,5 +1,5 @@
 [general]
-import = ['C:\Users\prana\AppData\Roaming\alacritty\catppuccin\mocha.toml', 'C:\Users\prana\AppData\Roaming\alacritty\fonts.toml']
+import = ['catppuccin/mocha.toml', 'fonts.toml']
 live_config_reload = true
 
 [colors]
