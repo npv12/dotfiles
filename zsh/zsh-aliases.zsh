@@ -139,7 +139,10 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
     alias open="xdg-open"
 fi
 
-alias btrdu="btrfs filesystem du -s"
+# if btrfs is not installed, no alias
+if command -v btrfs &> /dev/null; then
+    alias btrdu="btrfs filesystem du -s"
+fi
 
 # Python
 alias python="python3"
