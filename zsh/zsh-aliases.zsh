@@ -133,7 +133,12 @@ alias novel="~/dotfiles/lightnovel.sh/lightnovel.sh"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
-alias open="xdg-open"
+
+# If macOS, do not alias it
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    alias open="xdg-open"
+fi
+
 alias btrdu="btrfs filesystem du -s"
 
 # Python
