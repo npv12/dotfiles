@@ -157,7 +157,7 @@ function sync-pics() {
 
 # YT Download
 function yt-download() {
-    yt-dlp -ciwx --audio-format mp3 --audio-quality 0 $1
+    yt-dlp -ciwx --audio-format mp3 --audio-quality 0 -o "%(playlist_index&{} - |)s%(title)s - %(uploader)s - %(upload_date)s.%(ext)s" $1
 }
 
 # Just used for testing
