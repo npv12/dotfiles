@@ -1,6 +1,7 @@
 [user]
 	name = Pranav
-	email = npv12@iitbbs.ac.in
+	email = pranav10121@gmail.com
+	signingkey = 9D0A107E3B860D032C41BAEB290C6B5028BD271A
 [alias]
 	co = checkout
 	br = branch
