@@ -17,8 +17,8 @@ export FZF_DEFAULT_OPTS=" \
 export GPG_TTY=$TTY
 
 # GO
-export PATH="$PATH:/home/npv12/.packages/go"
-export GOPATH="/home/npv12/.packages/go"
+export GOPATH="$HOME/.packages/go"
+export PATH="$PATH:$GOPATH"
 
 # Fuzzy search
 export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
