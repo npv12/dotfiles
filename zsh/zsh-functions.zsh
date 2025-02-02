@@ -96,6 +96,14 @@ function load-nvm() {
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 }
 
+function load-python() {
+    # Pyenv manager
+    if command -v pyenv &> /dev/null; then
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+    fi
+}
+
 function load-ros() {
     export ROS_DOMAIN_ID=42
     export ROS_VERSION=1
