@@ -104,6 +104,10 @@ function load-python() {
     fi
 }
 
+function load-mise() {
+    eval "$(/home/npv12/.local/bin/mise activate zsh)"
+}
+
 function load-ros() {
     export ROS_DOMAIN_ID=42
     export ROS_VERSION=1
