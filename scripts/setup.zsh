@@ -23,7 +23,7 @@ if command -v apt &> /dev/null; then
     sudo apt update
     sudo apt install -y eza
 
-    sudo apt install fd-find ripgrep direnv pinentry-tty duf micro bat zoxide ueberzug neovim tmux
+    sudo apt install fd-find ripgrep direnv pinentry-tty duf micro bat zoxide ueberzug neovim tmux pass pass-otp
 fi 
 git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # Rust
