@@ -278,7 +278,3 @@ alias kgj='kubectl get job'
 alias kej='kubectl edit job'
 alias kdj='kubectl describe job'
 alias kdelj='kubectl delete job'
-
-# Pbcopy replacement
-alias pbcopy="xclip -selection clipboard"
-alias pbpaste='xclip -selection clipboard -o'

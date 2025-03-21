@@ -44,3 +44,5 @@
 	autoupdate = true
 [tag]
 	sort = version:refname
+[gpg]
+	program = /opt/homebrew/bin/gpg

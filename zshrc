@@ -6,7 +6,7 @@ zstyle ':z4h:' auto-update      'ask'
 zstyle ':z4h:' auto-update-days '28'
 
 # Keyboard type: 'mac' or 'pc'.
-zstyle ':z4h:bindkey' keyboard  'pc'
+zstyle ':z4h:bindkey' keyboard  'mac'
 
 # Start tmux automatically
 zstyle ':z4h:' start-tmux command tmux -u new -A -D -t z4h
@@ -61,16 +61,16 @@ z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer
 z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
 
 # Define key bindings.
-z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
-z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
+z4h bindkey z4h-backward-kill-word  Option+Backspace     Option+H
+z4h bindkey z4h-backward-kill-zword Option+Shift+Backspace
 
 z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
-z4h bindkey redo Alt+/             # redo the last undone command line change
+z4h bindkey redo Option+/             # redo the last undone command line change
 
-z4h bindkey z4h-cd-back    Alt+Left   # cd into the previous directory
-z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
-z4h bindkey z4h-cd-up      Alt+Up     # cd into the parent directory
-z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
+z4h bindkey z4h-cd-back    Shift+Left   # cd into the previous directory
+z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
+z4h bindkey z4h-cd-up      Shift+Up     # cd into the parent directory
+z4h bindkey z4h-cd-down    Shift+Down   # cd into a child directory
 
 # Autoload functions.
 autoload -Uz zmv
