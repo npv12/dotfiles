@@ -14,13 +14,33 @@
 	rem = remote
 	unstage = reset HEAD --
 	last = log -1 HEAD
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[commit]
+	verbose = true
 [core]
 	editor = micro
+	excludesfile = ~/.gitignore
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[help]
+	autocorrect = prompt
 [init]
 	defaultBranch = main
 [merge]
 	log = true
+	conflictstyle = zdiff3
 [pull]
 	rebase = false
 [push]
 	autoSetupRemote = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[tag]
+	sort = version:refname
