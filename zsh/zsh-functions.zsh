@@ -178,7 +178,6 @@ function timezsh() {
 }
 
 # Kubernetes
-# Kubernetes related
 function kres(){
   kubectl set env $@ REFRESHED_AT=$(date +%Y%m%d%H%M%S)
 }
@@ -203,6 +202,13 @@ _build_kubectl_out_alias "kj"  'kubectl "$@" -o json | jq'
 _build_kubectl_out_alias "kjx" 'kubectl "$@" -o json | fx'
 _build_kubectl_out_alias "ky"  'kubectl "$@" -o yaml | yh'
 unfunction _build_kubectl_out_alias
+
+# Pass
+function create-password() {
+     local pass=$(openssl rand -base64 $1)
+     echo $pass
+     echo $pass | pbcopy
+ }
 
 # Python
 # If mkvenv is not already defined
