@@ -181,52 +181,45 @@ function timezsh() {
 # If mkvenv is not already defined
 if ! command -v mkvenv &> /dev/null; then
     function mkvenv() {
-        # If -p is used as an argument where -p could be anywhere
-        python_version="3.11" # Current py version
-        if [[ "$@" == *"-p"* ]]; then
-            python_version=$(echo $@ | grep -oP '(-p|--python) \K([\w.]+)')
+        if [ -f "mise.toml" ]; then
+            echo "mise.toml already exists"
+            return 1
         fi
-        
-        venv_name=$(basename $PWD)-$(openssl rand -hex 2)
+        cat <<EOF > mise.toml
+[tools]
+python = "3.11"
+uv = "latest"
 
-        # Split out non arg parts
-        iter_count=0
-        for arg in "$@"; do
-            iter_count=$((iter_count + 1))
-            if [[ $((iter_count % 2)) -eq 1 && ! $arg =~ ^- ]]; then
-                venv_name=$arg
-                break
-            fi
-        done
+[env._.python.venv]
+path=".venv"
+create = true
 
-        # Create the virtual environment
-        pyenv virtualenv $python_version $venv_name 
+[tasks.check]
+description = "Validate environment consistency"
+run = "uv pip check && uv pip freeze | diff - requirements.txt"
 
-        # Store it in .venv to be automatically enabled
-        pyenv local $venv_name
+[tasks.update]
+description = "Update dependencies while maintaining constraints"
+run = [
+    "uv pip compile requirements.in -o requirements.txt",
+    "uv pip sync requirements.txt"
+]
 
-        # Check if requirements.txt exists
-        if [ -f requirements.txt ]; then
-            echo "Do you want to install the requirements? (y/n)"
-            read install_req
-            if [ "$install_req" = "y" ]; then
-                pip install -r requirements.txt
-            fi
-        fi
-    }
-fi
+[tasks.install]
+description = "Install requirements.txt packages"
+run = "uv pip install -r requirements.txt"
 
-if ! command -v rmvenv &> /dev/null; then
-    function rmvenv() {
-        # Check if .venv exists
-        if [ -f .python-version ]; then
-            virtual_env_name=$(cat .python-version)
-            echo "Deactivating and removing Python environment named: $virtual_env_name" 
-            pyenv deactivate
-            rm .python-version
-            pyenv virtualenv-delete $virtual_env_name
-        else
-            echo "No virtual environment found"
-        fi
+[tasks.sync]
+description = "Synchronize environment with requirements.txt"
+run = "uv pip sync requirements.txt"
+
+[tasks.install-uv]
+run = "mise install uv@latest"
+
+[settings]
+python.uv_venv_auto = true
+python.uv_venv_create_args = ["--seed"]
+EOF
+        echo "mise.toml created successfully"
     }
 fi
