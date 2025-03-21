@@ -26,7 +26,7 @@ export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 
 # History
 export HISTORY_IGNORE_DUPS=1
-export HISTORY_IGNORE="(pass *)"
+export HISTORY_IGNORE="(pass * | mise set *)"
 
 # Micro
 export "MICRO_TRUECOLOR=1"
