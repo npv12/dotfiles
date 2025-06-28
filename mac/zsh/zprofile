@@ -1,0 +1,20 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh"
+
+# In ~/.zprofile:
+if [[ -z "$AMAZON_Q_INITIALIZED" ]]; then
+    if [[ -f '${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh' ]]; then
+      source '${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh'
+    fi
+
+    if [[ -f '${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh' ]]; then
+      source '${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh'
+    fi
+    export AMAZON_Q_INITIALIZED=1
+fi
+
+# Added by Toolbox App
+export PATH="${PATH}:${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh"
