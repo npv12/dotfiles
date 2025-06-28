@@ -7,15 +7,19 @@ sudo apt update
 sudo apt install -y kubelet kubectl
 sudo apt install kubectx
 
-sudo apt install -y alacritty bat git micro tmux zsh
+sudo apt install -y bat git micro tmux zsh
 sudo apt install -y ripgrep fd-find
 
 # Bottom
-curl -LO https://github.com/ClementTsang/bottom/releases/download/0.10.2/bottom_0.10.2-1_amd64.deb
-sudo dpkg -i bottom_0.10.2-1_amd64.deb
-rm bottom_0.10.2-1_amd64.deb
+BOTTOM_RELEASE_VERSION=0.10.2
+BOTTOM_RELEASE_FILE="bottom_${BOTTOM_RELEASE_VERSION}-1_amd64.deb"
+curl -LO https://github.com/ClementTsang/bottom/releases/download/${BOTTOM_RELEASE_VERSION}/${BOTTOM_RELEASE_FILE}
+sudo dpkg -i ${BOTTOM_RELEASE_FILE}
+rm ${BOTTOM_RELEASE_FILE}
 
-# git delta
-curl -LO https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-i686-unknown-linux-gnu.deb
-sudo dpkg -i delta-0.18.2-i686-unknown-linux-gnu.deb
-rm delta-0.18.2-i686-unknown-linux-gnu.deb
+# Git delta
+DELTA_RELEASE_VERSION=0.18.2
+DELTA_RELEASE_FILE="git-delta_${DELTA_RELEASE_VERSION}_amd64.deb"
+curl -LO https://github.com/dandavison/delta/releases/download/${DELTA_RELEASE_VERSION}/${DELTA_RELEASE_FILE}
+sudo dpkg -i ${DELTA_RELEASE_FILE}
+rm ${DELTA_RELEASE_FILE}
