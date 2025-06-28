@@ -25,8 +25,14 @@
 	excludesfile = ~/.gitignore
 	pager = delta
 [delta]
-	side-by-side = true
 	features = catppuccin-mocha
+	line-numbers = true
+	hyperlinks = true
+	navigate = true
+	true-color = always
+	side-by-side = true
+[pager]
+	blame = delta
 [diff]
 	algorithm = histogram
 	colorMoved = plain
