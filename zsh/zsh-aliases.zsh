@@ -56,7 +56,7 @@ fi
 
 alias ll="ls -lh"
 alias la="ll -a"
-alias tree="ll --tree --level=2"
+alias tree="ls --tree --level=2 --icons=never"
 alias lh="la -h"
 
 # Flutter
