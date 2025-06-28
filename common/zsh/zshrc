@@ -8,6 +8,15 @@ zstyle ':z4h:' auto-update-days '28'
 # Keyboard type: 'mac' or 'pc'.
 zstyle ':z4h:bindkey' keyboard  'pc'
 
+# Linux keybindings
+zstyle ':z4h:autosuggestions' forward-char 'accept'
+
+# Enable ('yes') or disable ('no') automatic teleportation of z4h over
+# SSH when connecting to these hosts.
+# zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
+# The default value if none of the overrides above match the hostname.
+zstyle ':z4h:ssh:*'                   enable 'yes'
+
 # Whether to move prompt to the bottom when zsh starts on Ctrl+L
 zstyle ':z4h:' prompt-at-bottom 'yes'
 

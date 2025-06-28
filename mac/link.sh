@@ -15,4 +15,4 @@ ln -s $MAC_DIR/sketchybar $CONFIG_DIR/sketchybar
 ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
 
 # Correct alacritty for macOS
-mv ~/.config/alacritty/mac.toml ~/.config/alacritty/alacritty.toml
+cp -f ~/.config/alacritty/mac.toml ~/.config/alacritty/alacritty.toml
