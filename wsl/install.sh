@@ -13,3 +13,9 @@ sudo apt install -y ripgrep fd-find
 # Bottom
 curl -LO https://github.com/ClementTsang/bottom/releases/download/0.10.2/bottom_0.10.2-1_amd64.deb
 sudo dpkg -i bottom_0.10.2-1_amd64.deb
+rm bottom_0.10.2-1_amd64.deb
+
+# git delta
+curl -LO https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-i686-unknown-linux-gnu.deb
+sudo dpkg -i delta-0.18.2-i686-unknown-linux-gnu.deb
+rm delta-0.18.2-i686-unknown-linux-gnu.deb

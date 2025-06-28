@@ -23,6 +23,10 @@
 [core]
 	editor = micro
 	excludesfile = ~/.gitignore
+	pager = delta
+[delta]
+	side-by-side = true
+	features = catppuccin-mocha
 [diff]
 	algorithm = histogram
 	colorMoved = plain
@@ -32,6 +36,10 @@
 	autocorrect = prompt
 [init]
 	defaultBranch = main
+[include]
+	path = ~/dotfiles/common/git/delta.catppuccin.gitconfig
+[interactive]
+	diffFilter = delta --color-only
 [merge]
 	log = true
 	conflictstyle = zdiff3
