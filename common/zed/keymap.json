@@ -7,15 +7,23 @@
 // from the command palette.
 [
   {
-    "context": "Workspace",
+    "context": "AgentConfiguration",
     "bindings": {
-      // "shift shift": "file_finder::Toggle"
+      "cmd-[": "pane::GoBack"
     }
   },
   {
-    "context": "Editor && vim_mode == insert && !menu",
+    "context": "ThreadHistory",
     "bindings": {
-      // "j k": "vim::SwitchToNormalMode"
+      "cmd-[": "pane::GoBack"
+    }
+  },
+  {
+    "context": "Pane",
+    "use_key_equivalents": true,
+    "bindings": {
+      "cmd-[": "pane::GoBack",
+      "cmd-]": "pane::GoForward"
     }
   }
 ]
