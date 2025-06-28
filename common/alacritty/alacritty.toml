@@ -1,5 +1,5 @@
 [general]
-import = ['C:\Users\prana\AppData\Roaming\alacritty\catppuccin\mocha.toml', 'C:\Users\prana\AppData\Roaming\alacritty\fonts.toml']
+import = ['catppuccin/mocha.toml', 'alacritty/fonts.toml']
 live_config_reload = true
 
 [colors]
@@ -106,10 +106,11 @@ mods = "None"
 history = 10000
 
 [window]
-decorations = "full"
+decorations = "Buttonless"
 dynamic_padding = false
-opacity = 1
-startup_mode = "Maximized"
+opacity = 0.9
+blur = true
+startup_mode = "Windowed"
 title = "Alacritty"
 
 [window.class]
