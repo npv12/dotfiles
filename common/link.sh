@@ -3,6 +3,10 @@
 COMMON_DIR="$HOME/dotfiles/common"
 CONFIG_DIR="$HOME/.config"
 
+rm -rf ~/.gitconfig  ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf $CONFIG_DIR/alacritty \
+    $CONFIG_DIR/bat $CONFIG_DIR/bottom $CONFIG_DIR/micro $CONFIG_DIR/zed \
+    $CONFIG_DIR/zsh
+
 # Link ZSH
 ln -s $COMMON_DIR/zsh/zshrc ~/.zshrc
 ln -s $COMMON_DIR/zsh/zshenv ~/.zshenv

@@ -1,8 +1,15 @@
 #!/usr/bin/env zsh
 
 MAC_DIR="$HOME/dotfiles/mac"
-ln -s $MAC_DIR/aerospace ~/.config/aerospace
-ln -s $MAC_DIR/aerospace-space ~/.config/aerospace-space
+CONFIG_DIR="$HOME/.config"
 
-ln -s $MAC_DIR/sketchybar ~/.config/sketchybar
+rm -rf $CONFIG_DIR/aerospace \
+    $CONFIG_DIR/aerospace-space \
+    $CONFIG_DIR/sketchybar \
+    ~/.zprofile
+
+ln -s $MAC_DIR/aerospace $CONFIG_DIR/aerospace
+ln -s $MAC_DIR/aerospace-space $CONFIG_DIR/aerospace-space
+
+ln -s $MAC_DIR/sketchybar $CONFIG_DIR/sketchybar
 ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
