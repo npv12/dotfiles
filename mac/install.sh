@@ -3,3 +3,7 @@ curl -sSL https://raw.githubusercontent.com/acsandmann/aerospace-swipe/main/inst
 
 brew tap FelixKratz/formulae
 brew install sketchybar
+
+brew install bat bottom micro tmux
+brew install --cask zed
+brew install --cask alacritty
