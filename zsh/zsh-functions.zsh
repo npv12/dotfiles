@@ -260,3 +260,17 @@ fi
 func del-hist() {
     LC_ALL=C sed -i '' "/$1/d" "$HISTFILE"
 }
+
+function kill-tmux-sessions() {
+    # Zsh instance created by ZSH
+    local keep_session="zsh-0"
+    # Get all tmux sessions except the one we want to keep
+    local sessions=$(tmux list-sessions -F '#{session_name}' | grep -v "^$keep_session$")
+    if [[ -z "$sessions" ]]; then
+        echo "No tmux sessions to kill."
+        return 0
+    fi
+    for session in $sessions; do
+        tmux kill-session -t "$session"
+    done
+}
