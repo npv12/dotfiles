@@ -256,3 +256,7 @@ EOF
         echo "mise.toml created successfully"
     }
 fi
+
+func del-hist() {
+    LC_ALL=C sed -i '' "/$1/d" "$HISTFILE"
+}
