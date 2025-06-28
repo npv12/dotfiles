@@ -1,5 +1,4 @@
 [general]
-import = ['catppuccin/mocha.toml', 'alacritty/fonts.toml']
 live_config_reload = true
 
 [colors]
