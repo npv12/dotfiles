@@ -134,6 +134,9 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 
+# Needed for zsh4human
+alias clear=z4h-clear-screen-soft-bottom
+
 # If macOS, do not alias it
 if [[ "$OSTYPE" != "darwin"* ]]; then
     alias open="xdg-open"

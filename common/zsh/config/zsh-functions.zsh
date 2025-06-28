@@ -37,26 +37,26 @@ if command -v pacman &> /dev/null; then
         xargs -I '{}' \
         expac "${bold_color}% 20n ${fg_no_bold[white]}%d${reset_color}" '{}'
     }
-    
+
     function pac-disowned() {
         local tmp db fs
         tmp=${TMPDIR-/tmp}/pacman-disowned-$UID-$$
         db=$tmp/db
         fs=$tmp/fs
-        
+
         mkdir "$tmp"
         trap 'rm -rf "$tmp"' EXIT
-        
+
         pacman -Qlq | sort -u > "$db"
-        
+
         find /bin /etc /lib /sbin /usr ! -name lost+found ! -path '/usr/share/secureboot/*' ! -path '/usr/local/bin/*' ! -path '/etc/doas.conf' \
         \( -type d -printf '%p/\n' -o -print \) | sort > "$fs"
-        
+
         comm -23 "$fs" "$db"
     }
-    
+
     alias pacmanallkeys='sudo pacman-key --refresh-keys'
-    
+
     function pacman-signkeys() {
         local key
         for key in $@; do
@@ -66,7 +66,7 @@ if command -v pacman &> /dev/null; then
             --no-permission-warning --command-fd 0 --edit-key $key
         done
     }
-    
+
     if (( $+commands[xdg-open] )); then
         function pac-web() {
             if [[ $# = 0 || "$1" =~ '--help|-h' ]]; then
@@ -77,7 +77,7 @@ if command -v pacman &> /dev/null; then
                 echo "    $bold_color$0$reset_color ${underline_color}target${reset_color}"
                 return 1
             fi
-            
+
             local pkg="$1"
             local infos="$(LANG=C pacman -Si "$pkg")"
             if [[ -z "$infos" ]]; then
@@ -182,6 +182,21 @@ function kres(){
   kubectl set env $@ REFRESHED_AT=$(date +%Y%m%d%H%M%S)
 }
 
+kxl () {
+  # Create a session-local kubeconfig if not already set
+  if [[ -z "$KUBECONFIG_LOCAL" ]]; then
+    export KUBECONFIG_LOCAL=$(mktemp /tmp/kubeconfig-local-XXXXXX)
+    cp ~/.kube/config "$KUBECONFIG_LOCAL"
+    export KUBECONFIG="$KUBECONFIG_LOCAL"
+  fi
+
+  # Use kubectx to switch context in the local config
+  kubectx "$@"
+}
+
+compdef kxl=kubectx
+
+
 # Utility print functions (json / yaml)
 function _build_kubectl_out_alias {
   setopt localoptions norcexpandparam
@@ -257,7 +272,7 @@ EOF
     }
 fi
 
-func del-hist() {
+function del-hist() {
     LC_ALL=C sed -i '' "/$1/d" "$HISTFILE"
 }
 
