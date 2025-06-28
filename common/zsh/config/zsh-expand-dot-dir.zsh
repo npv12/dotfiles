@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Expands ... to ../..
 function expand-dot-to-parent-directory-path {
   if [[ $LBUFFER = *.. ]]; then

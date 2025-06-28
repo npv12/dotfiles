@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 function extract () {
     if [ -f $1 ] ; then
