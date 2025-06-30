@@ -183,15 +183,12 @@ function kres(){
 }
 
 kxl () {
-  # Create a session-local kubeconfig if not already set
-  if [[ -z "$KUBECONFIG_LOCAL" ]]; then
-    export KUBECONFIG_LOCAL=$(mktemp /tmp/kubeconfig-local-XXXXXX)
-    cp ~/.kube/config "$KUBECONFIG_LOCAL"
-    export KUBECONFIG="$KUBECONFIG_LOCAL"
-  fi
-
-  # Use kubectx to switch context in the local config
-  kubectx "$@"
+    if [[ -z "$KUBECONFIG_LOCAL" ]]; then
+        export KUBECONFIG_LOCAL=$(mktemp /tmp/kubeconfig-local-XXXXXX)
+        kubectl config view --flatten --minify --raw > "$KUBECONFIG_LOCAL"
+        export KUBECONFIG="$KUBECONFIG_LOCAL"
+    fi
+    kubectx "$@"
 }
 
 compdef kxl=kubectx
