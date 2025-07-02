@@ -1,1 +1,6 @@
 mise.toml
+.zed/
+.classpath
+.factorypath
+.project
+.settings/
