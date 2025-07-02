@@ -1,6 +1,10 @@
 ICON_COLOR=0xFFFEFEFE
 
 case $INFO in
+  "Slack")
+  	ICON=
+  	ICON_COLOR=0xfff38ba8s
+  	;;
   "Zed Preview")
     ICON_PADDING_RIGHT=2
     ICON_COLOR=0xffcba6f7
