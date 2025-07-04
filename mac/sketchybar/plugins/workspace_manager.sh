@@ -7,7 +7,7 @@ source "$CONFIG_DIR/colors.sh"
 ALL_WORKSPACES=($(aerospace list-workspaces --all | sort -n))
 
 # Retrieve non-empty workspaces
-NON_EMPTY=($(aerospace list-workspaces --monitor focused --empty no))
+NON_EMPTY=($(aerospace list-workspaces --monitor all --empty no))
 
 # Get the currently focused workspace
 FOCUSED=$(aerospace list-workspaces --focused)
@@ -34,10 +34,17 @@ if [ "${WORKSPACES_TO_SHOW[*]}" != "${EXISTING_IDS[*]}" ]; then
   # Add workspace items in the correct order
   for sid in "${WORKSPACES_TO_SHOW[@]}"; do
     ITEM_NAME="space.$sid"
+    if [[ "$sid" =~ ^[1-9]$ ]]; then
+        DISPLAY=1
+    else
+        DISPLAY=2
+    fi
+    LABEL="${sid^^}"
     if [[ "$sid" == "$FOCUSED" ]]; then
         sketchybar --add item "$ITEM_NAME" left \
         --set "$ITEM_NAME" \
-            label="$sid" \
+            associated_display=$DISPLAY \
+            label=$LABEL \
             icon.drawing=off \
             padding_left=2 \
             padding_right=2 \
@@ -51,16 +58,17 @@ if [ "${WORKSPACES_TO_SHOW[*]}" != "${EXISTING_IDS[*]}" ]; then
     else
       sketchybar --add item "$ITEM_NAME" left \
       --set "$ITEM_NAME" \
-          label="$sid" \
-          icon.drawing=off \
-          padding_left=2 \
-          padding_right=2 \
-          background.color=0xFF11111B \
-          label.color=0xFFCDD6F4 \
-          background.corner_radius=5 \
-          background.height=20 \
-          click_script="aerospace workspace $sid" \
-          script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
+            associated_display=$DISPLAY \
+            label=$LABEL \
+            icon.drawing=off \
+            padding_left=2 \
+            padding_right=2 \
+            background.color=0xFF11111B \
+            label.color=0xFFCDD6F4 \
+            background.corner_radius=5 \
+            background.height=20 \
+            click_script="aerospace workspace $sid" \
+            script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
       --subscribe "$ITEM_NAME" aerospace_workspace_change
     fi
   done

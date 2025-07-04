@@ -107,7 +107,7 @@ history = 10000
 [window]
 decorations = "Buttonless"
 dynamic_padding = false
-opacity = 0.9
+opacity = 0.85
 blur = true
 startup_mode = "Windowed"
 title = "Alacritty"
