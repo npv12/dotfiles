@@ -5,7 +5,7 @@ CONFIG_DIR="$HOME/.config"
 
 rm -rf ~/.gitconfig  ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf $CONFIG_DIR/alacritty \
     $CONFIG_DIR/bat $CONFIG_DIR/bottom $CONFIG_DIR/micro $CONFIG_DIR/zed \
-    $CONFIG_DIR/zsh
+    $CONFIG_DIR/zsh $CONFIG_DIR/gdu
 
 mkdir -p ~/.config/zed
 
@@ -23,6 +23,8 @@ ln -s $COMMON_DIR/alacritty $CONFIG_DIR/alacritty
 ln -s $COMMON_DIR/bat $CONFIG_DIR/bat
 ln -s $COMMON_DIR/bottom $CONFIG_DIR/bottom
 ln -s $COMMON_DIR/micro $CONFIG_DIR/micro
+ln -s $COMMON_DIR/gdu $CONFIG_DIR/gdu
 ln -s $COMMON_DIR/tmux ~/.tmux.conf
 ln -s $COMMON_DIR/zed/keymap.json $CONFIG_DIR/zed/keymap.json
 ln -s $COMMON_DIR/zed/settings.json $CONFIG_DIR/zed/settings.json
+ln -s

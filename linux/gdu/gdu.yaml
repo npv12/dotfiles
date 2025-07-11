@@ -1,7 +1,0 @@
-style:
-    selected-row:
-        text-color: black
-        background-color: "#94e2d5"
-    sorting:
-      by: size 
-      order: desc
