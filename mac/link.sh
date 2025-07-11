@@ -9,10 +9,17 @@ rm -rf $CONFIG_DIR/aerospace \
     ~/.zprofile
 
 ln -s $MAC_DIR/aerospace $CONFIG_DIR/aerospace
-ln -s $MAC_DIR/aerospace-space $CONFIG_DIR/aerospace-space
+ln -s $MAC_DIR/aerospace-swipe $CONFIG_DIR/aerospace-swipe
 
 ln -s $MAC_DIR/sketchybar $CONFIG_DIR/sketchybar
 ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
 
 # Correct alacritty for macOS
 cp -f ~/.config/alacritty/mac.toml ~/.config/alacritty/alacritty.toml
+
+xattr -rd com.apple.quarantine /Applications/Alacritty.app
+
+find ~/.ssh -type f \( -name "id_*" ! -name "*.pub" ! -name "config" ! -name "known_hosts" \) | while read -r key; do
+    echo "Adding key: $key"
+    ssh-add "$key"
+done
