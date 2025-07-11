@@ -106,8 +106,9 @@ sketchybar --add item weather right \
 #  --subscribe moon mouse.clicked
 
 sketchybar --add item mic right \
-    --set mic update_freq=1 \
+    --set mic \
     script="$PLUGIN_DIR/mic.sh" \
+    update_freq=1 \
     click_script="$PLUGIN_DIR/mic_click.sh" \
     icon.drawing=on \
     label.drawing=on \

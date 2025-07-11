@@ -4,6 +4,7 @@
 
 # Code
 alias code="code-insiders"
+alias zed="zed-preview"
 
 # DNF
 if command -v dnf &> /dev/null; then

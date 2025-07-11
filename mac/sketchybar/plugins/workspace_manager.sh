@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
-source "$CONFIG_DIR/colors.sh"
 
 # Retrieve all workspaces
 ALL_WORKSPACES=($(aerospace list-workspaces --all | sort -n))
@@ -39,7 +38,7 @@ if [ "${WORKSPACES_TO_SHOW[*]}" != "${EXISTING_IDS[*]}" ]; then
     else
         DISPLAY=2
     fi
-    LABEL="${sid^^}"
+    LABEL=$(echo "$sid" | tr '[:lower:]' '[:upper:]')
     if [[ "$sid" == "$FOCUSED" ]]; then
         sketchybar --add item "$ITEM_NAME" left \
         --set "$ITEM_NAME" \

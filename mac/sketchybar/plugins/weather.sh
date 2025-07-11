@@ -1,50 +1,45 @@
 #!/bin/bash
 
-sketchybar --set $NAME \
+sketchybar --set "$NAME" \
   label="..." \
   icon.color=0xFFFEFEFE
 
-# fetch weather data
+# Fetch weather data
 WEATHER_JSON=$(curl -s "https://wttr.in/?format=j1")
 
 # Fallback if empty
-if [ -z $WEATHER_JSON ]; then
-  sketchybar --set $NAME label="No data"
-  return
+if [ -z "$WEATHER_JSON" ]; then
+  sketchybar --set "$NAME" label="No data"
+  exit 1
 fi
 
-TEMPERATURE=$(echo $WEATHER_JSON | jq '.current_condition[0].temp_C' | tr -d '"')
-WEATHER_DESCRIPTION=$(echo $WEATHER_JSON | jq '.current_condition[0].weatherDesc[0].value' | tr -d '"' | sed 's/\(.\{16\}\).*/\1.../')
+# Extract data
+TEMPERATURE=$(echo "$WEATHER_JSON" | jq -r '.current_condition[0].temp_C')
+WEATHER_DESCRIPTION=$(echo "$WEATHER_JSON" | jq -r '.current_condition[0].weatherDesc[0].value' | sed 's/\(.\{16\}\).*/\1.../')
+WEATHER_CODE=$(echo "$WEATHER_JSON" | jq -r '.current_condition[0].weatherCode')
 
-case $(echo $WEATHER_JSON | jq '.current_condition[0].weatherCode' | tr -d '"') in
+# Choose icon
+case "$WEATHER_CODE" in
   113)
-    ICON=
-    ;;
+    ICON="" ;;  # Sunny
   116 | 119 | 122)
-    ICON=󰅟
-    ;;
+    ICON="󰅟" ;;  # Cloudy
   143 | 248 | 260)
-    ICON=
-    ;;
-  179 | 182 | 185 | 281 | 284 | 311 | 314 | 317 | 350 | 362 | 362 | 374 | 377)
-    ICON=
-    ;;
+    ICON="" ;;  # Fog
+  179 | 182 | 185 | 281 | 284 | 311 | 314 | 317 | 350 | 362 | 374 | 377)
+    ICON="" ;;  # Snow
   176 | 263 | 266 | 293 | 296 | 299 | 302 | 305 | 308 | 353 | 356 | 359)
-    ICON=
-    ;;
+    ICON="" ;;  # Rain
   200 | 386 | 389)
-    ICON=
-    ;;
+    ICON="" ;;  # Thunderstorm
   392)
-    ICON=
-    ;;
+    ICON="" ;;  # Snow Showers
   *)
-    ICON=
-    ;;
-
+    ICON="" ;;  # Default
 esac
 
-sketchybar --set $NAME \
-  label="$TEMPERATURE$(echo '°')C " \
+# Update bar
+sketchybar --set "$NAME" \
+  label="${TEMPERATURE}°C" \
   icon="$ICON" \
   icon.color="0xFFa6e3a1"
