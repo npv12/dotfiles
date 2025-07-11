@@ -281,5 +281,9 @@ alias kdj='kubectl describe job'
 alias kdelj='kubectl delete job'
 
 # Pbcopy replacement
-alias pbcopy="xclip -selection clipboard"
-alias pbpaste='xclip -selection clipboard -o'
+if ! command -v pbcopy &> /dev/null; then
+    alias pbcopy="xclip -selection clipboard"
+    alias pbpaste='xclip -selection clipboard -o'
+fi
+
+alias docker=podman

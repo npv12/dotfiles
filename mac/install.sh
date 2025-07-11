@@ -4,7 +4,7 @@ curl -sSL https://raw.githubusercontent.com/acsandmann/aerospace-swipe/main/inst
 brew tap FelixKratz/formulae
 brew install sketchybar borders
 
-brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight alacritty mise gpg maccy pass zoxide
+brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight alacritty mise gpg maccy pass zoxide podman
 brew install kubernetes-cli kubectx
 brew install --cask zed@preview
 brew install --cask alacritty

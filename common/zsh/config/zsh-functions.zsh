@@ -105,7 +105,7 @@ function load-python() {
 }
 
 function load-mise() {
-    eval "$(${HOME}/.local/bin/mise activate zsh)"
+    eval "$(mise activate zsh)"
 }
 
 function load-ros() {
