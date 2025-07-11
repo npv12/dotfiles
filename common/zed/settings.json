@@ -1,14 +1,197 @@
 {
+  "agent": {
+    "default_profile": "write",
+    "profiles": {
+      "write": {
+        "name": "Write",
+        "enable_all_context_servers": false,
+        "tools": {
+          "copy_path": true,
+          "create_directory": true,
+          "delete_path": true,
+          "diagnostics": true,
+          "edit_file": true,
+          "fetch": true,
+          "list_directory": true,
+          "move_path": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "terminal": true,
+          "thinking": true,
+          "web_search": true
+        }
+      },
+      "ask": {
+        "name": "Ask",
+        "enable_all_context_servers": false,
+        "tools": {
+          "contents": true,
+          "diagnostics": true,
+          "fetch": true,
+          "list_directory": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "open": true,
+          "grep": true,
+          "thinking": true,
+          "web_search": true
+        }
+      },
+      "minimal": {
+        "name": "Minimal",
+        "enable_all_context_servers": false,
+        "tools": {}
+      },
+      "playwright": {
+        "tools": {
+          "fetch": true,
+          "edit_file": true,
+          "delete_path": true,
+          "create_directory": true,
+          "copy_path": true,
+          "thinking": true,
+          "read_file": true,
+          "open": true,
+          "now": true,
+          "move_path": true,
+          "diagnostics": true,
+          "list_directory": true,
+          "grep": true,
+          "find_path": true
+        },
+        "name": "Playwright",
+        "enable_all_context_servers": false,
+        "context_servers": {
+          "sequential-thinking": {
+            "tools": {
+              "sequentialthinking": true
+            }
+          },
+          "playwright": {
+            "tools": {
+              "browser_wait_for": true,
+              "browser_type": true,
+              "browser_take_screenshot": true,
+              "browser_tab_select": true,
+              "browser_tab_new": true,
+              "browser_tab_list": true,
+              "browser_tab_close": true,
+              "browser_snapshot": true,
+              "browser_select_option": true,
+              "browser_resize": true,
+              "browser_press_key": true,
+              "browser_pdf_save": true,
+              "browser_network_requests": true,
+              "browser_navigate_forward": true,
+              "browser_navigate_back": true,
+              "browser_navigate": true,
+              "browser_install": true,
+              "browser_hover": true,
+              "browser_handle_dialog": true,
+              "browser_generate_playwright_test": true,
+              "browser_file_upload": true,
+              "browser_drag": true,
+              "browser_console_messages": true,
+              "browser_close": true,
+              "browser_click": true
+            }
+          }
+        }
+      }
+    },
+    "always_allow_tool_actions": true,
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    }
+  },
   "base_keymap": "JetBrains",
   "icon_theme": "Catppuccin Mocha",
   "features": {
     "edit_prediction_provider": "copilot"
   },
-  "agent": {
-    "default_profile": "write",
-    "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-4.1"
+  "lsp": {
+    "jdtls": {
+      "settings": {
+        "java": {
+          "home": "$HOME/.local/share/mise/installs/java/21.0.2/",
+          "java.jdt.ls.lombokSupport.enabled": true
+        }
+      }
+    }
+  },
+  "terminal": {
+    "font_family": "MesloLGS NF",
+    "font_size": 14,
+    "line_height": "standard"
+  },
+  "context_servers": {
+    "gcp": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": ["run", "-i", "--rm", "node:20", "npx", "-y", "gcp-mcp"]
+    },
+    "kubernetes": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": ["run", "-i", "--rm", "node:20", "npx", "mcp-server-kubernetes"]
+    },
+    "perplexity-ask": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PERPLEXITY_API_KEY",
+        "mcp/perplexity-ask"
+      ],
+      "env": {
+        "PERPLEXITY_API_KEY": "$(pass api/perplexity)"
+      }
+    },
+    "playwright": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": ["run", "-i", "--rm", "node:20", "npx", "@playwright/mcp@latest"]
+    },
+    "sequential-thinking": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "node:20",
+        "npx",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "postgres": {
+      "enabled": true,
+      "source": "custom",
+      "command": "podman",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "DATABASE_URI=postgresql://postgres:secret@host.docker.internal:5432/expenses_db",
+        "crystaldba/postgres-mcp",
+        "--access-mode=unrestricted"
+      ],
+      "env": {
+        "DATABASE_URI": "postgresql://postgres:secret@localhost:5432/expenses_db"
+      }
     }
   },
   "when_closing_with_no_tabs": "keep_window_open",

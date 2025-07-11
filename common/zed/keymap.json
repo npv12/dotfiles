@@ -25,5 +25,17 @@
       "cmd-[": "pane::GoBack",
       "cmd-]": "pane::GoForward"
     }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-g": [
+        "task::Spawn",
+        {
+          "task_name": "gitdiff",
+          "reveal_target": "center"
+        }
+      ]
+    }
   }
 ]

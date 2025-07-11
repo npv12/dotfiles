@@ -1,0 +1,6 @@
+[
+  {
+    "label": "gitdiff",
+    "command": "git diff $ZED_FILE"
+  }
+]
