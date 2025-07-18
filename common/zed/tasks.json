@@ -1,6 +1,6 @@
 [
   {
     "label": "gitdiff",
-    "command": "git diff $ZED_FILE"
+    "command": "DELTA_PAGER= git diff $ZED_FILE"
   }
 ]

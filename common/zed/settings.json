@@ -123,6 +123,7 @@
       }
     }
   },
+  "autosave": { "after_delay": { "milliseconds": 500 } },
   "terminal": {
     "font_family": "MesloLGS NF",
     "font_size": 14,
@@ -130,7 +131,7 @@
   },
   "context_servers": {
     "gcp": {
-      "enabled": true,
+      "enabled": false,
       "source": "custom",
       "command": "podman",
       "args": ["run", "-i", "--rm", "node:20", "npx", "-y", "gcp-mcp"]
