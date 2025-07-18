@@ -5,3 +5,5 @@ mise.toml
 .project
 .settings/
 .DS_Store
+.run/
+.kiro/
