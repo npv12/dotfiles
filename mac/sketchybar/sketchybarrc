@@ -114,8 +114,6 @@ sketchybar --add item mic right \
     label.drawing=on \
     --subscribe mic volume_change
 
-sketchybar --add event aerospace_workspace_change
-
 # Volume item
 sketchybar --add item volume right \
     --set volume \
@@ -125,10 +123,17 @@ sketchybar --add item volume right \
     label.drawing=on \
     click_script="osascript -e 'set volume output muted not (output muted of (get volume settings))'"
 
+# Caffeine
+sketchybar --add item caffeinate right \
+  --set caffeinate \
+  script="$PLUGIN_DIR/caffeinate.sh" \
+  click_script="$PLUGIN_DIR/caffeinate.sh" \
+  icon=
+
 sketchybar --add item workspace_manager left \
   --set workspace_manager \
-    script="$CONFIG_DIR/plugins/workspace_manager.sh" \
+    script="$CONFIG_DIR/plugins/yabai.sh" \
     drawing=off \
-  --subscribe workspace_manager aerospace_workspace_change
+  --subscribe workspace_manager space_change
 
 sketchybar --update

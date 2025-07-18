@@ -6,10 +6,19 @@ CONFIG_DIR="$HOME/.config"
 rm -rf $CONFIG_DIR/aerospace \
     $CONFIG_DIR/aerospace-space \
     $CONFIG_DIR/sketchybar \
-    ~/.zprofile
+    ~/.zprofile \
+    $CONFIG_DIR/yabai \
+    $CONFIG_DIR/skhd
 
-ln -s $MAC_DIR/aerospace $CONFIG_DIR/aerospace
-ln -s $MAC_DIR/aerospace-swipe $CONFIG_DIR/aerospace-swipe
+if command -v aerospace >/dev/null 2>&1; then
+    ln -s $MAC_DIR/aerospace $CONFIG_DIR/aerospace
+    ln -s $MAC_DIR/aerospace-swipe $CONFIG_DIR/aerospace-swipe
+fi
+
+if command -v yabai >/dev/null 2>&1; then
+    ln -s $MAC_DIR/yabai $CONFIG_DIR/yabai
+    ln -s $MAC_DIR/skhd $CONFIG_DIR/skhd
+fi
 
 ln -s $MAC_DIR/sketchybar $CONFIG_DIR/sketchybar
 ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
