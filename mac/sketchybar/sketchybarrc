@@ -144,3 +144,5 @@ sketchybar --add item aerospace_manager left \
     script="$CONFIG_DIR/plugins/workspace_manager.sh" \
     drawing=off \
   --subscribe aerospace_manager aerospace_workspace_change
+
+sketchybar --update
