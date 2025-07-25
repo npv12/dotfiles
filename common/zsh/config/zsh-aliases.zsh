@@ -286,4 +286,6 @@ if ! command -v pbcopy &> /dev/null; then
     alias pbpaste='xclip -selection clipboard -o'
 fi
 
-alias docker=podman
+if command -v podman &> /dev/null; then
+    alias docker=podman
+fi
