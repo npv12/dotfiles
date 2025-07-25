@@ -134,6 +134,6 @@ sketchybar --add item workspace_manager left \
   --set workspace_manager \
     script="$CONFIG_DIR/plugins/yabai.sh" \
     drawing=off \
-  --subscribe workspace_manager space_change
+  --subscribe workspace_manager space_change display_change
 
 sketchybar --update
