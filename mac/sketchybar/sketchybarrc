@@ -129,11 +129,18 @@ sketchybar --add item caffeinate right \
   script="$PLUGIN_DIR/caffeinate.sh" \
   click_script="$PLUGIN_DIR/caffeinate.sh" \
   icon=
-
+  
+# Yabai
 sketchybar --add item workspace_manager left \
   --set workspace_manager \
     script="$CONFIG_DIR/plugins/yabai.sh" \
     drawing=off \
   --subscribe workspace_manager space_change display_change
 
-sketchybar --update
+# Aerospace
+sketchybar --add event aerospace_workspace_change
+sketchybar --add item aerospace_manager left \
+  --set aerospace_manager \
+    script="$CONFIG_DIR/plugins/workspace_manager.sh" \
+    drawing=off \
+  --subscribe aerospace_manager aerospace_workspace_change

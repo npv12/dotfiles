@@ -64,7 +64,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 4
 outer.bottom = 4
-outer.top = [{ monitor."Built-in Retina Display" = 40 }, 40]
+outer.top = [{ monitor."Built-in Retina Display" = 10 }, 40]
 outer.right = 4
 
 # 'main' binding mode declaration
@@ -134,7 +134,6 @@ alt-9 = 'workspace 9'
 alt-a = 'workspace A'
 alt-b = 'workspace B'
 alt-c = 'workspace C'
-alt-d = 'workspace D'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
@@ -150,7 +149,6 @@ alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
 alt-shift-a = 'move-node-to-workspace A --focus-follows-window'
 alt-shift-b = 'move-node-to-workspace B --focus-follows-window'
 alt-shift-c = 'move-node-to-workspace C --focus-follows-window'
-alt-shift-d = 'move-node-to-workspace D --focus-follows-window'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -162,11 +160,12 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 alt-shift-semicolon = 'mode service'
 
 # Fullscreen
-alt-shift-f = 'fullscreen'
-alt-f = 'layout floating tiling'
+alt-d = 'fullscreen'
+alt-shift-f = "macos-native-fullscreen"
+alt-f = ["layout floating tiling", "exec-and-forget ~/.config/aerospace/center_float.sh"]
 
 alt-enter = '''exec-and-forget osascript -e '
-    do shell script "open -na Alacritty"'
+    do shell script "open -na Ghostty"'
     '''
 
 ctrl-left = 'workspace prev'
