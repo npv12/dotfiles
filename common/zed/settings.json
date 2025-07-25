@@ -104,8 +104,8 @@
     },
     "always_allow_tool_actions": true,
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-4.1"
+      "provider": "google",
+      "model": "gemini-2.5-pro"
     }
   },
   "base_keymap": "JetBrains",
@@ -118,7 +118,13 @@
       "settings": {
         "java": {
           "home": "$HOME/.local/share/mise/installs/java/21.0.2/",
-          "java.jdt.ls.lombokSupport.enabled": true
+          "jdt": {
+            "ls": {
+              "lombokSupport": {
+                "enabled": true
+              }
+            }
+          }
         }
       }
     }
@@ -139,8 +145,8 @@
     "kubernetes": {
       "enabled": true,
       "source": "custom",
-      "command": "podman",
-      "args": ["run", "-i", "--rm", "node:20", "npx", "mcp-server-kubernetes"]
+      "command": "npx",
+      "args": ["mcp-server-kubernetes@2.4.5"]
     },
     "perplexity-ask": {
       "enabled": true,
