@@ -26,7 +26,7 @@ for DISP in "${DISPLAYS[@]}"; do
       ITEM="space.$DISP.$sid"
       BG="0xFF11111B"; FG="0xFFCDD6F4"
       if [ "$sid" -eq "$FOCUSED" ]; then
-        BG="0xFFFAB387"; FG="0xFF11111B"
+        BG="0xFF89b4fa"; FG="0xFF11111B"
       fi
 
       sketchybar --add item "$ITEM" left \

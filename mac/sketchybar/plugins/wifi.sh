@@ -1,4 +1,4 @@
-SSID=$(ipconfig getsummary $(networksetup -listallhardwareports | awk '/Hardware Port: Wi-Fi/{getline; print $2}') | awk -F ' SSID : ' '/ SSID : / {print $2}')
+SSID=$(system_profiler SPAirPortDataType | awk '/Current Network/ {getline; $1=$1; print $0 | "tr -d \":\""; exit}')
 
 if [[ $SSID -eq "" ]]; then
     sketchybar --set $NAME \
