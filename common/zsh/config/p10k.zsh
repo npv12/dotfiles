@@ -80,7 +80,7 @@
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
     context                 # user@hostname
-    nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
+    # nordvpn               # nordvpn connection status, linux only (https://nordvpn.com/), NEVER ENABLE. IT IS BROKEN
     ranger                  # ranger shell (https://github.com/ranger/ranger)
     yazi                    # yazi shell (https://github.com/sxyazi/yazi)
     nnn                     # nnn shell (https://github.com/jarun/nnn)
