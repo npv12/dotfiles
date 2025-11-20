@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ $(uname) == "Darwin" ]]; then
+if [[ $(uname) == "Darwin" || $(uname) == "Linux" ]]; then
     # Mac keybindings
 else
     # WSL Specific
