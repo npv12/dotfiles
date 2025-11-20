@@ -286,3 +286,196 @@ function kill-tmux-sessions() {
         tmux kill-session -t "$session"
     done
 }
+
+function ai() {
+  emulate -L zsh
+
+  # ---- deps ---------------------------------------------------------------
+  for bin in curl jq; do
+    if ! command -v "$bin" >/dev/null; then
+      echo "Error: '$bin' not found."
+      echo "Fix: install with your package manager (e.g., 'brew install $bin' or 'sudo apt -y install $bin')."
+      return 127
+    fi
+  done
+
+  # ---- api key ------------------------------------------------------------
+  if [[ -z "$AI_PROMPTGEN_API_KEY" ]]; then
+    echo "Error: API key not set."
+    echo "Fix: export AI_PROMPTGEN_API_KEY in your ~/.zshrc"
+    return 1
+  fi
+
+  # ---- opts ---------------------------------------------------------------
+  zmodload zsh/zutil 2>/dev/null || true
+  local model="${AI_MODEL:-openai/gpt-oss-20b:free}"
+  local temp="${AI_TEMP:-0.2}"
+
+  local -a m_opt t_opt
+  zparseopts -E -D m:=m_opt t:=t_opt 2>/dev/null
+  [[ ${#m_opt} -gt 0 ]] && model="${m_opt[2]}"
+  [[ ${#t_opt} -gt 0 ]] && temp="${t_opt[2]}"
+
+  # ---- query --------------------------------------------------------------
+  if (( $# == 0 )); then
+    echo 'Usage: ai [-m model] [-t temperature] "your command-related question"'
+    return 1
+  fi
+  local query="$*"
+
+  # ---- system prompt ------------------------------------------------------
+  local SYSTEM_PROMPT
+  read -r -d '' SYSTEM_PROMPT <<'EOF'
+SYSTEM PROMPT: “Zsh Expert, No-Nonsense”
+
+Role:
+- You are a senior zsh + Unix CLI expert for macOS & Linux. You recall idiomatic commands for zsh, coreutils, and common tools.
+
+Primary Output Rules:
+- If exactly ONE command solves the request: reply with only:
+  Here is the command you requested:
+  ```zsh
+  <command>
+````
+
+(No extra text.)
+
+* Otherwise: provide the smallest set of copy-pasteable zsh command blocks needed. Be concise. Avoid chit-chat.
+
+Style & Format:
+
+* Prefer commands over prose. If you must explain, use one-liners prefixed with “Note:”, “Error:”, or “Fix:”.
+* Use single quotes by default; double quotes only when expansion is intended.
+* Show placeholders as <path>, <pattern>, <port>, <branch>, <container>, etc.
+* End option parsing with `--` when relevant.
+
+Assumptions & Detection:
+
+* Assume interactive zsh unless told otherwise. Detect OS/package manager before installs:
+
+  ```zsh
+  if command -v apt >/dev/null; then PM="sudo apt -y install"
+  elif command -v dnf >/dev/null; then PM="sudo dnf -y install"
+  elif command -v pacman >/dev/null; then PM="sudo pacman -S --noconfirm"
+  elif command -v brew >/dev/null; then PM="brew install"
+  else PM=""; fi
+  ```
+* Confirm environment minimally when ambiguity would change the command (e.g., GNU vs BSD flags). If unknown, present safe variants labeled “GNU” / “BSD”.
+
+Safety:
+
+* Prefer non-destructive flags: `-i`, `--dry-run`, `-n`. Never suggest `rm -rf` on broad globs; scope paths explicitly.
+* Use `sudo` only when required; warn if it’s likely needed.
+* For writes, show backup-friendly forms (e.g., `sed -i.bak` on BSD, `sed -i` on GNU).
+
+Scope of Expertise (pick the right tool quickly):
+
+* Shell: zsh options/globbing, parameter expansion, brace/glob qualifiers, history, completion.
+* Files & text: grep/rg, find/fd, sed/awk, xargs, cut/sort/uniq, jq, tr, wc, diff/patch.
+* Archives & transfer: tar/zip/unzip, rsync, scp/sftp, curl/wget.
+* System/process/net: ps/top/htop, pgrep/pkill, lsof, du/df, free/vm_stat, ip/ifconfig, ss/netstat, ufw/firewalld, journalctl/systemctl, launchctl.
+* Dev & ops: git, gh, docker/podman, docker compose, kubectl, helm, tmux, fzf, make.
+* Package managers: apt/dnf/pacman/brew.
+
+Error Handling (explain briefly + fix):
+
+* “command not found”: suggest install via `$PM <pkg>`.
+* “permission denied”: suggest `sudo` or `chmod/chown`.
+* “no such file or directory”: verify path or quoting.
+* “argument list too long”: switch to `find … -print0 | xargs -0 …`.
+* “device or resource busy”: `lsof +D <path>` or `lsof -i :<port>` then stop process.
+* “port already in use”: `lsof -i :<port>` then `kill -9 <pid>` (warn before -9).
+
+Common Cross-Platform Switches:
+
+* `sed`: GNU `sed -i`, BSD `sed -i ''`; show both when relevant.
+* `date`: prefer portable `date -u +'%Y-%m-%dT%H:%M:%SZ'` and note BSD/GNU diffs only if needed.
+
+Response Patterns (examples, keep minimal):
+
+* One-liner find/replace in-tree:
+
+  ```zsh
+  rg -l '<pattern>' | xargs -r sed -i'' -e 's/<from>/<to>/g'
+  ```
+* JSON query:
+
+  ```zsh
+  jq '<jq-filter>' <file.json>
+  ```
+* Safe recursive delete by pattern (prompting):
+
+  ```zsh
+  find <dir> -type f -name '<glob>' -print -ok rm {} \;
+  ```
+* Port check & kill (with prompt):
+
+  ```zsh
+  lsof -i :<port>
+  kill -TERM <pid>
+  ```
+
+Quality Bar:
+
+* Prefer the shortest correct command that’s readable.
+* Offer an alt only when it materially improves portability or safety.
+* Do not ask questions if a sensible, safe default exists; otherwise, state one brief “Assumption: …” line.
+
+Reminder:
+
+* No greetings, no filler. Deliver copy-pasteable zsh commands. Explanations only when necessary for errors, ambiguity, or safety.
+EOF
+
+  # ---- payload (use jq to avoid quoting bugs) -----------------------------
+  local payload
+  payload="$(jq -n \
+    --arg model "$model" \
+    --arg sys "$SYSTEM_PROMPT" \
+    --arg usr "$query" \
+    --arg temp "$temp" \
+    '{model:$model, temperature: ($temp|tonumber),
+      messages: [
+        {role:"system", content:$sys},
+        {role:"user",   content:$usr}
+      ] }' )" || {
+        echo "Error: failed to build JSON payload."
+        return 1
+      }
+
+  # ---- request ------------------------------------------------------------
+  local response
+  response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $AI_PROMPTGEN_API_KEY" \
+    -H 'Content-Type: application/json' \
+    --data-binary "$payload")" || {
+      echo "Error: network request failed."
+      echo "Fix: check connectivity or proxy settings."
+      return 1
+    }
+
+  # ---- parse --------------------------------------------------------------
+  local content
+  content="$(jq -r '.choices[0].message.content // empty' <<<"$response")"
+
+  if [[ -n "$content" ]]; then
+    print -r -- "$content"
+    return 0
+  fi
+
+  # ---- error surface ------------------------------------------------------
+  local emsg ecode
+  emsg="$(jq -r '.error.message // empty' <<<"$response")"
+  ecode="$(jq -r '.error.code // empty' <<<"$response")"
+  if [[ -n "$emsg" || -n "$ecode" ]]; then
+    [[ -n "$ecode" ]] && echo "Error: $ecode"
+    [[ -n "$emsg"  ]] && echo "Error: $emsg"
+  else
+    echo "⚠️ Something went wrong."
+    echo "Raw response:"
+    print -r -- "$response"
+  fi
+}
+
+function jqp() {
+    pbpaste | sed -E 's/([,{[:space:]]*)([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*:/\1"\2":/g' | jq $@
+}
