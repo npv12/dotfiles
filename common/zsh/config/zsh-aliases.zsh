@@ -125,7 +125,7 @@ alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify" # verify s
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys" # receive the key of a developer
 
 # Light novel
-alias novel="~/dotfiles/lightnovel.sh/lightnovel.sh"
+alias novel="~/dotfiles/linux/lightnovel.sh/lightnovel.sh"
 
 # Misc
 alias cp="cp -i"

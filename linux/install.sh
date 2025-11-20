@@ -18,7 +18,8 @@ curl -fsSL https://install.danklinux.com | sh
 
 # Install packages
 paru -S mise zed zen-browser-bin zsh-autosuggestions zsh-syntax-highlighting zsh bat bottom duf \
-    code-insiders kubectx zoxide podman-compose eza gpg pass git-delta
+    code-insiders kubectx zoxide podman-compose eza gpg pass git-delta yazi micro \
+    ripgrep gdu
 
 # Change default shell to zsh
 chsh -s $(which zsh)
