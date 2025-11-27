@@ -20,6 +20,10 @@ curl -fsSL https://install.danklinux.com | sh
 paru -S mise zed zen-browser-bin zsh-autosuggestions zsh-syntax-highlighting zsh bat bottom duf \
     code-insiders kubectx zoxide podman-compose eza gpg pass git-delta yazi micro \
     ripgrep gdu
+    
+# Install fonts
+paru -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-dejavu \
+    ttf-liberation ttf-roboto ttf-ubuntu-font-family ttf-inter ttf-ms-fonts
 
 # Change default shell to zsh
 chsh -s $(which zsh)
