@@ -4,8 +4,10 @@ sketchybar --set "$NAME" \
   label="..." \
   icon.color=0xFFFEFEFE
 
+LOCATION="ichchhapore"
+
 # Fetch weather data
-WEATHER_JSON=$(curl -s "https://wttr.in/mumbai?format=j1")
+WEATHER_JSON=$(curl -s "https://wttr.in/${LOCATION}?format=j1")
 
 # Fallback if empty
 if [ -z "$WEATHER_JSON" ]; then
