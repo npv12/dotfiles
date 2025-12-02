@@ -1,4 +1,4 @@
-SSID=$(system_profiler SPAirPortDataType | awk '/Current Network/ {getline; $1=$1; print $0 | "tr -d \":\""; exit}')
+SSID=$(~/Applications/wifi-unredactor.app/Contents/MacOS/wifi-unredactor | jq -r '.ssid')
 
 if [[ $SSID -eq "" ]]; then
     sketchybar --set $NAME \

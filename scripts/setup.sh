@@ -9,7 +9,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 if [[ "$OSTYPE" == "linux"* ]]; then
-    # It is assumed that brew is installed
+    # It is assumed that paru is installed
     $HOME/dotfiles/common/link.sh
     $HOME/dotfiles/linux/install.sh
     $HOME/dotfiles/linux/link.sh

@@ -56,6 +56,13 @@ sketchybar --add item user left \
   label="$(whoami)" label.font.style="Bold" \
   icon=󰀄 icon.color=0xFFFEFEFE
 
+# Caffeine
+sketchybar --add item caffeinate left \
+  --set caffeinate \
+  script="$PLUGIN_DIR/caffeinate.sh" \
+  click_script="$PLUGIN_DIR/caffeinate.sh" \
+  icon=
+
 sketchybar --add item front-app left \
   --set front-app \
   script="$PLUGIN_DIR/front-app.sh" \
@@ -123,21 +130,7 @@ sketchybar --add item volume right \
     label.drawing=on \
     click_script="osascript -e 'set volume output muted not (output muted of (get volume settings))'"
 
-# Caffeine
-sketchybar --add item caffeinate right \
-  --set caffeinate \
-  script="$PLUGIN_DIR/caffeinate.sh" \
-  click_script="$PLUGIN_DIR/caffeinate.sh" \
-  icon=
-  
-# Yabai
-sketchybar --add item workspace_manager left \
-  --set workspace_manager \
-    script="$CONFIG_DIR/plugins/yabai.sh" \
-    drawing=off \
-  --subscribe workspace_manager space_change display_change
-
-# Aerospace
+# Hyprspace
 sketchybar --add event aerospace_workspace_change
 sketchybar --add item aerospace_manager left \
   --set aerospace_manager \

@@ -37,7 +37,15 @@ case $INFO in
     ICON_COLOR=0xffb4befe
     ICON=
     ;;
+  "Ghostty")
+    ICON_COLOR=0xffb4befe
+    ICON=
+    ;;
   "Google Chrome")
+    ICON_COLOR=0xffa6e3a1
+    ICON=
+    ;;
+  "Twilight")
     ICON_COLOR=0xffa6e3a1
     ICON=
     ;;
@@ -47,7 +55,7 @@ case $INFO in
     ;;
   *)
     ICON_COLOR=0xFFFEFEFE
-    ICON=﯂
+    ICON=
     ;;
 esac
 
