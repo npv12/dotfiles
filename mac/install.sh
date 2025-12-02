@@ -1,10 +1,8 @@
 brew install --cask nikitabobko/tap/aerospace
-curl -sSL https://raw.githubusercontent.com/acsandmann/aerospace-swipe/main/install.sh | bash
 
 brew tap FelixKratz/formulae
 brew install sketchybar borders
 
-brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight alacritty mise gpg maccy pass zoxide podman
-brew install kubernetes-cli kubectx
-brew install --cask zed@preview
-brew install --cask alacritty
+brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight mise gpg maccy pass zoxide podman \
+    kubernetes-cli kubectx visual-studio-code@insiders font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font
+brew install --cask zed@preview ghostty scroll-reverser
