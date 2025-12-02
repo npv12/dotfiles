@@ -5,6 +5,8 @@ if command -v yabai &>/dev/null; then
   FOCUSED_SPACE=$(yabai -m query --spaces --space | jq -r '.index')
 elif command -v aerospace &>/dev/null; then
   FOCUSED_SPACE=$(aerospace list-workspaces --focused)
+elif command -v hyprspace &>/dev/null; then
+    FOCUSED_SPACE=$(hyprspace list-workspaces --focused)
 else
   exit 1
 fi
