@@ -136,6 +136,12 @@
     "line_height": "standard"
   },
   "context_servers": {
+    "mcp-server-context7": {
+      "enabled": true,
+      "settings": {
+        "context7_api_key": "ctx7sk-a0950ef6-31ba-40a7-b0d8-170f9fab1c77"
+      }
+    },
     "gcp": {
       "enabled": false,
       "source": "custom",
