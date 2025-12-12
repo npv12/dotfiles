@@ -7,3 +7,7 @@ mise.toml
 .DS_Store
 .run/
 .kiro/
+.claude/
+.serena/
+npv12_*
+npv12/
