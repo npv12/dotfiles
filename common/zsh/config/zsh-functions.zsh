@@ -300,16 +300,16 @@ function ai() {
   done
 
   # ---- api key ------------------------------------------------------------
-  if [[ -z "$AI_PROMPTGEN_API_KEY" ]]; then
+  if [[ -z "$OPENROUTER_API_KEY" ]]; then
     echo "Error: API key not set."
-    echo "Fix: export AI_PROMPTGEN_API_KEY in your ~/.zshrc"
+    echo "Fix: export OPENROUTER_API_KEY in your ~/.zshrc"
     return 1
   fi
 
   # ---- opts ---------------------------------------------------------------
   zmodload zsh/zutil 2>/dev/null || true
   local model="${AI_MODEL:-openai/gpt-oss-20b:free}"
-  local temp="${AI_TEMP:-0.2}"
+  local temp="${AI_TEMP:-0.5}"
 
   local -a m_opt t_opt
   zparseopts -E -D m:=m_opt t:=t_opt 2>/dev/null
@@ -445,7 +445,7 @@ EOF
   # ---- request ------------------------------------------------------------
   local response
   response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
-    -H "Authorization: Bearer $AI_PROMPTGEN_API_KEY" \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
     -H 'Content-Type: application/json' \
     --data-binary "$payload")" || {
       echo "Error: network request failed."
@@ -475,6 +475,160 @@ EOF
     print -r -- "$response"
   fi
 }
+
+function generate_commit() {
+    emulate -L zsh
+
+    # ---- deps ---------------------------------------------------------------
+    for bin in curl jq; do
+      if ! command -v "$bin" >/dev/null; then
+        echo "Error: '$bin' not found."
+        echo "Fix: install with your package manager (e.g., 'brew install $bin' or 'sudo apt -y install $bin')."
+        return 127
+      fi
+    done
+
+    # ---- api key ------------------------------------------------------------
+    if [[ -z "$OPENROUTER_API_KEY" ]]; then
+      echo "Error: API key not set."
+      echo "Fix: export OPENROUTER_API_KEY in your ~/.zshrc"
+      return 1
+    fi
+
+    # ---- opts ---------------------------------------------------------------
+    zmodload zsh/zutil 2>/dev/null || true
+    local model="${AI_MODEL:-openai/gpt-oss-20b:free}"
+    local temp="${AI_TEMP:-1.1}"
+
+    # Grab staged diff
+    local diff
+    diff="$(git diff --cached)"
+
+    # If no diff, exit
+    if [[ -z "$diff" ]]; then
+        echo "No changes to commit."
+        return 0
+    fi
+
+    # Reject overly large diffs (change limit as needed)
+    local diff_lines
+    diff_lines=$(printf "%s" "$diff" | wc -l)
+    if [ "$diff_lines" -gt 2000 ]; then
+        echo "Diff too large; refusing to read."
+        return 1
+    fi
+
+    # Build AI prompt
+    # --- Build system and user prompts ---
+    local SYSTEM_PROMPT
+    read -r -d '' SYSTEM_PROMPT <<'EOF'
+You are an expert Git commit message generator. Follow these rules exactly.
+
+OUTPUT FORMAT:
+- Output ONLY a single JSON object and nothing else. No commentary, no code fences.
+- JSON shape:
+    {
+    "title": "<one-line title>",
+    "body": "<bullet-lines or empty string>",
+    "module": "<module name or '-'>"
+    }
+
+MODULE DETECTION RULES:
+- Infer the module (scope) from the diff.
+- The module is typically the subsystem, directory, feature folder, or conceptual area most affected.
+- Choose the smallest meaningful namespace with consistent usage. Examples:
+    src/auth/login.js          -> "auth"
+    pkg/database/query.ts      -> "database"
+    ui/components/Button.tsx   -> "ui"
+- If multiple modules appear, choose the one with the *most important* or *most concentrated* changes.
+- If no reasonable module exists, return "-".
+- The title uses this inferred module unless it is "-".
+
+TITLE RULES:
+- Must be exactly one line.
+- Pattern: <type>: <module>: <specific change>
+- type needs to be of one of the following: feat, fix, docs, style, refactor, test, chore, revert
+- If module is "-", omit "<module>: ".
+- Be specific and crisp, no trailing period.
+
+BODY RULES:
+- Optional. If present: bullet lines starting with "* ".
+- No code blocks or diff snippets.
+- Max ~6 bullets, <= 120 chars each.
+
+PARSE SAFETY:
+- Output MUST be valid JSON. Nothing before or after it.
+- If you are unable to generate a commit message, return an empty string for title.
+
+EXAMPLES:
+{"title":"feat: auth: add token refresh","body":"- add refresh logic\n- update tests","module":"auth"}
+{"title":"fix: db: prevent null dereference","body":"","module":"db"}
+EOF
+
+    local USER_PROMPT
+    read -r -d '' USER_PROMPT <<EOF
+Generate a commit message using the rules from the system prompt.
+
+Staged diff:
+---
+${diff}
+---
+
+Instructions:
+1) Infer the module from the diff paths and conceptual grouping.
+2) Output ONLY valid JSON following the system rules.
+3) The commit title must include the type and the inferred module (unless module is "-").
+4) Body should include bullet points for secondary changes.
+EOF
+
+    # --- Build JSON payload for OpenRouter (chat completions) ---
+    # Model can be changed; keep it as an OpenRouter-compatible Anthropic model or other provider you use.
+    payload="$(jq -n \
+      --arg model "$model" \
+      --arg sys "$SYSTEM_PROMPT" \
+      --arg usr "$USER_PROMPT" \
+      --arg temp "$temp" \
+      '{model:$model, temperature: ($temp|tonumber),
+        messages: [
+          {role:"system", content:$sys},
+          {role:"user",   content:$usr}
+        ] }' )" || {
+        echo "Error: failed to build JSON payload."
+        return 1
+    }
+
+    local response
+    response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H 'Content-Type: application/json' \
+    --data-binary "$payload")" || {
+        echo "Error: network request failed."
+        echo "Fix: check connectivity or proxy settings."
+        return 1
+    }
+
+    # Extract AI output
+    local ai_output
+    ai_output=$(printf "%s" "$response" | jq -r '.choices[0].message.content')
+
+    if [ -z "$ai_output" ] || [ "$ai_output" = "null" ]; then
+        echo "AI returned no commit message."
+        return 1
+    fi
+
+    local title body
+    
+    title=$(printf "%s" "$ai_output" | jq -r '.title')
+    body=$(printf "%s" "$ai_output" | jq -r '.body')
+    
+    # Commit
+    if [ -z "$body" ]; then
+        git commit -s -S -v -m "$title"
+    else
+        git commit -s -S -v -m "$title" -m "$body"
+    fi
+}
+
 
 function jqp() {
     pbpaste | sed -E 's/([,{[:space:]]*)([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*:/\1"\2":/g' | jq $@

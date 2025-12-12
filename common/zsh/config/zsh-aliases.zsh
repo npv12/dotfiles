@@ -110,6 +110,7 @@ alias gsl="git shortlog"
 alias gcount="git -sn"
 alias gstats="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)by %an%Creset' --all"
 alias glast="git log -1 HEAD"
+alias gcmai="generate_commit"
 
 # Grep
 alias pygrep="grep -nr --include='*.py'"
