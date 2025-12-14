@@ -579,9 +579,10 @@ Instructions:
 2) Output ONLY valid JSON following the system rules.
 3) The commit title must include the type and the inferred module (unless module is "-").
 4) Body should include bullet points for secondary changes.
+5) If any secret is present inside the diff, then mention this information in the title itself so that the user knows, but it is fine to merge (sometimes this is necessary for )
 EOF
 
-    # --- Build JSON payload for OpenRouter (chat completions) ---
+    # --- Build JSON payload for OpenRouter (chat completions) ---private repos
     # Model can be changed; keep it as an OpenRouter-compatible Anthropic model or other provider you use.
     payload="$(jq -n \
       --arg model "$model" \
