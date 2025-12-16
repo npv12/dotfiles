@@ -2,11 +2,6 @@
   function prompt_mise() {
     local plugins=("${(@f)$(mise ls --current 2>/dev/null | awk '!/\(symlink\)/ && $3!="~/.tool-versions" && $3!="~/.config/mise/config.toml" {print $1, $2}')}")
     local plugin
-    local mise_env_exported=false
-
-    if [[ -n $(mise env | grep -v '^#' | grep -v '^$' | grep -v '^export PATH=') ]]; then
-      mise_env_exported=true
-    fi
 
     for plugin in ${(k)plugins}; do
       local parts=("${(@s/ /)plugin}")
@@ -14,10 +9,6 @@
       local version=${parts[2]}
       p10k segment -r -i "${tool}_ICON" -s $tool -t "$version"
     done
-
-    if $mise_env_exported; then
-      p10k segment -r -i "PACKAGE_ICON" -s "MISE" -t "mise"
-    fi
   }
 
   # Replace 'asdf' with 'mise' in the right prompt
