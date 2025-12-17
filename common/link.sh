@@ -35,6 +35,6 @@ ln -s $COMMON_DIR/bat $CONFIG_DIR/bat
 ln -s $COMMON_DIR/bottom $CONFIG_DIR/bottom
 ln -s $COMMON_DIR/micro $CONFIG_DIR/micro
 ln -s $COMMON_DIR/gdu $CONFIG_DIR/gdu
-ln -s $COMMON_DIR/tmux ~/.tmux.conf
+ln -s $COMMON_DIR/tmux/tmux.conf ~/.tmux.conf
 ln -s $COMMON_DIR/zed/keymap.json $CONFIG_DIR/zed/keymap.json
 ln -s $COMMON_DIR/zed/settings.json $CONFIG_DIR/zed/settings.json
