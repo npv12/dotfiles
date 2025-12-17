@@ -3,11 +3,19 @@
     local plugins=("${(@f)$(mise ls --current 2>/dev/null | awk '!/\(symlink\)/ && $3!="~/.tool-versions" && $3!="~/.config/mise/config.toml" {print $1, $2}')}")
     local plugin
 
+    tools_to_skip=(
+      "asdf"
+      "just"
+      "uv"
+    )
+
     for plugin in ${(k)plugins}; do
       local parts=("${(@s/ /)plugin}")
       local tool=${(U)parts[1]}
       local version=${parts[2]}
-      p10k segment -r -i "${tool}_ICON" -s $tool -t "$version"
+      if [[ ! " ${(U)tools_to_skip[@]} " =~ " ${tool} " ]]; then
+        p10k segment -r -i "${tool}_ICON" -s $tool -t "$version"
+      fi
     done
   }
 

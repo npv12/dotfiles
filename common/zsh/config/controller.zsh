@@ -5,6 +5,7 @@ unsetopt BEEP
 
 zsh_add_file "zsh-aliases"
 zsh_add_file "zsh-exports"
+zsh_add_file "zsh-autocomplete.zsh"
 zsh_add_file "zsh-functions"
 zsh_add_file "zsh-expand-dot-dir"
 zsh_add_file "secrets"

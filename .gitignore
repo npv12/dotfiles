@@ -3,7 +3,6 @@ icons/Fluent-*
 venv
 .vscode
 */plugin/packer_compiled.lua
-quriate.zsh
 *vscode-thunder-client/
 ncmpcpp/lyrics
 secrets.zsh

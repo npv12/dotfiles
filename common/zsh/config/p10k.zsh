@@ -32,27 +32,27 @@
 
   # Catppuccin Mocha Palette for Powerlevel10k
   # This file defines the color palette used for the Mocha theme.
-  
+
   # Core colors
   typeset -g P10K_COLOR_BASE="#1e1e2e"   # Base
   typeset -g P10K_COLOR_MANTLE="#181825" # Mantle
   typeset -g P10K_COLOR_CRUST="#11111b"  # Crust
-  
+
   # Text and Subtext
   typeset -g P10K_COLOR_TEXT="#cdd6f4"     # Text
   typeset -g P10K_COLOR_SUBTEXT1="#bac2de" # Subtext 1
   typeset -g P10K_COLOR_SUBTEXT0="#a6adc8" # Subtext 0
-  
+
   # Overlays
   typeset -g P10K_COLOR_OVERLAY2="#9399b2" # Overlay 2
   typeset -g P10K_COLOR_OVERLAY1="#7f849c" # Overlay 1
   typeset -g P10K_COLOR_OVERLAY0="#6c7086" # Overlay 0
-  
+
   # Surfaces
   typeset -g P10K_COLOR_SURFACE2="#585b70" # Surface 2
   typeset -g P10K_COLOR_SURFACE1="#45475a" # Surface 1
   typeset -g P10K_COLOR_SURFACE0="#313244" # Surface 0
-  
+
   # Accent colors
   typeset -g P10K_COLOR_BLUE="#89b4fa"      # Blue
   typeset -g P10K_COLOR_LAVENDER="#b4befe"  # Lavender
@@ -74,7 +74,7 @@
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     dir                     # current directory
-    git_origin              # git branch name only
+    git_origin              # git origin name only
     # =========================[ Line #2 ]=========================
     newline                 # \n
     os_icon                 # os identifier
@@ -406,20 +406,33 @@
 
   ##########################[ git_branch: git origin/icon indicator ]##########################
   function prompt_git_origin() {
-    # Get the actual remote name (prefer 'origin', otherwise use first remote)
-    local remote_name
-    if git remote | grep -q '^origin$'; then
-      remote_name='origin'
-    else
-      remote_name=$(git remote | head -n1)
-    fi
-    
-    # Only proceed if we have a remote
-    [[ -z "$remote_name" ]] && return
-    
-    local icon=$'\uF09B '  # GitHub icon (Font Awesome)
+    # Check if we're in a git repo
+    git rev-parse --git-dir &>/dev/null || return
 
-    p10k segment -f $P10K_COLOR_CRUST -b $P10K_COLOR_MAUVE -i $icon -t $remote_name
+    local remote_name=$(git remote get-url origin 2>/dev/null)
+    local org=$(echo "$remote_name" | sed -E 's#.*github\.com[:/]([^/]+)/.*#\1#')
+    [[ -z "$org" ]] && return
+
+    # Get the tracking branch
+    local tracking_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+    [[ -z "$tracking_branch" ]] && return
+
+    # Calculate commits ahead and behind
+    local behind=$(git rev-list --count HEAD..${tracking_branch} 2>/dev/null)
+    local ahead=$(git rev-list --count ${tracking_branch}..HEAD 2>/dev/null)
+
+    local icon=$'\uF09B '  # GitHub icon (Font Awesome)
+    local text=$org
+
+    if (( ahead )); then
+      text+=" ⇡${ahead}"
+    fi
+
+    if (( behind )); then
+      text+=" ⇣${behind}"
+    fi
+
+    p10k segment -f $P10K_COLOR_CRUST -b $P10K_COLOR_MAUVE -i $icon -t $text
   }
 
   #####################################[ vcs: git status ]######################################
@@ -500,7 +513,8 @@
     if [[ $VCS_STATUS_COMMIT_SUMMARY == (|*[^[:alnum:]])(wip|WIP)(|[^[:alnum:]]*) ]]; then
       res+=" ${modified}wip"
     fi
-
+    
+    # Display commits ahead/behind if available
     if (( VCS_STATUS_COMMITS_AHEAD || VCS_STATUS_COMMITS_BEHIND )); then
       # ⇣42 if behind the remote.
       (( VCS_STATUS_COMMITS_BEHIND )) && res+=" ${clean}⇣${VCS_STATUS_COMMITS_BEHIND}"
@@ -563,7 +577,7 @@
   # Enable counters for staged, unstaged, etc.
   typeset -g POWERLEVEL9K_VCS_{STAGED,UNSTAGED,UNTRACKED,CONFLICTED,COMMITS_AHEAD,COMMITS_BEHIND}_MAX_NUM=-1
 
-  
+
   # Icon color.
   typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=$P10K_COLOR_CRUST
   typeset -g POWERLEVEL9K_VCS_LOADING_VISUAL_IDENTIFIER_COLOR=$P10K_COLOR_CRUST
@@ -830,14 +844,14 @@
   typeset -g POWERLEVEL9K_RANGER_FOREGROUND=$P10K_COLOR_CRUST
   # Custom icon.
   # typeset -g POWERLEVEL9K_RANGER_VISUAL_IDENTIFIER_EXPANSION='⭐'
-  
+
   ####################[ yazi: yazi shell (https://github.com/sxyazi/yazi) ]#####################
   # Yazi shell color.
   typeset -g POWERLEVEL9K_YAZI_BACKGROUND=$P10K_COLOR_YELLOW
   typeset -g POWERLEVEL9K_YAZI_FOREGROUND=$P10K_COLOR_CRUST
   # Custom icon.
   # typeset -g POWERLEVEL9K_YAZI_VISUAL_IDENTIFIER_EXPANSION='⭐'
-  
+
   ######################[ nnn: nnn shell (https://github.com/jarun/nnn) ]#######################
   # Nnn shell color.
   typeset -g POWERLEVEL9K_NNN_BACKGROUND=$P10K_COLOR_SAPPHIRE
@@ -932,7 +946,7 @@
 
   ######################################[ ram: free RAM ]#######################################
   # RAM color.
-  typeset -g POWERLEVEL9K_RAM_BACKGROUND=$P10K_COLOR_PEACH
+  typeset -g POWERLEVEL9K_RAM_BACKGROUND=$P10K_COLOR_GREEN
   typeset -g POWERLEVEL9K_RAM_FOREGROUND=$P10K_COLOR_CRUST
   # Custom icon.
   # typeset -g POWERLEVEL9K_RAM_VISUAL_IDENTIFIER_EXPANSION='⭐'
@@ -1839,7 +1853,7 @@
   typeset -g POWERLEVEL9K_TIME_BACKGROUND=$P10K_COLOR_PINK
   typeset -g POWERLEVEL9K_TIME_FOREGROUND=$P10K_COLOR_CRUST
   # Format for the current time: 09:51:02. See `man 3 strftime`.
-  typeset -g POWERLEVEL9K_TIME_FORMAT='%D{%H:%M:%S}'
+  typeset -g POWERLEVEL9K_TIME_FORMAT='%D{%I:%M %p}'
   # If set to true, time will update when you hit enter. This way prompts for the past
   # commands will contain the start times of their commands as opposed to the default
   # behavior where they contain the end times of their preceding commands.
@@ -1891,11 +1905,11 @@
   #   - same-dir: Trim down prompt when accepting a command line unless this is the first command
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
-  function p10k-on-post-prompt() { 
+  function p10k-on-post-prompt() {
     p10k display '1|empty_line'=hide '2/right/time'=hide '2/right/*'=show '2/left/os_icon'=show '2/left/prompt_char'=hide
   }
-  function p10k-on-pre-prompt() { 
-    p10k display '1|empty_line'=show '2/right/time'=show '2/right/*'=hide '2/left/os_icon'=hide '2/left/prompt_char'=show  
+  function p10k-on-pre-prompt() {
+    p10k display '1|empty_line'=show '2/right/time'=show '2/right/*'=hide '2/left/os_icon'=hide '2/left/prompt_char'=show
   }
 
   # Instant prompt mode.
