@@ -8,12 +8,16 @@ rm -rf ~/.gitconfig  ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf $CONFIG_DIR/al
     $CONFIG_DIR/zsh $CONFIG_DIR/gdu $CONFIG_DIR/kitty $CONFIG_DIR/ghostty
 
 mkdir -p ~/.config/zed
+mkdir -p ~/.claude
 
 # Link ZSH
 ln -s $COMMON_DIR/zsh/zshrc ~/.zshrc
 ln -s $COMMON_DIR/zsh/zshenv ~/.zshenv
 ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
 ln -s $COMMON_DIR/zsh/config $CONFIG_DIR/zsh
+
+# Link claude
+ln -s $COMMON_DIR/claude/CLAUDE.md ~/.claude/CLAUDE.md
 
 # Link Git
 ln -s $COMMON_DIR/git/gitconfig ~/.gitconfig
