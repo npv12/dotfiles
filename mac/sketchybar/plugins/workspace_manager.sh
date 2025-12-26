@@ -3,13 +3,13 @@
 CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
 
 # Retrieve all workspaces
-ALL_WORKSPACES=($(hyprspace list-workspaces --all | sort -n))
+ALL_WORKSPACES=($(aerospace list-workspaces --all | sort -n))
 
 # Retrieve non-empty workspaces
-NON_EMPTY=($(hyprspace list-workspaces --monitor all --empty no))
+NON_EMPTY=($(aerospace list-workspaces --monitor all --empty no))
 
 # Get the currently focused workspace
-FOCUSED=$(hyprspace list-workspaces --focused)
+FOCUSED=$(aerospace list-workspaces --focused)
 
 # Combine non-empty and focused workspaces
 WORKSPACES_TO_SHOW=($(echo "${NON_EMPTY[@]}" "$FOCUSED" | tr ' ' '\n' | sort -n | uniq))
@@ -51,7 +51,7 @@ if [ "${WORKSPACES_TO_SHOW[*]}" != "${EXISTING_IDS[*]}" ]; then
             label.color=0xFF11111B \
             background.corner_radius=5 \
             background.height=20 \
-            click_script="hyprspace workspace $sid" \
+            click_script="aerospace workspace $sid" \
             script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
         --subscribe "$ITEM_NAME" aerospace_workspace_change
     else
@@ -66,7 +66,7 @@ if [ "${WORKSPACES_TO_SHOW[*]}" != "${EXISTING_IDS[*]}" ]; then
             label.color=0xFFCDD6F4 \
             background.corner_radius=5 \
             background.height=20 \
-            click_script="hyprspace workspace $sid" \
+            click_script="aerospace workspace $sid" \
             script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
       --subscribe "$ITEM_NAME" aerospace_workspace_change
     fi
