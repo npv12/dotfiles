@@ -5,7 +5,7 @@
   "base_keymap": "JetBrains",
   "icon_theme": "Catppuccin Mocha",
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "copilot"
   },
   "lsp": {
     "jdtls": {
