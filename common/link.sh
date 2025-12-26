@@ -12,6 +12,7 @@ mkdir -p ~/.config/zed
 # Link ZSH
 ln -s $COMMON_DIR/zsh/zshrc ~/.zshrc
 ln -s $COMMON_DIR/zsh/zshenv ~/.zshenv
+ln -s $COMMON_DIR/zsh/zprofile ~/.zprofile
 ln -s $COMMON_DIR/zsh/config $CONFIG_DIR/zsh
 
 # Link Git
