@@ -22,76 +22,85 @@ DEFAULT_THEME="$DIR/theme/default.bash"
 PYWAL_THEME="$HOME/.cache/wal/colors.sh"
 
 ## Check if current file exist
-if [[ ! -e "$CURRENT_THEME" ]]; then
+if [[ ! -e $CURRENT_THEME ]]; then
 	touch "$CURRENT_THEME"
 fi
 
 ## Default Theme
 source_default() {
-	cat ${DEFAULT_THEME} > ${CURRENT_THEME}
-	source ${CURRENT_THEME}
-	altbackground="`pastel color $background | pastel lighten 0.10 | pastel format hex`"
-	altforeground="`pastel color $foreground | pastel darken 0.30 | pastel format hex`"
-	modbackground=(`pastel gradient -n 3 $background $altbackground | pastel format hex`)
+	cat "${DEFAULT_THEME}" >"${CURRENT_THEME}"
+	# shellcheck source=/dev/null
+	source "${CURRENT_THEME}"
+	# shellcheck disable=SC2154
+	altbackground="$(pastel color "$background" | pastel lighten 0.10 | pastel format hex)"
+	# shellcheck disable=SC2154
+	altforeground="$(pastel color "$foreground" | pastel darken 0.30 | pastel format hex)"
+	mapfile -t modbackground < <(pastel gradient -n 3 "$background" "$altbackground" | pastel format hex)
+	# shellcheck disable=SC2154
 	accent="$color4"
-	notify-send -h string:x-canonical-private-synchronous:sys-notify-dtheme -u normal -i ${PATH_MAKO}/icons/palette.png "Applying Default Theme..."
+	notify-send -h string:x-canonical-private-synchronous:sys-notify-dtheme -u normal -i "${PATH_MAKO}/icons/palette.png" "Applying Default Theme..."
 }
 
 ## Random Theme
 source_pywal() {
 	# Set you wallpaper directory here.
-	WALLDIR="`xdg-user-dir PICTURES`/wallpapers"
+	WALLDIR="$(xdg-user-dir PICTURES)/wallpapers"
 
 	# Check for wallpapers
 	check_wallpaper() {
-		if [[ -d "$WALLDIR" ]]; then
-			WFILES="`ls --format=single-column $WALLDIR | wc -l`"
-			if [[ "$WFILES" == 0 ]]; then
-				notify-send -h string:x-canonical-private-synchronous:sys-notify-noimg -u low -i ${PATH_MAKO}/icons/picture.png "There are no wallpapers in : $WALLDIR"
+		if [[ -d $WALLDIR ]]; then
+			WFILES="$(find "$WALLDIR" -type f | wc -l)"
+			if [[ $WFILES == 0 ]]; then
+				notify-send -h string:x-canonical-private-synchronous:sys-notify-noimg -u low -i "${PATH_MAKO}/icons/picture.png" "There are no wallpapers in : $WALLDIR"
 				exit
 			fi
 		else
 			mkdir -p "$WALLDIR"
-			notify-send -h string:x-canonical-private-synchronous:sys-notify-noimg -u low -i ${PATH_MAKO}/icons/picture.png "Put some wallpapers in : $WALLDIR"
+			notify-send -h string:x-canonical-private-synchronous:sys-notify-noimg -u low -i "${PATH_MAKO}/icons/picture.png" "Put some wallpapers in : $WALLDIR"
 			exit
 		fi
 	}
 
 	# Run `pywal` to generate colors
-	generate_colors() {	
+	generate_colors() {
 		check_wallpaper
-		if [[ `which wal` ]]; then
-			notify-send -t 50000 -h string:x-canonical-private-synchronous:sys-notify-runpywal -i ${PATH_MAKO}/icons/timer.png "Generating Colorscheme. Please wait..."
+		if command -v wal &>/dev/null; then
+			notify-send -t 50000 -h string:x-canonical-private-synchronous:sys-notify-runpywal -i "${PATH_MAKO}/icons/timer.png" "Generating Colorscheme. Please wait..."
 			wal -q -n -s -t -e -i "$WALLDIR"
-			if [[ "$?" != 0 ]]; then
-				notify-send -h string:x-canonical-private-synchronous:sys-notify-runpywal -u normal -i ${PATH_MAKO}/icons/palette.png "Failed to generate colorscheme."
+			if ! wal -q -n -s -t -e -i "$WALLDIR"; then
+				notify-send -h string:x-canonical-private-synchronous:sys-notify-runpywal -u normal -i "${PATH_MAKO}/icons/palette.png" "Failed to generate colorscheme."
 				exit
 			fi
 		else
-			notify-send -h string:x-canonical-private-synchronous:sys-notify-runpywal -u normal -i ${PATH_MAKO}/icons/palette.png "'pywal' is not installed."
+			notify-send -h string:x-canonical-private-synchronous:sys-notify-runpywal -u normal -i "${PATH_MAKO}/icons/palette.png" "'pywal' is not installed."
 			exit
 		fi
 	}
 
 	generate_colors
-	cat ${PYWAL_THEME} > ${CURRENT_THEME}
-	source ${CURRENT_THEME}
-	altbackground="`pastel color $background | pastel lighten 0.10 | pastel format hex`"
-	altforeground="`pastel color $foreground | pastel darken 0.30 | pastel format hex`"
-	modbackground=(`pastel gradient -n 3 $background $altbackground | pastel format hex`)
+	cat "${PYWAL_THEME}" >"${CURRENT_THEME}"
+	# shellcheck source=/dev/null
+	source "${CURRENT_THEME}"
+	# shellcheck disable=SC2154
+	altbackground="$(pastel color "$background" | pastel lighten 0.10 | pastel format hex)"
+	altforeground="$(pastel color "$foreground" | pastel darken 0.30 | pastel format hex)"
+	mapfile -t modbackground < <(pastel gradient -n 3 "$background" "$altbackground" | pastel format hex)
+	export altforeground
 	accent="$color4"
 }
 
 ## Wallpaper ---------------------------------
 apply_wallpaper() {
-	sed -i -e "s#WALLPAPER=.*#WALLPAPER='$wallpaper'#g" ${DIR}/scripts/wallpaper
-	bash ${DIR}/scripts/wallpaper &
+	# shellcheck disable=SC2154
+	sed -i "s#WALLPAPER=.*#WALLPAPER='$wallpaper'#g" "${DIR}/scripts/wallpaper"
+	bash "${DIR}/scripts/wallpaper" &
 }
 
 ## Alacritty ---------------------------------
 apply_alacritty() {
 	# alacritty : colors
-	cat > ${PATH_ALAC}/colors.yml <<- _EOF_
+	# shellcheck disable=SC2154
+	cat >"${PATH_ALAC}/colors.yml" <<-_EOF_
 		## Colors configuration
 		colors:
 		  # Default colors
@@ -126,7 +135,7 @@ apply_alacritty() {
 ## Foot --------------------------------------
 apply_foot() {
 	# foot : colors
-	cat > ${PATH_FOOT}/colors.ini <<- _EOF_
+	cat >"${PATH_FOOT}/colors.ini" <<-_EOF_
 		## Colors configuration
 		[colors]
 		alpha=1.0
@@ -158,8 +167,8 @@ apply_foot() {
 ## Mako --------------------------------------
 apply_mako() {
 	# mako : config
-	sed -i '/# Mako_Colors/Q' ${PATH_MAKO}/config
-	cat >> ${PATH_MAKO}/config <<- _EOF_
+	sed -i '/# Mako_Colors/Q' "${PATH_MAKO}/config"
+	cat >>"${PATH_MAKO}/config" <<-_EOF_
 		# Mako_Colors
 		background-color=${background}
 		text-color=${foreground}
@@ -180,13 +189,13 @@ apply_mako() {
 		default-timeout=0
 	_EOF_
 
-	pkill mako && bash ${DIR}/scripts/notifications &
+	pkill mako && bash "${DIR}/scripts/notifications" &
 }
 
 ## Rofi --------------------------------------
 apply_rofi() {
 	# rofi : colors
-	cat > ${PATH_ROFI}/shared/colors.rasi <<- EOF
+	cat >"${PATH_ROFI}/shared/colors.rasi" <<-EOF
 		* {
 		    background:     ${background};
 		    background-alt: ${modbackground[1]};
@@ -201,7 +210,7 @@ apply_rofi() {
 ## Waybar ------------------------------------
 apply_waybar() {
 	# waybar : colors
-	cat > ${PATH_WAYB}/colors.css <<- EOF
+	cat >"${PATH_WAYB}/colors.css" <<-EOF
 		/** ********** Colors ********** **/
 		@define-color background      ${background};
 		@define-color background-alt1 ${modbackground[1]};
@@ -218,13 +227,13 @@ apply_waybar() {
 		@define-color white           ${color7};
 	EOF
 
-	pkill waybar && bash ${DIR}/scripts/statusbar &
+	pkill waybar && bash "${DIR}/scripts/statusbar" &
 }
 
 ## Wlogout -----------------------------------
 apply_wlogout() {
 	# wlogout : colors
-	cat > ${PATH_WLOG}/colors.css <<- EOF
+	cat >"${PATH_WLOG}/colors.css" <<-EOF
 		/** ********** Colors ********** **/
 		@define-color background      ${background};
 		@define-color background-alt1 ${modbackground[1]};
@@ -244,8 +253,8 @@ apply_wlogout() {
 
 ## Wofi --------------------------------------
 apply_wofi() {
-	# wofi : colors	
-	sed -i ${PATH_WOFI}/style.css \
+	# wofi : colors
+	sed -i "${PATH_WOFI}/style.css" \
 		-e "s/@define-color background .*/@define-color background      ${background};/g" \
 		-e "s/@define-color background-alt1 .*/@define-color background-alt1 ${modbackground[1]};/g" \
 		-e "s/@define-color background-alt2 .*/@define-color background-alt2 ${modbackground[2]};/g" \
@@ -264,7 +273,7 @@ apply_wofi() {
 ## Hyprland --------------------------------------
 apply_hypr() {
 	# hyprland : theme
-	sed -i ${DIR}/hyprtheme.conf \
+	sed -i "${DIR}/hyprtheme.conf" \
 		-e "s/\$active_border_col_1 =.*/\$active_border_col_1 = 0xFF${accent:1}/g" \
 		-e "s/\$active_border_col_2 =.*/\$active_border_col_2 = 0xFF${color1:1}/g" \
 		-e "s/\$inactive_border_col_1 =.*/\$inactive_border_col_1 = 0xFF${modbackground[1]:1}/g" \
@@ -274,9 +283,9 @@ apply_hypr() {
 }
 
 ## Source Theme Accordingly -----------------
-if [[ "$1" == '--default' ]]; then
+if [[ $1 == '--default' ]]; then
 	source_default
-elif [[ "$1" == '--pywal' ]]; then
+elif [[ $1 == '--pywal' ]]; then
 	source_pywal
 else
 	echo "Available Options: --default  --pywal"

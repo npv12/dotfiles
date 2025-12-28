@@ -1,7 +1,7 @@
 [user]
 	name = Pranav
 	email = pranav10121@gmail.com
-	signingkey = 9D0A107E3B860D032C41BAEB290C6B5028BD271A
+	signingkey = 9D0A107E3B860D032C41BAEB290C6B5028BD271A  # pragma: allowlist secret
 [alias]
 	co = checkout
 	br = branch

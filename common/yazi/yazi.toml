@@ -1,20 +1,21 @@
 # Use Ghostty's native preview method (Kitty protocol)
-[preview]
-# Keep caches moderate but allow high-res images
-max_width = 1500
-max_height = 1500
-image_quality = 75
-image_filter = "lanczos3"
-image_delay = 50  # slight debounce for scrolling
 
 # Layout settings
 [layout]
-preview_ratio = 0.6  # pane width: 60% for preview
+preview_ratio = 0.6 # pane width: 60% for preview
 
 # Mgr (file manager) preferences
 [mgr]
+linemode = "size"
+scrolloff = 3
 show_hidden = true
 sort_by = "natural"
 sort_reverse = false
-linemode = "size"
-scrolloff = 3
+
+[preview]
+image_delay = 50 # slight debounce for scrolling
+image_filter = "lanczos3"
+image_quality = 75
+max_height = 1500
+# Keep caches moderate but allow high-res images
+max_width = 1500

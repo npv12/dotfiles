@@ -12,18 +12,18 @@ ICON_LOW="󰕿"
 ICON_MEDIUM="󰖀"
 ICON_HIGH="󰕾"
 
-if [[ "$MUTED" == "true" ]]; then
-  ICON="$ICON_MUTED"
-  COLOR="0xFFF38BA8" # Red
+if [[ $MUTED == "true" ]]; then
+	ICON="$ICON_MUTED"
+	COLOR="0xFFF38BA8" # Red
 elif [[ $VOLUME -ge 80 ]]; then
-  ICON="$ICON_HIGH"
-  COLOR="0xFFCDD6F4"
+	ICON="$ICON_HIGH"
+	COLOR="0xFFCDD6F4"
 elif [[ $VOLUME -ge 30 ]]; then
-  ICON="$ICON_MEDIUM"
-  COLOR="0xFFCDD6F4"
+	ICON="$ICON_MEDIUM"
+	COLOR="0xFFCDD6F4"
 else
-  ICON="$ICON_LOW"
-  COLOR="0xFFCDD6F4"
+	ICON="$ICON_LOW"
+	COLOR="0xFFCDD6F4"
 fi
 
 ITEM="${1:-volume}"

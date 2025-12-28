@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ $(uname) == "Darwin" ]]; then 
+if [[ $(uname) == "Darwin" ]]; then
     # Mac keybindings
     zstyle ':z4h:bindkey' keyboard  'mac'
 elif [[ $(uname) == "Linux" ]]; then

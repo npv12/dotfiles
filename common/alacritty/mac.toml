@@ -1,2 +1,2 @@
 [general]
-import = ['common.toml', 'catppuccin/mocha.toml', 'fonts.toml',]
+import = ['common.toml', 'catppuccin/mocha.toml', 'fonts.toml']

@@ -23,7 +23,11 @@
       }
     }
   },
-  "autosave": { "after_delay": { "milliseconds": 500 } },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 500
+    }
+  },
   "terminal": {
     "font_family": "MesloLGS NF",
     "font_size": 14,

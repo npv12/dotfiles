@@ -1,12 +1,12 @@
+[font]
+size = 12
+
 [general]
 import = [
-    'C:\Users\prana\AppData\Roaming\alacritty\fonts.toml',
-    'C:\Users\prana\AppData\Roaming\alacritty\common.toml',
-    'C:\Users\prana\AppData\Roaming\alacritty\catppuccin\mocha.toml'
+  'C:\Users\prana\AppData\Roaming\alacritty\fonts.toml',
+  'C:\Users\prana\AppData\Roaming\alacritty\common.toml',
+  'C:\Users\prana\AppData\Roaming\alacritty\catppuccin\mocha.toml'
 ]
 
 [window]
 opacity = 1
-
-[font]
-size = 12

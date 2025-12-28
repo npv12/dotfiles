@@ -619,10 +619,10 @@ EOF
     fi
 
     local title body
-    
+
     title=$(printf "%s" "$ai_output" | jq -r '.title')
     body=$(printf "%s" "$ai_output" | jq -r '.body')
-    
+
     # Commit
     if [ -z "$body" ]; then
         git commit -s -S -v -m "$title"

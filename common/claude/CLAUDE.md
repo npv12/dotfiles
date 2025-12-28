@@ -3,8 +3,8 @@
 - **Tools**: Use rg not grep, fd not find, tree is installed
 - **Style**: Prefer self-documenting code over comments
 - **Git**: Never commit or stage anything into git. You may use commands like git diff though
-- **Notes**: 
-  * Unless I explicitly mention to implement something, do not update the code, if un-sure, ask me first. Always print a summary. 
+- **Notes**:
+  * Unless I explicitly mention to implement something, do not update the code, if un-sure, ask me first. Always print a summary.
   * If you find any information, awlays use  the notion MCP server to connect to notion and document everything
   * Always google first before asking me any questions. This should be crucial when implementing using any library or framework.
   * If you are unsure about any library or you do not have latest documentation, use context7 to get latest documentation. This has documentation for almost all popular libraries and frameworks.

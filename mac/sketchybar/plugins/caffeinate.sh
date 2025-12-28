@@ -4,19 +4,19 @@ CAFFINATE_ID=$(pmset -g assertions | grep "caffeinate" | awk '{print $2}' | cut 
 
 # It was not a button click
 if [ -z "$BUTTON" ]; then
-  if [ -z "$CAFFINATE_ID" ]; then
-    sketchybar --set "$NAME" icon= label="off"
-  else
-    sketchybar --set "$NAME" icon= label="on"
-  fi
-  exit 0
+	if [ -z "$CAFFINATE_ID" ]; then
+		sketchybar --set "$NAME" icon= label="off"
+	else
+		sketchybar --set "$NAME" icon= label="on"
+	fi
+	exit 0
 fi
 
 # It is a mouse click
 if [ -z "$CAFFINATE_ID" ]; then
-  caffeinate -id &
-  sketchybar --set "$NAME" icon= label="on"
+	caffeinate -id &
+	sketchybar --set "$NAME" icon= label="on"
 else
-  kill -9 "$CAFFINATE_ID"
-  sketchybar --set "$NAME" icon= label="off"
+	kill -9 "$CAFFINATE_ID"
+	sketchybar --set "$NAME" icon= label="off"
 fi

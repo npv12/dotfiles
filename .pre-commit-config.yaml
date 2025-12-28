@@ -1,0 +1,75 @@
+# Pre-commit configuration for formatting, linting, and secret scanning
+# - Bash: format with shfmt, lint with shellcheck
+# - JSON: parse check + auto-format
+# - TOML: parse check + auto-format (toml-sort)
+# - Secrets: detect-secrets (baseline required)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      # JSON: fail on parse errors
+      - id: check-json
+        files: ^.*\.(json)$
+      # JSON: auto-format pretty
+      - id: pretty-format-json
+        files: ^.*\.(json)$
+        args: ["--autofix", "--indent", "2", "--no-sort-keys"]
+      # TOML: fail on parse errors
+      - id: check-toml
+        files: ^.*\.(toml)$
+
+  # TOML: auto-format (stable Python tool)
+  - repo: https://github.com/pappasam/toml-sort
+    rev: v0.24.2
+    hooks:
+      - id: toml-sort
+        files: ^.*\.(toml)$
+        args: ["--in-place", "--sort-table-keys"]
+
+  # Bash: format
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.12.0-2
+    hooks:
+      - id: shfmt
+        files: ^.*\.(sh|bash)$
+        args: ["-s", "-w"]
+
+  # Bash: lint (shellcheck), skip zsh-specific files to avoid false positives
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        files: ^.*\.(sh|bash)$
+        args: ["-x"]
+        exclude: ^(scripts/(setup|deprecated)\.sh|wsl/install\.sh)$
+
+  # Secrets scanning (requires baseline file .secrets.baseline)
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        # Skip known non-code/binary-heavy areas to reduce noise
+        exclude: >
+          (?x)^(
+            assets/fonts/.*|
+            common/bat/themes/.*|
+            .*\.tmTheme|
+            assets/icons/.*|
+            scripts/deprecated/.*
+          )$
+
+  # Zsh: syntax-only check (no auto-format) to catch parse errors
+  - repo: local
+    hooks:
+      - id: zsh-syntax-check
+        name: zsh syntax check
+        entry: zsh -n
+        language: system
+        types: [file]
+        files: ^.*\.(zsh)$
