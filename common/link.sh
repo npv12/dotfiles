@@ -18,6 +18,7 @@ ln -s $COMMON_DIR/zsh/config $CONFIG_DIR/zsh
 
 # Link claude
 ln -s $COMMON_DIR/claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -s $COMMON_DIR/claude/CLAUDE.md ~/.codex/AGENTS.md
 
 # Link Git
 ln -s $COMMON_DIR/git/gitconfig ~/.gitconfig
