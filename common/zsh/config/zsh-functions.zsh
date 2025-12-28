@@ -300,9 +300,10 @@ function ai() {
   done
 
   # ---- api key ------------------------------------------------------------
-  if [[ -z "$OPENROUTER_API_KEY" ]]; then
+  api_key=$(pass tokens/openrouter 2>/dev/null || echo "")
+  if [[ -z "$api_key" ]]; then
     echo "Error: API key not set."
-    echo "Fix: export OPENROUTER_API_KEY in your ~/.zshrc"
+    echo "Fix: store your key in 'pass tokens/openrouter'"
     return 1
   fi
 
@@ -445,7 +446,7 @@ EOF
   # ---- request ------------------------------------------------------------
   local response
   response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Authorization: Bearer $api_key" \
     -H 'Content-Type: application/json' \
     --data-binary "$payload")" || {
       echo "Error: network request failed."
