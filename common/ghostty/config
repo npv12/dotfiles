@@ -8,7 +8,8 @@ theme = catppuccin-mocha
 macos-titlebar-style = hidden
 
 bold-is-bright = true
-cursor-style = underline
+cursor-style = block_hollow
+cursor-style-blink = true
 
 window-padding-x = 10
 window-padding-y = 10
