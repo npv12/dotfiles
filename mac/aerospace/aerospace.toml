@@ -117,7 +117,10 @@ outer.bottom = 4
 # ]
 outer.left = 4
 outer.right = 4
-outer.top = [{monitor = "Built-in Retina Display", value = 10}, 40]
+outer.top = [
+  {monitor = {"Built-in Retina Display" = 10}},
+  40
+]
 
 [key-mapping]
 # Keyboard layout preset
