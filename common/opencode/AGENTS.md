@@ -51,6 +51,8 @@ Use these modern tools for better performance and features:
 ## Development Preferences
 - **Always prefer using TypeScript over JavaScript** unless I explicitly mention to use JavaScript
 - **Always prefer using functional components and hooks over class components** unless I explicitly mention to use class
+- **Tools over scripts**: Prefer using dedicated tools for tasks (e.g., `rg`, `fd`, `prettier`, `eslint`) instead of writing custom scripts
+- **Package Managers**: We use mise over standard packages. However mise is sometimes not loaded by default. If this is your first command, then please enable mise using eval "$(mise activate zsh)" and then run your command. This is useful when certain command says "command not found"
 
 ## Notes
 * Unless I explicitly mention to implement something, do not update code. If unsure, ask me first. Always print a summary.
