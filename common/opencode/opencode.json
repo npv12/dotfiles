@@ -2,7 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "opencode-openai-codex-auth@4.2.0",
-    "opencode-gemini-auth@latest"
+    "opencode-google-antigravity-auth",
+    "@mohak34/opencode-notifier"
   ],
   "provider": {
     "openai": {

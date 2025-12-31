@@ -3,12 +3,13 @@
 COMMON_DIR="$HOME/dotfiles/common"
 CONFIG_DIR="$HOME/.config"
 
-rm -rf ~/.gitconfig ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf "$CONFIG_DIR"/alacritty \
+rm -rf ~/.gitconfig ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf ~/.opencode "$CONFIG_DIR"/alacritty \
 	"$CONFIG_DIR"/bat "$CONFIG_DIR"/bottom "$CONFIG_DIR"/micro "$CONFIG_DIR"/zed \
 	"$CONFIG_DIR"/zsh "$CONFIG_DIR"/gdu "$CONFIG_DIR"/kitty "$CONFIG_DIR"/ghostty
 
 mkdir -p ~/.config/zed
 mkdir -p ~/.claude
+mkdir -p ~/.opencode
 
 # Link ZSH
 ln -s "$COMMON_DIR"/zsh/zshrc ~/.zshrc
@@ -19,6 +20,10 @@ ln -s "$COMMON_DIR"/zsh/config "$CONFIG_DIR"/zsh
 # Link claude
 ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.codex/AGENTS.md
+
+# Link opencode
+ln -s "$COMMON_DIR"/opencode/opencode.json ~/.opencode/opencode.json
+ln -s "$COMMON_DIR"/opencode/AGENTS.md ~/.opencode/AGENTS.md
 
 # Link Git
 ln -s "$COMMON_DIR"/git/gitconfig ~/.gitconfig
