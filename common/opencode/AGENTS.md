@@ -59,6 +59,7 @@ Use these modern tools for better performance and features:
 * If you find any information, always use notion MCP server to connect to notion and document everything. Document it in simbian teamspace. Create tasks in task tracker
 * Always use context7 or google first (using webfetch) before asking me any questions. This is crucial when implementing using any library or framework.
 * Always run lint/typecheck commands after making changes to ensure code is correct
+* If you find a file has been modified and a feature is missing, ask me before implementing it again.
 
 ## Tool Usage Patterns
 - **Avoid** using Bash for file operations (read, write, search) - use dedicated tools instead

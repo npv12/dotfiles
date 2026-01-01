@@ -10,6 +10,7 @@ rm -rf ~/.gitconfig ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf ~/.opencode "$C
 mkdir -p ~/.config/zed
 mkdir -p ~/.claude
 mkdir -p ~/.opencode
+mkdir -p "$CONFIG_DIR"/opencode
 
 # Link ZSH
 ln -s "$COMMON_DIR"/zsh/zshrc ~/.zshrc
@@ -22,8 +23,9 @@ ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.codex/AGENTS.md
 
 # Link opencode
-ln -s "$COMMON_DIR"/opencode/opencode.json ~/.opencode/opencode.json
-ln -s "$COMMON_DIR"/opencode/AGENTS.md ~/.opencode/AGENTS.md
+ln -s "$COMMON_DIR"/opencode/opencode.json "$CONFIG_DIR"/opencode.json
+ln -s "$COMMON_DIR"/opencode/AGENTS.md "$CONFIG_DIR"/AGENTS.md
+ln -s "$COMMON_DIR"/opencode/agent "$CONFIG_DIR"/opencode/agent
 
 # Link Git
 ln -s "$COMMON_DIR"/git/gitconfig ~/.gitconfig
