@@ -309,7 +309,7 @@ function ai() {
 
   # ---- opts ---------------------------------------------------------------
   zmodload zsh/zutil 2>/dev/null || true
-  local model="${AI_MODEL:-openai/gpt-oss-20b:free}"
+  local model="${AI_MODEL:-xiaomi/mimo-v2-flash:free}"
   local temp="${AI_TEMP:-0.5}"
 
   local -a m_opt t_opt
@@ -499,7 +499,7 @@ function generate_commit() {
 
     # ---- opts ---------------------------------------------------------------
     zmodload zsh/zutil 2>/dev/null || true
-    local model="${AI_MODEL:-openai/gpt-oss-20b:free}"
+    local model="${AI_MODEL:-xiaomi/mimo-v2-flash:free}"
     local temp="${AI_TEMP:-1.1}"
 
     # Grab staged diff
