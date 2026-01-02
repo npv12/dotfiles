@@ -571,63 +571,6 @@
       }
     }
   },
-  "agent": {
-    "orchestrator": {
-      "tools": {
-        "task": true,
-        "todoread": true,
-        "*": false
-      }
-    },
-    "taskmaker": {
-      "model": "openai/gpt-5.1-codex-mini-medium",
-      "tools": {
-        "notion_*": true,
-        "*": false
-      }
-    },
-    "planner": {
-      "model": "openai/gpt-5.2-codex-medium",
-      "tools": {
-        "task": true,
-        "read": true,
-        "glob": true,
-        "grep": true,
-        "bash": true,
-        "list": true,
-        "tavily_*": true,
-        "tavily_tavily_search": true,
-        "tavily_tavily_extract": true,
-        "tavily_tavily_crawl": true,
-        "tavily_tavily_map": true,
-        "google_search": true,
-        "context7_*": true,
-        "websearch": true,
-        "webfetch": true,
-        "codesearch": true,
-        "submit_plan": true,
-        "*": false
-      }
-    },
-    "executor": {
-      "model": "openai/gpt-5.1-codex-mini-medium",
-      "tools": {
-        "bash": true,
-        "read": true,
-        "write": true,
-        "edit": true,
-        "glob": true,
-        "grep": true,
-        "list": true,
-        "lsp": true,
-        "patch": true,
-        "skill": true,
-        "todowrite": true,
-        "todoread": true,
-        "*": false
-      }
-    }
-  },
   "mcp": {
     "context7": {
       "type": "remote",
