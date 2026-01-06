@@ -5,7 +5,7 @@
 # Code
 alias code="code-insiders"
 alias zed="zed-preview"
-alias opencode="CONTEXT7_API_KEY=\$(pass tokens/context7) TAVILY_API_KEY=\$(pass tokens/tavily) opencode"
+alias opencode="CONTEXT7_API_KEY=\$(pass tokens/context7) TAVILY_API_KEY=\$(pass tokens/tavily) MILVUS_TOKEN=\$(pass tokens/milvus) OPENAI_API_KEY=\$(pass tokens/openai/personal) opencode"
 
 # DNF
 if command -v dnf &> /dev/null; then
