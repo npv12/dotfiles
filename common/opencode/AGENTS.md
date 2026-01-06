@@ -86,6 +86,15 @@ Use these modern tools for better performance and features:
 
 - **Always use Glob** instead of find for file pattern matching
 
+### Semantic Search with Milvus
+- **Use Milvus for semantic code search**: The Milvus tools provide powerful semantic search capabilities for codebases. Use them as your starting point for code exploration:
+  - `milvus_index_codebase`: Index a codebase directory to enable semantic search
+  - `milvus_search_code`: Search indexed codebase using natural language queries
+  - `milvus_get_indexing_status`: Check indexing progress
+  - `milvus_clear_index`: Clear search index when needed
+- **Milvus as starting point**: Always use Milvus search first to get an overview and locate relevant files. Then read the actual files to get detailed understanding, as semantic search results may not contain complete implementation details.
+- **Index before searching**: If Milvus search fails because the codebase isn't indexed, use `milvus_index_codebase` first, then retry your search.
+
  ### Information Gathering
  - **Use `webfetch` tool** for Google searches and real-time information:
    ```bash
