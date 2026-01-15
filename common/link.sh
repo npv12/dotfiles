@@ -3,51 +3,81 @@
 COMMON_DIR="$HOME/dotfiles/common"
 CONFIG_DIR="$HOME/.config"
 
-rm -rf ~/.gitconfig ~/.gitignore ~/.zshrc ~/.zshenv ~/.tmux.conf ~/.opencode "$CONFIG_DIR"/alacritty \
-	"$CONFIG_DIR"/bat "$CONFIG_DIR"/bottom "$CONFIG_DIR"/micro "$CONFIG_DIR"/zed \
-	"$CONFIG_DIR"/zsh "$CONFIG_DIR"/gdu "$CONFIG_DIR"/kitty "$CONFIG_DIR"/ghostty
+# --- Define files and directories to link ---
+# Format: "source;destination"
+declare -a links=(
+	# ZSH
+	"$COMMON_DIR/zsh/zshrc;$HOME/.zshrc"
+	"$COMMON_DIR/zsh/zshenv;$HOME/.zshenv"
+	"$COMMON_DIR/zsh/zprofile;$HOME/.zprofile"
+	"$COMMON_DIR/zsh/config;$CONFIG_DIR/zsh"
+	# Claude / Codex
+	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.claude/CLAUDE.md"
+	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.codex/AGENTS.md"
+	# Opencode
+	"$COMMON_DIR/opencode/opencode.json;$CONFIG_DIR/opencode.json"
+	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
+	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
+	# Git
+	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
+	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"
+	# Misc Apps
+	"$COMMON_DIR/gdu;$CONFIG_DIR/gdu"
+	"$COMMON_DIR/tmux/tmux.conf;$HOME/.tmux.conf"
+	"$COMMON_DIR/zed/keymap.json;$CONFIG_DIR/zed/keymap.json"
+	"$COMMON_DIR/zed/settings.json;$CONFIG_DIR/zed/settings.json"
+)
 
-mkdir -p ~/.config/zed
-mkdir -p ~/.claude
-mkdir -p ~/.opencode
-mkdir -p "$CONFIG_DIR"/opencode
+# --- Define conditional links (based on command existence) ---
+# Format: "command;source;destination"
+declare -a conditional_links=(
+	"ghostty;$COMMON_DIR/ghostty;$CONFIG_DIR/ghostty"
+	"alacritty;$COMMON_DIR/alacritty;$CONFIG_DIR/alacritty"
+	"kitty;$COMMON_DIR/kitty;$CONFIG_DIR/kitty"
+	"nvim;$COMMON_DIR/nvim;$CONFIG_DIR/nvim"
+	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
+	"bottom;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
+	"micro;$COMMON_DIR/micro;$CONFIG_DIR/micro"
+)
 
-# Link ZSH
-ln -s "$COMMON_DIR"/zsh/zshrc ~/.zshrc
-ln -s "$COMMON_DIR"/zsh/zshenv ~/.zshenv
-ln -s "$COMMON_DIR"/zsh/zprofile ~/.zprofile
-ln -s "$COMMON_DIR"/zsh/config "$CONFIG_DIR"/zsh
+# --- Common function to process a link ---
+process_link() {
+	local source="$1"
+	local destination="$2"
+	local message="${3:-Linking}"
 
-# Link claude
-ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.claude/CLAUDE.md
-ln -s "$COMMON_DIR"/claude/CLAUDE.md ~/.codex/AGENTS.md
+	mkdir -p "$(dirname "$destination")"
 
-# Link opencode
-ln -s "$COMMON_DIR"/opencode/opencode.json "$CONFIG_DIR"/opencode.json
-ln -s "$COMMON_DIR"/opencode/AGENTS.md "$CONFIG_DIR"/AGENTS.md
-ln -s "$COMMON_DIR"/opencode/agent "$CONFIG_DIR"/opencode/agent
+	if [[ -e $destination && ! -L $destination ]]; then
+		echo "Backing up $destination to ${destination}.bak"
+		mv "$destination" "${destination}.bak"
+	fi
 
-# Link Git
-ln -s "$COMMON_DIR"/git/gitconfig ~/.gitconfig
-ln -s "$COMMON_DIR"/git/gitignore ~/.gitignore
+	if [[ -L $destination ]]; then
+		rm "$destination"
+	fi
 
-# Link Apps
-if command -v ghostty &>/dev/null; then
-	ln -s "$COMMON_DIR/ghostty" "$CONFIG_DIR/ghostty"
-fi
+	echo "$message $source -> $destination"
+	ln -s "$source" "$destination"
+}
 
-if command -v alacritty &>/dev/null; then
-	ln -s "$COMMON_DIR/alacritty" "$CONFIG_DIR/alacritty"
-fi
+# --- Process unconditional links ---
+echo "Processing common dotfiles..."
+for link_pair in "${links[@]}"; do
+	IFS=';' read -r source destination <<<"$link_pair"
+	process_link "$source" "$destination"
+done
 
-if command -v kitty &>/dev/null; then
-	ln -s "$COMMON_DIR/kitty" "$CONFIG_DIR/kitty"
-fi
+# --- Process conditional links ---
+echo "Processing conditional links..."
+for link_info in "${conditional_links[@]}"; do
+	IFS=';' read -r command_name source destination <<<"$link_info"
 
-ln -s "$COMMON_DIR"/bat "$CONFIG_DIR"/bat
-ln -s "$COMMON_DIR"/bottom "$CONFIG_DIR"/bottom
-ln -s "$COMMON_DIR"/micro "$CONFIG_DIR"/micro
-ln -s "$COMMON_DIR"/gdu "$CONFIG_DIR"/gdu
-ln -s "$COMMON_DIR"/tmux/tmux.conf ~/.tmux.conf
-ln -s "$COMMON_DIR"/zed/keymap.json "$CONFIG_DIR"/zed/keymap.json
-ln -s "$COMMON_DIR"/zed/settings.json "$CONFIG_DIR"/zed/settings.json
+	if command -v "$command_name" &>/dev/null; then
+		process_link "$source" "$destination" "Linking (found $command_name)"
+	else
+		echo "Skipping $command_name link, command not found."
+	fi
+done
+
+echo "Common linking complete."

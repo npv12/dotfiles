@@ -16,11 +16,6 @@ export FZF_DEFAULT_OPTS=" \
 # GPG
 export GPG_TTY=$TTY
 
-# GO
-export GOPATH="$HOME/.packages/go"
-export PATH="$PATH:$GOPATH"
-export PATH=$PATH:/usr/local/go/bin
-
 # Fuzzy search
 export PATH="${Z4H}/bigH/git-fuzzy/bin:$PATH"
 
