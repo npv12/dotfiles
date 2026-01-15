@@ -1,5 +1,5 @@
 model = "gpt-5.2-codex"
-model_reasoning_effort = "low"
+model_reasoning_effort = "medium"
 
 [features]
 web_search_request = true
@@ -7,10 +7,6 @@ web_search_request = true
 [mcp_servers.context7]
 http_headers = {"CONTEXT7_API_KEY" = "$(pass tokens/context7)"}
 url = "https://mcp.context7.com/mcp"
-
-[mcp_servers.notion]
-type = "http"
-url = "https://mcp.notion.com/mcp"
 
 [projects."/Users/npv12/projects/simbian/SimbianOS"]
 trust_level = "trusted"
