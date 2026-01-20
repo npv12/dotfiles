@@ -7,6 +7,7 @@
       "asdf"
       "just"
       "uv"
+      "opencode"
     )
 
     for plugin in ${(k)plugins}; do
