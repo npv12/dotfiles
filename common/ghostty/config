@@ -1,3 +1,4 @@
+# Theme
 font-size = 16
 font-family = MesloLGS NF
 
@@ -5,7 +6,6 @@ background-opacity = 0.9
 background-blur = true
 
 theme = catppuccin-mocha
-macos-titlebar-style = hidden
 
 bold-is-bright = true
 cursor-style = block_hollow
@@ -14,6 +14,15 @@ cursor-style-blink = true
 window-padding-x = 10
 window-padding-y = 10
 
+# Splits
 split-divider-color = "#dc8a78"
 unfocused-split-opacity = 0.7
-keybind = shift+enter=text:\x1b\r
+
+# Quick Terminal
+keybind = global:cmd+backquote=toggle_quick_terminal
+quick-terminal-position = center
+quick-terminal-autohide = true
+quick-terminal-space-behavior = remain
+
+# Secure Input
+macos-auto-secure-input = true
