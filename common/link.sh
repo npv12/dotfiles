@@ -14,6 +14,7 @@ declare -a links=(
 	# Claude / Codex
 	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.claude/CLAUDE.md"
 	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.codex/AGENTS.md"
+	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
 	# Opencode
 	"$COMMON_DIR/opencode/opencode.json;$CONFIG_DIR/opencode.json"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
