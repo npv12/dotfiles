@@ -1,8 +1,31 @@
 {
+  "language_models": {
+    "openai_compatible": {
+      "Synthetic": {
+        "api_url": "https://api.synthetic.new/openai/v1",
+        "available_models": [
+          {
+            "name": "hf:moonshotai/Kimi-K2.5",
+            "max_tokens": 256000,
+            "max_output_tokens": 66000,
+            "max_completion_tokens": 262000,
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "agent_servers": {},
   "agent": {
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "oswe-vscode-prime"
+      "provider": "Synthetic",
+      "model": "hf:moonshotai/Kimi-K2.5"
     },
     "favorite_models": [],
     "model_parameters": []
@@ -15,22 +38,7 @@
   "features": {
     "edit_prediction_provider": "copilot"
   },
-  "lsp": {
-    "jdtls": {
-      "settings": {
-        "java": {
-          "home": "$HOME/.local/share/mise/installs/java/21.0.2/",
-          "jdt": {
-            "ls": {
-              "lombokSupport": {
-                "enabled": true
-              }
-            }
-          }
-        }
-      }
-    }
-  },
+  "format_on_save": "off",
   "autosave": {
     "after_delay": {
       "milliseconds": 500

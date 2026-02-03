@@ -106,9 +106,16 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     },
-    "tavily": {
-      "type": "remote",
-      "url": "https://mcp.tavily.com/mcp?tavilyApiKey={env:TAVILY_API_KEY}"
+    "synthetic-web-search": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "synthetic-web-search-mcp@latest"
+      ],
+      "environment": {
+        "SYNTHETIC_API_KEY": "{env:SYNTHETIC_API_KEY}"
+      }
     }
   }
 }

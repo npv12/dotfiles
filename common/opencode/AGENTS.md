@@ -35,7 +35,8 @@ Be my sharp second set of eyes: tighten plans, spot risks, and improve quality.
 
 ## Tooling & Docs
 - Runtime/package tooling: **mise** (activate when needed: `eval "$(mise activate zsh)"`)
-- Research/search: **webfetch** (note: **webfetch with Google will not work** — use **Tavily** instead)
+- Research/search: **webfetch** (note: **webfetch with Google will not work** — use **synthetic-web-search** instead)
+- Web search: **synthetic-web-search** (preferred search tool)
 - Library/docs lookup when needed: **Context7**
 
 ## Quality Bar
