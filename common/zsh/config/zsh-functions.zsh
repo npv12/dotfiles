@@ -599,6 +599,10 @@ PARSE SAFETY:
 - Output MUST be valid JSON. Nothing before or after it.
 - If you are unable to generate a commit message, return an empty string for title.
 
+SECRETS:
+- Do NOT treat the presence of `pass ...`, token paths (e.g., `tokens/...`), or secret *references* as secrets.
+- Only treat it as a secret if the diff contains an actual secret value (e.g., API keys/tokens, private key material, passwords).
+
 EXAMPLES:
 {"title":"feat: auth: add token refresh","body":"- add refresh logic\n- update tests","module":"auth"}
 {"title":"fix: db: prevent null dereference","body":"","module":"db"}
@@ -618,7 +622,7 @@ Instructions:
 2) Output ONLY valid JSON following the system rules.
 3) The commit title must include the type and the inferred module (unless module is "-").
 4) Body should include bullet points for secondary changes.
-5) If any secret is present inside the diff, then mention this information in the title itself so that the user knows, but it is fine to merge (sometimes this is necessary for )
+5) If an actual secret value is present inside the diff, mention this in the title so the user notices (ignore `pass ...` and token path references).
 EOF
 
     # Extract AI output
