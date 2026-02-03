@@ -287,11 +287,19 @@ function kill-tmux-sessions() {
     done
 }
 
-function ai() {
+function _ai_chat() {
   emulate -L zsh
 
-  # ---- deps ---------------------------------------------------------------
-  for bin in curl jq; do
+  local system_prompt="${1:-}"
+  local user_prompt="${2:-}"
+
+  if [[ -z "$system_prompt" || -z "$user_prompt" ]]; then
+    echo "Error: missing prompts."
+    echo "Usage: _ai_chat <system_prompt> <user_prompt>"
+    return 1
+  fi
+
+  for bin in curl jq pass; do
     if ! command -v "$bin" >/dev/null; then
       echo "Error: '$bin' not found."
       echo "Fix: install with your package manager (e.g., 'brew install $bin' or 'sudo apt -y install $bin')."
@@ -299,27 +307,124 @@ function ai() {
     fi
   done
 
-  # ---- api key ------------------------------------------------------------
-  api_key=$(pass tokens/openrouter 2>/dev/null || echo "")
-  if [[ -z "$api_key" ]]; then
-    echo "Error: API key not set."
-    echo "Fix: store your key in 'pass tokens/openrouter'"
+  local model="${AI_MODEL:-openai/gpt-oss-120b:free}"
+  local temp="${AI_TEMP:-0.5}"
+  local openrouter_api_key
+  openrouter_api_key="$(pass tokens/openrouter 2>/dev/null || echo "")"
+
+  local synthetic_api_key
+  synthetic_api_key="$(pass tokens/synthetic/simbian 2>/dev/null || echo "")"
+
+  local synthetic_model="${AI_SYNTHETIC_MODEL:-hf:moonshotai/Kimi-K2.5}"
+  local synthetic_temp="${AI_SYNTHETIC_TEMP:-$temp}"
+  local fallback_to_synthetic="${AI_FALLBACK_TO_SYNTHETIC:-}"
+
+  local payload response content
+
+  if [[ -n "$openrouter_api_key" ]]; then
+    payload="$(jq -n \
+      --arg model "$model" \
+      --arg sys "$system_prompt" \
+      --arg usr "$user_prompt" \
+      --arg temp "$temp" \
+      '{model:$model, temperature: ($temp|tonumber),
+        messages: [
+          {role:"system", content:$sys},
+          {role:"user",   content:$usr}
+        ] }' )" || {
+          echo "Error: failed to build JSON payload."
+          return 1
+        }
+
+    response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
+      -H "Authorization: Bearer $openrouter_api_key" \
+      -H 'Content-Type: application/json' \
+      --data-binary "$payload")" || {
+        response=""
+      }
+
+    content="$(jq -r '.choices[0].message.content // empty' <<<"$response" 2>/dev/null || echo "")"
+    if [[ -n "$content" ]]; then
+      print -r -- "$content"
+      return 0
+    fi
+
+    local emsg ecode
+    emsg="$(jq -r '.error.message // empty' <<<"$response" 2>/dev/null || echo "")"
+    ecode="$(jq -r '.error.code // empty' <<<"$response" 2>/dev/null || echo "")"
+    if [[ -z "$fallback_to_synthetic" ]]; then
+      if [[ -n "$ecode" || -n "$emsg" ]]; then
+        [[ -n "$ecode" ]] && echo "Error: $ecode"
+        [[ -n "$emsg"  ]] && echo "Error: $emsg"
+      else
+        echo "Error: request failed."
+      fi
+      return 1
+    fi
+  else
+    if [[ -z "$fallback_to_synthetic" ]]; then
+      echo "Error: OpenRouter API key not set."
+      echo "Fix: store your key in 'pass tokens/openrouter'"
+      return 1
+    fi
+  fi
+
+  if [[ -z "$synthetic_api_key" ]]; then
+    echo "Error: Synthetic API key not set."
+    echo "Fix: store your key in 'pass tokens/synthetic/simbian'"
     return 1
   fi
 
-  # ---- opts ---------------------------------------------------------------
-  zmodload zsh/zutil 2>/dev/null || true
-  local model="${AI_MODEL:-z-ai/glm-4.5-air:free}"
-  local temp="${AI_TEMP:-0.5}"
+  print -u2 -- "Note: OpenRouter failed; using Synthetic fallback."
 
-  local -a m_opt t_opt
-  zparseopts -E -D m:=m_opt t:=t_opt 2>/dev/null
-  [[ ${#m_opt} -gt 0 ]] && model="${m_opt[2]}"
-  [[ ${#t_opt} -gt 0 ]] && temp="${t_opt[2]}"
+  payload="$(jq -n \
+    --arg model "$synthetic_model" \
+    --arg sys "$system_prompt" \
+    --arg usr "$user_prompt" \
+    --arg temp "$synthetic_temp" \
+    '{model:$model, temperature: ($temp|tonumber),
+      messages: [
+        {role:"system", content:$sys},
+        {role:"user",   content:$usr}
+      ] }' )" || {
+        echo "Error: failed to build JSON payload."
+        return 1
+      }
+
+  response="$(curl -sS https://api.synthetic.new/openai/v1/chat/completions \
+    -H "Authorization: Bearer $synthetic_api_key" \
+    -H 'Content-Type: application/json' \
+    --data-binary "$payload")" || {
+      echo "Error: network request failed."
+      echo "Fix: check connectivity or proxy settings."
+      return 1
+    }
+
+  content="$(jq -r '.choices[0].message.content // empty' <<<"$response")"
+  if [[ -n "$content" ]]; then
+    print -r -- "$content"
+    return 0
+  fi
+
+  local semsg secode
+  semsg="$(jq -r '.error.message // empty' <<<"$response")"
+  secode="$(jq -r '.error.code // empty' <<<"$response")"
+  if [[ -n "$semsg" || -n "$secode" ]]; then
+    [[ -n "$secode" ]] && echo "Error: $secode"
+    [[ -n "$semsg"  ]] && echo "Error: $semsg"
+  else
+    echo "Error: request failed."
+  fi
+  return 1
+}
+
+function ai() {
+  emulate -L zsh
 
   # ---- query --------------------------------------------------------------
   if (( $# == 0 )); then
-    echo 'Usage: ai [-m model] [-t temperature] "your command-related question"'
+    echo 'Usage: ai "your command-related question"'
+    echo 'Env: AI_MODEL, AI_TEMP, AI_FALLBACK_TO_SYNTHETIC=1, AI_SYNTHETIC_MODEL'
     return 1
   fi
   local query="$*"
@@ -428,79 +533,11 @@ Reminder:
 EOF
 
   # ---- payload (use jq to avoid quoting bugs) -----------------------------
-  local payload
-  payload="$(jq -n \
-    --arg model "$model" \
-    --arg sys "$SYSTEM_PROMPT" \
-    --arg usr "$query" \
-    --arg temp "$temp" \
-    '{model:$model, temperature: ($temp|tonumber),
-      messages: [
-        {role:"system", content:$sys},
-        {role:"user",   content:$usr}
-      ] }' )" || {
-        echo "Error: failed to build JSON payload."
-        return 1
-      }
-
-  # ---- request ------------------------------------------------------------
-  local response
-  response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
-    -H "Authorization: Bearer $api_key" \
-    -H 'Content-Type: application/json' \
-    --data-binary "$payload")" || {
-      echo "Error: network request failed."
-      echo "Fix: check connectivity or proxy settings."
-      return 1
-    }
-
-  # ---- parse --------------------------------------------------------------
-  local content
-  content="$(jq -r '.choices[0].message.content // empty' <<<"$response")"
-
-  if [[ -n "$content" ]]; then
-    print -r -- "$content"
-    return 0
-  fi
-
-  # ---- error surface ------------------------------------------------------
-  local emsg ecode
-  emsg="$(jq -r '.error.message // empty' <<<"$response")"
-  ecode="$(jq -r '.error.code // empty' <<<"$response")"
-  if [[ -n "$emsg" || -n "$ecode" ]]; then
-    [[ -n "$ecode" ]] && echo "Error: $ecode"
-    [[ -n "$emsg"  ]] && echo "Error: $emsg"
-  else
-    echo "⚠️ Something went wrong."
-    echo "Raw response:"
-    print -r -- "$response"
-  fi
+  _ai_chat "$SYSTEM_PROMPT" "$query"
 }
 
 function generate_commit() {
     emulate -L zsh
-
-    # ---- deps ---------------------------------------------------------------
-    for bin in curl jq; do
-      if ! command -v "$bin" >/dev/null; then
-        echo "Error: '$bin' not found."
-        echo "Fix: install with your package manager (e.g., 'brew install $bin' or 'sudo apt -y install $bin')."
-        return 127
-      fi
-    done
-
-    # ---- api key ------------------------------------------------------------
-    api_key=$(pass tokens/openrouter 2>/dev/null || echo "")
-    if [[ -z "$api_key" ]]; then
-      echo "Error: API key not set."
-      echo "Fix: store your key in 'pass tokens/openrouter'"
-      return 1
-    fi
-
-    # ---- opts ---------------------------------------------------------------
-    zmodload zsh/zutil 2>/dev/null || true
-    local model="${AI_MODEL:-z-ai/glm-4.5-air:free}"
-    local temp="${AI_TEMP:-1.1}"
 
     # Grab staged diff
     local diff
@@ -584,35 +621,9 @@ Instructions:
 5) If any secret is present inside the diff, then mention this information in the title itself so that the user knows, but it is fine to merge (sometimes this is necessary for )
 EOF
 
-    # --- Build JSON payload for OpenRouter (chat completions) ---private repos
-    # Model can be changed; keep it as an OpenRouter-compatible Anthropic model or other provider you use.
-    payload="$(jq -n \
-      --arg model "$model" \
-      --arg sys "$SYSTEM_PROMPT" \
-      --arg usr "$USER_PROMPT" \
-      --arg temp "$temp" \
-      '{model:$model, temperature: ($temp|tonumber),
-        messages: [
-          {role:"system", content:$sys},
-          {role:"user",   content:$usr}
-        ] }' )" || {
-        echo "Error: failed to build JSON payload."
-        return 1
-    }
-
-    local response
-    response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
-    -H "Authorization: Bearer $api_key" \
-    -H 'Content-Type: application/json' \
-    --data-binary "$payload")" || {
-        echo "Error: network request failed."
-        echo "Fix: check connectivity or proxy settings."
-        return 1
-    }
-
     # Extract AI output
     local ai_output
-    ai_output=$(printf "%s" "$response" | jq -r '.choices[0].message.content')
+    ai_output="$(_ai_chat "$SYSTEM_PROMPT" "$USER_PROMPT")" || return $?
 
     if [ -z "$ai_output" ] || [ "$ai_output" = "null" ]; then
         echo "AI returned no commit message."
