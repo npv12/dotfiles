@@ -622,7 +622,7 @@ Instructions:
 2) Output ONLY valid JSON following the system rules.
 3) The commit title must include the type and the inferred module (unless module is "-").
 4) Body should include bullet points for secondary changes.
-5) If an actual secret value is present inside the diff, mention this in the title so the user notices (ignore `pass ...` and token path references).
+5) If an actual secret value is present inside the diff, mention this in the title so the user notices (ignore 'pass ...' and token path references).
 EOF
 
     # Extract AI output
