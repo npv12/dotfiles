@@ -1,5 +1,5 @@
-model = "gpt-5.2"
-model_reasoning_effort = "medium"
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
 web_search = "cached"
 
 [mcp_servers.context7]
@@ -10,6 +10,9 @@ url = "https://mcp.context7.com/mcp"
 "gpt-5.2" = "gpt-5.2-codex"
 
 [projects."/Users/npv12/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/npv12/projects/personal/AeroSpace"]
 trust_level = "trusted"
 
 [projects."/Users/npv12/projects/simbian/SimbianOS"]
