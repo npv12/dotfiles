@@ -11,6 +11,7 @@ bold-is-bright = true
 cursor-style = block_hollow
 cursor-style-blink = true
 
+# Padding
 window-padding-x = 10
 window-padding-y = 10
 
@@ -26,3 +27,6 @@ quick-terminal-space-behavior = remain
 
 # Secure Input
 macos-auto-secure-input = true
+
+# Opencode Keybind -> Required for opencode shift+enter to work in the terminal
+keybind = shift+enter=text:\x1b\r
