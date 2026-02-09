@@ -27,6 +27,10 @@
     "branch": "master",
     "commit": "3faffefbd6ddeb52578535ec6b730e0b72d7fd1a"
   },
+  "diffview.nvim": {
+    "branch": "main",
+    "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a"
+  },
   "flash.nvim": {
     "branch": "main",
     "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2"
