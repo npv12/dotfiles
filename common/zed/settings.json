@@ -1,4 +1,13 @@
 {
+  "edit_predictions": {
+    "provider": "copilot"
+  },
+  "git": {
+    "inline_blame": {}
+  },
+  "ui_font_family": "Inter Variable",
+  "buffer_font_weight": 500.0,
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "language_models": {
     "openai_compatible": {
       "Synthetic": {
@@ -27,16 +36,29 @@
       "provider": "Synthetic",
       "model": "hf:moonshotai/Kimi-K2.5"
     },
-    "favorite_models": [],
+    "favorite_models": [
+      {
+        "provider": "Synthetic",
+        "model": "hf:moonshotai/Kimi-K2.5",
+        "enable_thinking": true
+      },
+      {
+        "provider": "copilot_chat",
+        "model": "gpt-5-mini",
+        "enable_thinking": false
+      }
+    ],
     "model_parameters": []
   },
   "git_panel": {
-    "tree_view": true
+    "sort_by_path": true,
+    "tree_view": false
   },
   "base_keymap": "JetBrains",
-  "icon_theme": "Catppuccin Mocha",
-  "features": {
-    "edit_prediction_provider": "copilot"
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
   },
   "format_on_save": "off",
   "autosave": {
@@ -54,11 +76,11 @@
     "diagnostics": false,
     "metrics": false
   },
-  "ui_font_size": 16,
+  "ui_font_size": 17.0,
   "buffer_font_size": 16,
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Catppuccin Mocha (Blur)"
+    "dark": "Catppuccin Mocha (Blur) [Heavy]"
   }
 }
