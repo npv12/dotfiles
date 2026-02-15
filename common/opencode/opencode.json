@@ -116,6 +116,15 @@
       "environment": {
         "SYNTHETIC_API_KEY": "{env:SYNTHETIC_API_KEY}"
       }
+    },
+    "obsidian": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@mauricio.wolff/mcp-obsidian@latest",
+        "$HOME/projects/obsidian"
+      ]
     }
   }
 }
