@@ -15,7 +15,9 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to Obsidian:** `Simbian/plans/implementation/YYYY/MM/YYYY-MM-DD-<feature-name>-implementation-plan.md`
+
+**Folder requirement:** Create missing vault folders before saving the note.
 
 ## Bite-Sized Task Granularity
 
@@ -94,11 +96,22 @@ git commit -m "feat: add specific feature"
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
 
+## Todoist Tracking (After Plan Creation)
+
+Immediately after saving the plan in Obsidian:
+
+1. Ask the user: **"Do you want me to create a matching Todoist tracking list for this plan? (recommended - say 'skip' to skip)"**
+2. If user says skip: continue to Execution Handoff.
+3. If user says yes:
+   - Keep plan title and Todoist title exactly the same.
+   - Use the exact plan title from the H1 heading (`# [Feature Name] Implementation Plan`) as the Todoist parent task title.
+   - Create one Todoist subtask per plan task (`Task 1`, `Task 2`, etc.) in the same order.
+
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the plan (and Todoist tracking unless skipped), offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `Simbian/plans/implementation/<YYYY>/<MM>/<filename>.md`. Two execution options:**
 
 **1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
 

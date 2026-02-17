@@ -27,7 +27,7 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+5. **Write design doc** — save to `Simbian/plans/design/YYYY/MM/YYYY-MM-DD-<topic>-design.md` in Obsidian (create folders as needed)
 6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
@@ -78,9 +78,9 @@ digraph brainstorming {
 ## After the Design
 
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- Write the validated design to `Simbian/plans/design/YYYY/MM/YYYY-MM-DD-<topic>-design.md` in Obsidian
+- Create missing folders in the Obsidian vault before saving the note
 - Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
 
 **Implementation:**
 - Invoke the writing-plans skill to create a detailed implementation plan
