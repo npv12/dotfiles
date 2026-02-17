@@ -1,39 +1,5 @@
 () {
-  function prompt_mise() {
-    local plugins=("${(@f)$(mise ls --current 2>/dev/null | awk '!/\(symlink\)/ && $3!="~/.tool-versions" && $3!="~/.config/mise/config.toml" {print $1, $2}')}")
-    local plugin
-
-    tools_to_skip=(
-      "asdf"
-      "just"
-      "uv"
-      "opencode"
-    )
-
-    for plugin in ${(k)plugins}; do
-      local parts=("${(@s/ /)plugin}")
-      local tool=${(U)parts[1]}
-      local version=${parts[2]}
-      if [[ ! " ${(U)tools_to_skip[@]} " =~ " ${tool} " ]]; then
-        p10k segment -r -i "${tool}_ICON" -s $tool -t "$version"
-      fi
-    done
-  }
-
-  # Replace 'asdf' with 'mise' in the right prompt
-  typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=("${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]/asdf/mise}")
-
-  # Segment colors
-  typeset -g POWERLEVEL9K_MISE_PYTHON_FOREGROUND=0
-  typeset -g POWERLEVEL9K_MISE_PYTHON_BACKGROUND=3
-  typeset -g POWERLEVEL9K_MISE_NODE_FOREGROUND=0
-  typeset -g POWERLEVEL9K_MISE_NODE_BACKGROUND=2
-  typeset -g POWERLEVEL9K_MISE_RUST_FOREGROUND=0
-  typeset -g POWERLEVEL9K_MISE_RUST_BACKGROUND=215
-  typeset -g POWERLEVEL9K_MISE_GO_FOREGROUND=0
-  typeset -g POWERLEVEL9K_MISE_GO_BACKGROUND=6
-  typeset -g POWERLEVEL9K_MISE_ENV_BACKGROUND=0
-  typeset -g POWERLEVEL9K_MISE_ENV_FOREGROUND=4
-  typeset -g POWERLEVEL9K_MISE_FOREGROUND=0
-  typeset -g POWERLEVEL9K_MISE_BACKGROUND=212
+  local this_file="${(%):-%x}"
+  local impl="${this_file:A:h}/p10k.mise.impl.zsh"
+  [[ -f "$impl" ]] && source "$impl"
 }
