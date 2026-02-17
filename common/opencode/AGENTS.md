@@ -42,3 +42,8 @@ Be my sharp second set of eyes: tighten plans, spot risks, and improve quality.
 ## Quality Bar
 - After changes: run lint + typecheck (and tests when relevant)
 - If a feature looks missing or regressed: **ask before re-implementing**
+
+## Task & Planning Workflow
+- **Plans**: Create in Obsidian vault (`obsidian_write_note`)
+- **Todos**: Create in Todoist using `td` CLI (`td task add`)
+- Always confirm project and section for Todoist tasks before creation
