@@ -123,7 +123,7 @@
         "npx",
         "-y",
         "@mauricio.wolff/mcp-obsidian@latest",
-        "$HOME/projects/obsidian"
+        "~/projects/obsidian"
       ]
     }
   }
