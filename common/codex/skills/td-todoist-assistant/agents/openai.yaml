@@ -1,0 +1,4 @@
+interface:
+  display_name: "Todoist TD Assistant"
+  short_description: "Create Todoist tasks with project/section prompts"
+  default_prompt: "Use $td-todoist-assistant to create a Todoist task by asking for project first, resolving section, collecting due date and priority, confirming details, then running td task add."

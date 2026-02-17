@@ -1,0 +1,1230 @@
+## td
+Usage: td [options] [command]
+
+Todoist CLI
+
+Options:
+  -V, --version            output the version number
+  --no-spinner             Disable loading animations
+  --progress-jsonl [path]  Output progress events as JSONL to stderr or file
+  -v, --verbose            Increase output verbosity (repeat up to 4x: -v, -vv,
+                           -vvv, -vvvv)
+  -h, --help               display help for command
+
+Commands:
+  add                      Quick add task with natural language (e.g., "Buy milk
+                           tomorrow p1 #Shopping")
+  today                    Show tasks due today and overdue
+  upcoming                 Show tasks due in the next N days (default: 7)
+  inbox                    List tasks in Inbox
+  completed                Show completed tasks
+  task                     Manage tasks
+  project                  Manage projects
+  label                    Manage labels
+  comment                  Manage comments
+  section                  Manage project sections
+  workspace                Manage workspaces
+  activity                 View activity logs
+  reminder                 Manage task reminders
+  settings                 Manage user settings
+  auth                     Manage authentication
+  stats                    View productivity stats and karma
+  filter                   Manage filters
+  notification             Manage notifications
+  skill                    Manage coding agent skills/integrations
+  completion               Manage shell completions
+  help [command]           display help for command
+
+Note for AI/LLM agents:
+  Use "td task add" (not "td add") to create tasks with structured flags.
+  Use --json or --ndjson flags for unambiguous, parseable output.
+  Default JSON shows essential fields; use --full for all fields.
+
+
+## td add
+Usage: td add [options] [text]
+
+Quick add with natural language (human shorthand; agents should use "task add")
+
+Options:
+  --assignee <ref>  Assign to user (name, email, id:xxx, or "me")
+  -h, --help        display help for command
+
+
+## td today
+Usage: td today [options]
+
+Show tasks due today and overdue
+
+Options:
+  --limit <n>         Limit number of results (default: 300)
+  --cursor <cursor>   Continue from cursor
+  --all               Fetch all results (no limit)
+  --any-assignee      Show tasks assigned to anyone (default: only
+                      me/unassigned)
+  --workspace <name>  Filter to tasks in workspace
+  --personal          Filter to tasks in personal projects
+  --json              Output as JSON
+  --ndjson            Output as newline-delimited JSON
+  --full              Include all fields in JSON output
+  --raw               Disable markdown rendering
+  --show-urls         Show web app URLs for each task
+  -h, --help          display help for command
+
+
+## td upcoming
+Usage: td upcoming [options] [days]
+
+Show tasks due in the next N days (default: 7)
+
+Options:
+  --limit <n>         Limit number of results (default: 300)
+  --cursor <cursor>   Continue from cursor
+  --all               Fetch all results (no limit)
+  --any-assignee      Show tasks assigned to anyone (default: only
+                      me/unassigned)
+  --workspace <name>  Filter to tasks in workspace
+  --personal          Filter to tasks in personal projects
+  --json              Output as JSON
+  --ndjson            Output as newline-delimited JSON
+  --full              Include all fields in JSON output
+  --show-urls         Show web app URLs for each task
+  -h, --help          display help for command
+
+
+## td inbox
+Usage: td inbox [options]
+
+List tasks in Inbox
+
+Options:
+  --priority <p1-p4>  Filter by priority (choices: "p1", "p2", "p3", "p4")
+  --due <date>        Filter by due date (today, overdue, or YYYY-MM-DD)
+  --limit <n>         Limit number of results (default: 300)
+  --cursor <cursor>   Continue from cursor
+  --all               Fetch all results (no limit)
+  --json              Output as JSON
+  --ndjson            Output as newline-delimited JSON
+  --full              Include all fields in JSON output
+  --raw               Disable markdown rendering
+  --show-urls         Show web app URLs for each task
+  -h, --help          display help for command
+
+
+## td completed
+Usage: td completed [options]
+
+Show completed tasks
+
+Options:
+  --since <date>     Start date (YYYY-MM-DD), default: today
+  --until <date>     End date (YYYY-MM-DD), default: tomorrow
+  --project <name>   Filter by project
+  --limit <n>        Limit number of results (default: 300)
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  --show-urls        Show web app URLs for each task
+  -h, --help         display help for command
+
+
+## td task
+Usage: td task [options] [command]
+
+Manage tasks
+
+Options:
+  -h, --help                display help for command
+
+Commands:
+  list [options]            List tasks
+  view [options] [ref]      View task details
+  complete [options] [ref]  Complete a task
+  uncomplete [ref]          Reopen a completed task (requires id:xxx)
+  delete [options] [ref]    Delete a task
+  add [options] [content]   Add a task
+  update [options] [ref]    Update a task
+  move [options] [ref]      Move task to project/section/parent
+  browse [ref]              Open task in browser
+  help [command]            display help for command
+
+
+## td project
+Usage: td project [options] [command]
+
+Manage projects
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  list [options]          List all projects
+  view [ref]              View project details
+  collaborators [ref]     List project collaborators
+  delete [options] [ref]  Delete a project (must have no uncompleted tasks)
+  create [options]        Create a project
+  update [options] [ref]  Update a project
+  archive [ref]           Archive a project
+  unarchive [ref]         Unarchive a project
+  browse [ref]            Open project in browser
+  help [command]          display help for command
+
+
+## td label
+Usage: td label [options] [command]
+
+Manage labels
+
+Options:
+  -h, --help               display help for command
+
+Commands:
+  list [options]           List all labels
+  create [options]         Create a label
+  delete [options] [name]  Delete a label
+  update [options] [ref]   Update a label
+  browse [ref]             Open label in browser
+  help [command]           display help for command
+
+
+## td comment
+Usage: td comment [options] [command]
+
+Manage comments
+
+Options:
+  -h, --help             display help for command
+
+Commands:
+  list [options] [ref]   List comments on a task (or project with --project)
+  add [options] [ref]    Add a comment to a task (or project with --project)
+  delete [options] [id]  Delete a comment
+  update [options] [id]  Update a comment
+  view [options] [id]    View a single comment with full details
+  browse [id]            Open comment in browser (requires id:xxx)
+  help [command]         display help for command
+
+
+## td section
+Usage: td section [options] [command]
+
+Manage project sections
+
+Options:
+  -h, --help                display help for command
+
+Commands:
+  list [options] [project]  List sections in a project
+  create [options]          Create a section
+  delete [options] [id]     Delete a section
+  update [options] [id]     Update a section
+  browse [id]               Open section in browser (requires id:xxx)
+  help [command]            display help for command
+
+
+## td workspace
+Usage: td workspace [options] [command]
+
+Manage workspaces
+
+Options:
+  -h, --help                display help for command
+
+Commands:
+  list [options]            List all workspaces
+  view [ref]                View workspace details
+  projects [options] [ref]  List projects in a workspace
+  users [options] [ref]     List users in a workspace
+  help [command]            display help for command
+
+
+## td activity
+Usage: td activity [options]
+
+View activity logs
+
+Options:
+  --since <date>     Start date (YYYY-MM-DD)
+  --until <date>     End date (YYYY-MM-DD)
+  --type <type>      Filter by object type (task, comment, project) (choices:
+                     "task", "comment", "project")
+  --event <type>     Filter by event type (choices: "added", "completed",
+                     "updated", "deleted", "uncompleted", "archived",
+                     "unarchived", "shared", "left", "reordered", "moved")
+  --project <name>   Filter by project
+  --by <user>        Filter by initiator (use "me" for yourself)
+  --limit <n>        Limit results (default: 100)
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  -h, --help         display help for command
+
+
+## td reminder
+Usage: td reminder [options] [command]
+
+Manage task reminders
+
+Options:
+  -h, --help             display help for command
+
+Commands:
+  list [options] [task]  List reminders for a task
+  add [options] [task]   Add a reminder to a task
+  update [options] [id]  Update a reminder
+  delete [options] [id]  Delete a reminder
+  help [command]         display help for command
+
+
+## td settings
+Usage: td settings [options] [command]
+
+Manage user settings
+
+Options:
+  -h, --help        display help for command
+
+Commands:
+  view [options]    View current settings
+  update [options]  Update settings
+  themes            List available themes
+  help [command]    display help for command
+
+
+## td auth
+Usage: td auth [options] [command]
+
+Manage authentication
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  login           Authenticate with Todoist via OAuth
+  token [token]   Save API token to config file (manual authentication)
+  status          Show current authentication status
+  logout          Remove saved authentication token
+  help [command]  display help for command
+
+
+## td stats
+Usage: td stats [options] [command]
+
+View productivity stats and karma
+
+Options:
+  --json              Output as JSON
+  --full              Include all fields in JSON output
+  -h, --help          display help for command
+
+Commands:
+  goals [options]     Update daily/weekly goals
+  vacation [options]  Toggle vacation mode
+
+
+## td filter
+Usage: td filter [options] [command]
+
+Manage filters
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  list [options]          List all filters
+  create [options]        Create a filter
+  delete [options] [ref]  Delete a filter
+  update [options] [ref]  Update a filter
+  show [options] [ref]    Show tasks matching a filter
+  browse [ref]            Open filter in browser
+  help [command]          display help for command
+
+
+## td notification
+Usage: td notification [options] [command]
+
+Manage notifications
+
+Options:
+  -h, --help           display help for command
+
+Commands:
+  list [options]       List notifications
+  view [options] [id]  View notification details
+  accept [id]          Accept a share invitation
+  reject [id]          Reject a share invitation
+  read [options] [id]  Mark notification(s) as read
+  unread [id]          Mark notification as unread
+  help [command]       display help for command
+
+
+## td skill
+Usage: td skill [options] [command]
+
+Manage coding agent skills/integrations
+
+Options:
+  -h, --help                   display help for command
+
+Commands:
+  install [options] [agent]    Install skill for a coding agent
+  update [options] [agent]     Update installed skill to latest version
+  uninstall [options] [agent]  Uninstall skill for a coding agent
+  list                         List supported agents and install status
+  help [command]               display help for command
+
+
+## td completion
+Usage: td completion [options] [command]
+
+Manage shell completions
+
+Options:
+  -h, --help       display help for command
+
+Commands:
+  install [shell]  Install shell completions (bash, zsh, fish)
+  uninstall        Remove shell completions
+  help [command]   display help for command
+
+
+## td task list
+Usage: td task list [options]
+
+List tasks
+
+Options:
+  --project <name>    Filter by project name or id:xxx
+  --parent <ref>      Filter subtasks of a parent task
+  --label <name>      Filter by label (comma-separated for multiple)
+  --priority <p1-p4>  Filter by priority (choices: "p1", "p2", "p3", "p4")
+  --due <date>        Filter by due date (today, overdue, or YYYY-MM-DD)
+  --filter <query>    Raw Todoist filter query
+  --assignee <ref>    Filter by assignee (me or id:xxx)
+  --unassigned        Show only unassigned tasks
+  --workspace <name>  Filter to tasks in workspace
+  --personal          Filter to tasks in personal projects
+  --limit <n>         Limit number of results (default: 300)
+  --cursor <cursor>   Continue from cursor
+  --all               Fetch all results (no limit)
+  --json              Output as JSON
+  --ndjson            Output as newline-delimited JSON
+  --full              Include all fields in JSON output
+  --raw               Disable markdown rendering
+  --show-urls         Show web app URLs for each task
+  -h, --help          display help for command
+
+
+## td task view
+Usage: td task view [options] [ref]
+
+View task details
+
+Options:
+  --json      Output as JSON
+  --full      Include all fields in output
+  --raw       Disable markdown rendering
+  -h, --help  display help for command
+
+
+## td task complete
+Usage: td task complete [options] [ref]
+
+Complete a task
+
+Options:
+  --forever   Complete recurring task permanently (stops recurrence)
+  -h, --help  display help for command
+
+
+## td task uncomplete
+Usage: td task uncomplete [options] [ref]
+
+Reopen a completed task (requires id:xxx)
+
+Options:
+  -h, --help  display help for command
+
+
+## td task delete
+Usage: td task delete [options] [ref]
+
+Delete a task
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td task add
+Usage: td task add [options] [content]
+
+Add a task
+
+Options:
+  --content <text>      Task content (legacy, prefer positional argument)
+  --due <date>          Due date (natural language or YYYY-MM-DD)
+  --deadline <date>     Deadline date (YYYY-MM-DD)
+  --priority <p1-p4>    Priority level (choices: "p1", "p2", "p3", "p4")
+  --project <name>      Project name or id:xxx
+  --section <ref>       Section (name with --project, or id:xxx)
+  --labels <a,b>        Comma-separated labels
+  --parent <ref>        Parent task reference
+  --description <text>  Task description
+  --assignee <ref>      Assign to user (name, email, id:xxx, or "me")
+  --duration <time>     Duration (e.g., 30m, 1h, 2h15m)
+  -h, --help            display help for command
+
+
+## td task update
+Usage: td task update [options] [ref]
+
+Update a task
+
+Options:
+  --content <text>      New content
+  --due <date>          New due date
+  --deadline <date>     Deadline date (YYYY-MM-DD)
+  --no-deadline         Remove deadline
+  --priority <p1-p4>    New priority (choices: "p1", "p2", "p3", "p4")
+  --labels <a,b>        New labels (replaces existing)
+  --description <text>  New description
+  --assignee <ref>      Assign to user (name, email, id:xxx, or "me")
+  --unassign            Remove assignee
+  --duration <time>     Duration (e.g., 30m, 1h, 2h15m)
+  -h, --help            display help for command
+
+
+## td task move
+Usage: td task move [options] [ref]
+
+Move task to project/section/parent
+
+Options:
+  --project <ref>  Target project (name or id:xxx)
+  --section <ref>  Target section (name or id:xxx)
+  --parent <ref>   Parent task (name or id:xxx)
+  --no-parent      Remove parent (move to project root)
+  --no-section     Remove section (move to project root)
+  -h, --help       display help for command
+
+
+## td task browse
+Usage: td task browse [options] [ref]
+
+Open task in browser
+
+Options:
+  -h, --help  display help for command
+
+
+## td project list
+Usage: td project list [options]
+
+List all projects
+
+Options:
+  --limit <n>        Limit number of results (default: 50)
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --personal         Show only personal projects
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  --show-urls        Show web app URLs for each project
+  -h, --help         display help for command
+
+
+## td project view
+Usage: td project view [options] [ref]
+
+View project details
+
+Options:
+  -h, --help  display help for command
+
+
+## td project collaborators
+Usage: td project collaborators [options] [ref]
+
+List project collaborators
+
+Options:
+  -h, --help  display help for command
+
+
+## td project delete
+Usage: td project delete [options] [ref]
+
+Delete a project (must have no uncompleted tasks)
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td project create
+Usage: td project create [options]
+
+Create a project
+
+Options:
+  --name <name>         Project name (required)
+  --color <color>       Project color
+  --favorite            Mark as favorite
+  --parent <ref>        Parent project (name or id:xxx)
+  --view-style <style>  View style (list, board, or calendar) (choices: "list",
+                        "board", "calendar")
+  -h, --help            display help for command
+
+
+## td project update
+Usage: td project update [options] [ref]
+
+Update a project
+
+Options:
+  --name <name>         New name
+  --color <color>       New color
+  --favorite            Mark as favorite
+  --no-favorite         Remove from favorites
+  --view-style <style>  View style (list, board, or calendar) (choices: "list",
+                        "board", "calendar")
+  -h, --help            display help for command
+
+
+## td project archive
+Usage: td project archive [options] [ref]
+
+Archive a project
+
+Options:
+  -h, --help  display help for command
+
+
+## td project unarchive
+Usage: td project unarchive [options] [ref]
+
+Unarchive a project
+
+Options:
+  -h, --help  display help for command
+
+
+## td project browse
+Usage: td project browse [options] [ref]
+
+Open project in browser
+
+Options:
+  -h, --help  display help for command
+
+
+## td label list
+Usage: td label list [options]
+
+List all labels
+
+Options:
+  --limit <n>  Limit number of results (default: 300)
+  --all        Fetch all results (no limit)
+  --json       Output as JSON
+  --ndjson     Output as newline-delimited JSON
+  --full       Include all fields in JSON output
+  --show-urls  Show web app URLs for each label
+  -h, --help   display help for command
+
+
+## td label create
+Usage: td label create [options]
+
+Create a label
+
+Options:
+  --name <name>    Label name (required)
+  --color <color>  Label color
+  --favorite       Mark as favorite
+  -h, --help       display help for command
+
+
+## td label delete
+Usage: td label delete [options] [name]
+
+Delete a label
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td label update
+Usage: td label update [options] [ref]
+
+Update a label
+
+Options:
+  --name <name>    New name
+  --color <color>  New color
+  --favorite       Mark as favorite
+  --no-favorite    Remove from favorites
+  -h, --help       display help for command
+
+
+## td label browse
+Usage: td label browse [options] [ref]
+
+Open label in browser
+
+Options:
+  -h, --help  display help for command
+
+
+## td comment list
+Usage: td comment list [options] [ref]
+
+List comments on a task (or project with --project)
+
+Options:
+  -P, --project  Target a project instead of a task
+  --limit <n>    Limit number of results (default: 10)
+  --all          Fetch all results (no limit)
+  --show-urls    Show web app URLs for each comment
+  --json         Output as JSON
+  --ndjson       Output as newline-delimited JSON
+  --full         Include all fields in JSON output
+  --lines <n>    Number of content lines to show (default: 3)
+  --raw          Disable markdown rendering
+  -h, --help     display help for command
+
+
+## td comment add
+Usage: td comment add [options] [ref]
+
+Add a comment to a task (or project with --project)
+
+Options:
+  -P, --project     Target a project instead of a task
+  --content <text>  Comment content (required)
+  --file <path>     Attach a file to the comment
+  -h, --help        display help for command
+
+
+## td comment delete
+Usage: td comment delete [options] [id]
+
+Delete a comment
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td comment update
+Usage: td comment update [options] [id]
+
+Update a comment
+
+Options:
+  --content <text>  New comment content (required)
+  -h, --help        display help for command
+
+
+## td comment view
+Usage: td comment view [options] [id]
+
+View a single comment with full details
+
+Options:
+  --raw       Disable markdown rendering
+  -h, --help  display help for command
+
+
+## td comment browse
+Usage: td comment browse [options] [id]
+
+Open comment in browser (requires id:xxx)
+
+Options:
+  -h, --help  display help for command
+
+
+## td section list
+Usage: td section list [options] [project]
+
+List sections in a project
+
+Options:
+  --project <ref>  Project name or id:xxx
+  --limit <n>      Limit number of results (default: 300)
+  --all            Fetch all results (no limit)
+  --json           Output as JSON
+  --ndjson         Output as newline-delimited JSON
+  --full           Include all fields in JSON output
+  --show-urls      Show web app URLs for each section
+  -h, --help       display help for command
+
+
+## td section create
+Usage: td section create [options]
+
+Create a section
+
+Options:
+  --name <name>     Section name (required)
+  --project <name>  Project name or id:xxx (required)
+  -h, --help        display help for command
+
+
+## td section delete
+Usage: td section delete [options] [id]
+
+Delete a section
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td section update
+Usage: td section update [options] [id]
+
+Update a section
+
+Options:
+  --name <name>  New section name (required)
+  -h, --help     display help for command
+
+
+## td section browse
+Usage: td section browse [options] [id]
+
+Open section in browser (requires id:xxx)
+
+Options:
+  -h, --help  display help for command
+
+
+## td workspace list
+Usage: td workspace list [options]
+
+List all workspaces
+
+Options:
+  --json      Output as JSON
+  --ndjson    Output as newline-delimited JSON
+  --full      Include all fields in JSON output
+  -h, --help  display help for command
+
+
+## td workspace view
+Usage: td workspace view [options] [ref]
+
+View workspace details
+
+Options:
+  -h, --help  display help for command
+
+
+## td workspace projects
+Usage: td workspace projects [options] [ref]
+
+List projects in a workspace
+
+Options:
+  --workspace <ref>  Workspace name or id:xxx
+  --limit <n>        Limit number of results
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  -h, --help         display help for command
+
+
+## td workspace users
+Usage: td workspace users [options] [ref]
+
+List users in a workspace
+
+Options:
+  --workspace <ref>  Workspace name or id:xxx
+  --role <roles>     Filter by role (comma-separated: ADMIN,MEMBER,GUEST)
+                     (choices: "ADMIN", "MEMBER", "GUEST")
+  --limit <n>        Limit number of results
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  -h, --help         display help for command
+
+
+## td reminder list
+Usage: td reminder list [options] [task]
+
+List reminders for a task
+
+Options:
+  --task <ref>  Task reference (name or id:xxx)
+  --json        Output as JSON
+  --ndjson      Output as newline-delimited JSON
+  --full        Include all fields in JSON output
+  -h, --help    display help for command
+
+
+## td reminder add
+Usage: td reminder add [options] [task]
+
+Add a reminder to a task
+
+Options:
+  --task <ref>         Task reference (name or id:xxx)
+  --before <duration>  Time before due (e.g., 30m, 1h)
+  --at <datetime>      Specific time (e.g., 2024-01-15 10:00)
+  -h, --help           display help for command
+
+
+## td reminder update
+Usage: td reminder update [options] [id]
+
+Update a reminder
+
+Options:
+  --before <duration>  Time before due (e.g., 30m, 1h)
+  --at <datetime>      Specific time (e.g., 2024-01-15 10:00)
+  -h, --help           display help for command
+
+
+## td reminder delete
+Usage: td reminder delete [options] [id]
+
+Delete a reminder
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td settings view
+Usage: td settings view [options]
+
+View current settings
+
+Options:
+  --json      Output as JSON
+  -h, --help  display help for command
+
+
+## td settings update
+Usage: td settings update [options]
+
+Update settings
+
+Options:
+  --timezone <tz>                   Timezone (e.g., UTC, Europe/London)
+  --time-format <format>            Time format: 12 or 24 (choices: "12", "24",
+                                    "12h", "24h")
+  --date-format <format>            Date format: us (MM-DD) or intl (DD-MM)
+                                    (choices: "us", "mm-dd-yyyy", "mdy", "intl",
+                                    "dd-mm-yyyy", "dmy")
+  --start-day <day>                 Week start: monday, tuesday, etc. (choices:
+                                    "monday", "mon", "tuesday", "tue",
+                                    "wednesday", "wed", "thursday", "thu",
+                                    "friday", "fri", "saturday", "sat",
+                                    "sunday", "sun")
+  --theme <name>                    Theme: todoist, dark, moonstone, tangerine,
+                                    etc. (choices: "todoist", "dark",
+                                    "moonstone", "tangerine", "kale",
+                                    "blueberry", "lavender", "raspberry")
+  --auto-reminder <min>             Default reminder minutes (0 to disable)
+  --next-week <day>                 "Next week" day: monday, tuesday, etc.
+                                    (choices: "monday", "mon", "tuesday", "tue",
+                                    "wednesday", "wed", "thursday", "thu",
+                                    "friday", "fri", "saturday", "sat",
+                                    "sunday", "sun")
+  --start-page <page>               Default view: inbox, today, or project URL
+  --reminder-push <bool>            Push reminders: on/off (choices: "on",
+                                    "off", "true", "false", "yes", "no", "1",
+                                    "0")
+  --reminder-desktop <bool>         Desktop reminders: on/off (choices: "on",
+                                    "off", "true", "false", "yes", "no", "1",
+                                    "0")
+  --reminder-email <bool>           Email reminders: on/off (choices: "on",
+                                    "off", "true", "false", "yes", "no", "1",
+                                    "0")
+  --completed-sound-desktop <bool>  Desktop completion sound: on/off (choices:
+                                    "on", "off", "true", "false", "yes", "no",
+                                    "1", "0")
+  --completed-sound-mobile <bool>   Mobile completion sound: on/off (choices:
+                                    "on", "off", "true", "false", "yes", "no",
+                                    "1", "0")
+  -h, --help                        display help for command
+
+
+## td settings themes
+Usage: td settings themes [options]
+
+List available themes
+
+Options:
+  -h, --help  display help for command
+
+
+## td auth login
+Usage: td auth login [options]
+
+Authenticate with Todoist via OAuth
+
+Options:
+  -h, --help  display help for command
+
+
+## td auth token
+Usage: td auth token [options] [token]
+
+Save API token to config file (manual authentication)
+
+Options:
+  -h, --help  display help for command
+
+
+## td auth status
+Usage: td auth status [options]
+
+Show current authentication status
+
+Options:
+  -h, --help  display help for command
+
+
+## td auth logout
+Usage: td auth logout [options]
+
+Remove saved authentication token
+
+Options:
+  -h, --help  display help for command
+
+
+## td stats goals
+Usage: td stats goals [options]
+
+Update daily/weekly goals
+
+Options:
+  --daily <n>   Set daily goal (tasks per day)
+  --weekly <n>  Set weekly goal (tasks per week)
+  -h, --help    display help for command
+
+
+## td stats vacation
+Usage: td stats vacation [options]
+
+Toggle vacation mode
+
+Options:
+  --on        Enable vacation mode
+  --off       Disable vacation mode
+  -h, --help  display help for command
+
+
+## td filter list
+Usage: td filter list [options]
+
+List all filters
+
+Options:
+  --json       Output as JSON
+  --ndjson     Output as newline-delimited JSON
+  --full       Include all fields in JSON output
+  --show-urls  Show web app URLs for each filter
+  -h, --help   display help for command
+
+
+## td filter create
+Usage: td filter create [options]
+
+Create a filter
+
+Options:
+  --name <name>    Filter name (required)
+  --query <query>  Filter query (required, e.g., "today | overdue")
+  --color <color>  Filter color
+  --favorite       Mark as favorite
+  -h, --help       display help for command
+
+
+## td filter delete
+Usage: td filter delete [options] [ref]
+
+Delete a filter
+
+Options:
+  --yes       Confirm deletion
+  -h, --help  display help for command
+
+
+## td filter update
+Usage: td filter update [options] [ref]
+
+Update a filter
+
+Options:
+  --name <name>    New name
+  --query <query>  New query
+  --color <color>  New color
+  --favorite       Mark as favorite
+  --no-favorite    Remove from favorites
+  -h, --help       display help for command
+
+
+## td filter show
+Usage: td filter show [options] [ref]
+
+Show tasks matching a filter
+
+Options:
+  --limit <n>        Limit number of results (default: 300)
+  --cursor <cursor>  Continue from cursor
+  --all              Fetch all results (no limit)
+  --json             Output as JSON
+  --ndjson           Output as newline-delimited JSON
+  --full             Include all fields in JSON output
+  --show-urls        Show web app URLs for each task
+  -h, --help         display help for command
+
+
+## td filter browse
+Usage: td filter browse [options] [ref]
+
+Open filter in browser
+
+Options:
+  -h, --help  display help for command
+
+
+## td notification list
+Usage: td notification list [options]
+
+List notifications
+
+Options:
+  --type <types>  Filter by type (comma-separated)
+  --unread        Only show unread notifications
+  --read          Only show read notifications
+  --limit <n>     Max notifications to show (default: 10)
+  --offset <n>    Skip first N notifications
+  --json          Output as JSON
+  --ndjson        Output as newline-delimited JSON
+  --full          Include all fields in JSON output
+  -h, --help      display help for command
+
+
+## td notification view
+Usage: td notification view [options] [id]
+
+View notification details
+
+Options:
+  --json      Output as JSON
+  -h, --help  display help for command
+
+
+## td notification accept
+Usage: td notification accept [options] [id]
+
+Accept a share invitation
+
+Options:
+  -h, --help  display help for command
+
+
+## td notification reject
+Usage: td notification reject [options] [id]
+
+Reject a share invitation
+
+Options:
+  -h, --help  display help for command
+
+
+## td notification read
+Usage: td notification read [options] [id]
+
+Mark notification(s) as read
+
+Options:
+  --all       Mark all notifications as read
+  --yes       Confirm marking all as read
+  -h, --help  display help for command
+
+
+## td notification unread
+Usage: td notification unread [options] [id]
+
+Mark notification as unread
+
+Options:
+  -h, --help  display help for command
+
+
+## td skill install
+Usage: td skill install [options] [agent]
+
+Install skill for a coding agent
+
+Options:
+  --local     Install in current project instead of global
+  --force     Overwrite existing skill file
+  -h, --help  display help for command
+
+
+## td skill update
+Usage: td skill update [options] [agent]
+
+Update installed skill to latest version
+
+Options:
+  --local     Update in current project instead of global
+  -h, --help  display help for command
+
+
+## td skill uninstall
+Usage: td skill uninstall [options] [agent]
+
+Uninstall skill for a coding agent
+
+Options:
+  --local     Remove from current project instead of global
+  -h, --help  display help for command
+
+
+## td skill list
+Usage: td skill list [options]
+
+List supported agents and install status
+
+Options:
+  -h, --help  display help for command
+
+
+## td completion install
+Usage: td completion install [options] [shell]
+
+Install shell completions (bash, zsh, fish)
+
+Options:
+  -h, --help  display help for command
+
+
+## td completion uninstall
+Usage: td completion uninstall [options]
+
+Remove shell completions
+
+Options:
+  -h, --help  display help for command
