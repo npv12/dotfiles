@@ -223,7 +223,7 @@ if ! command -v mkvenv &> /dev/null; then
         fi
         cat <<EOF > mise.toml
 [tools]
-python = "3.11"
+python = "3.13"
 uv = "latest"
 
 [env._.python.venv]
