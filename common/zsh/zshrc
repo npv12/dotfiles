@@ -1,4 +1,11 @@
 export ZSH_DIR="${ZDOTDIR}/.config/zsh"
+
+# Initialize benchmark module if profiling enabled
+if [[ "${ZSH_PROFILE:-}" == "1" ]]; then
+    source "$ZSH_DIR/modules/benchmark/functions.zsh"
+    _benchmark_init
+fi
+
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no'
@@ -76,3 +83,8 @@ setopt correct_all
 
 zsh_add_file "controller"
 z4h source "$ZSH_DIR/p10k.zsh"
+
+# Display benchmark results if profiling enabled
+if [[ "${ZSH_PROFILE:-}" == "1" ]]; then
+    _benchmark_report
+fi
