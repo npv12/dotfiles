@@ -82,7 +82,7 @@ _benchmark_report() {
     printf "${PURPLE}${BOLD}  ⚙  ZSH Startup Profile${RESET}\n"
     printf "${PURPLE}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}\n\n"
 
-    printf "  ${final_color}${BOLD}${final_icon} ${final_rating}${RESET}  ${GRAY}│${RESET}  ${BOLD}%.2fms${RESET}\n" "$final_ms"
+    printf "  ${ready_color}${BOLD}${final_icon} ${ready_rating}${RESET}  ${GRAY}│${RESET}  ${BOLD}%.2fms${RESET}\n" "$ready_ms"
     printf "  ${DIM}ready:${RESET} ${ready_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}defer:${RESET} ${defer_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}final:${RESET} ${final_color}%s${RESET} ${CYAN}%.2fms${RESET}\n\n" "$ready_rating" "$ready_ms" "$defer_rating" "$defer_ms" "$final_rating" "$final_ms"
 
     printf "  ${GRAY}${BOLD}TOP FUNCTIONS${RESET}${GRAY} (by execution time)${RESET}\n\n"
