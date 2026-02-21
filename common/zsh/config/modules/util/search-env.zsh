@@ -16,36 +16,73 @@ function SearchEnv() {
         use_fzf=1
     fi
 
-    local print_env() {
-        local name_width=25
-        local prefix_total=2 + name_width + 4
-        local available_width=$((cols - prefix_total - 2))
-
-        while IFS='=' read -r name value; do
-            printf "  %s%-25s%s %s::%s %s" "${BOLD}${BLUE}" "$name" "$RESET" "$DIM" "$RESET" "${GREEN}"
-
-            if [[ ${#value} -le $available_width ]]; then
-                print -r -- "$value${RESET}"
-            else
-                print -r -- "${value:0:$available_width}${RESET}"
-                local remaining="${value:$available_width}"
-                while [[ ${#remaining} -gt 0 ]]; do
-                    printf "  %25s    %s%s%s\n" "" "${GREEN}" "${remaining:0:$available_width}" "$RESET"
-                    remaining="${remaining:$available_width}"
-                done
-            fi
-        done
-    }
-
     if (( use_fzf )); then
-        printenv | sort | print_env | fzf --ansi --layout=reverse --height=100% \
+        printenv | sort | awk -v C_NAME="${BOLD}${BLUE}" \
+                                   -v C_EQ="${DIM}" \
+                                   -v C_VAL="${GREEN}" \
+                                   -v C_RST="${RESET}" \
+                                   -v TERM_WIDTH="$cols" \
+        '
+        {
+            idx = index($0, "=")
+            if (idx == 0) next
+
+            name = substr($0, 1, idx - 1)
+            val  = substr($0, idx + 1)
+
+            name_width = 25
+            prefix_total = 2 + name_width + 4
+            available_width = TERM_WIDTH - prefix_total - 2
+
+            printf "  %s%-25s%s %s::%s %s", C_NAME, name, C_RST, C_EQ, C_RST, C_VAL
+
+            if (length(val) <= available_width) {
+                print val C_RST
+            } else {
+                print substr(val, 1, available_width) C_RST
+                remaining = substr(val, available_width + 1)
+                while (length(remaining) > 0) {
+                    printf "  %25s    %s%s%s\n", "", C_VAL, substr(remaining, 1, available_width), C_RST
+                    remaining = substr(remaining, available_width + 1)
+                }
+            }
+        }' | fzf --ansi --layout=reverse --height=100% \
             --prompt="Search env > " \
             --preview="echo {}" \
             --preview-window=hidden \
             --bind="enter:abort" \
             --header="${YELLOW}Environment Variables${RESET}"
     else
-        printenv | sort | print_env | less -RFX
+        printenv | sort | awk -v C_NAME="${BOLD}${BLUE}" \
+                                   -v C_EQ="${DIM}" \
+                                   -v C_VAL="${GREEN}" \
+                                   -v C_RST="${RESET}" \
+                                   -v TERM_WIDTH="$cols" \
+        '
+        {
+            idx = index($0, "=")
+            if (idx == 0) next
+
+            name = substr($0, 1, idx - 1)
+            val  = substr($0, idx + 1)
+
+            name_width = 25
+            prefix_total = 2 + name_width + 4
+            available_width = TERM_WIDTH - prefix_total - 2
+
+            printf "  %s%-25s%s %s::%s %s", C_NAME, name, C_RST, C_EQ, C_RST, C_VAL
+
+            if (length(val) <= available_width) {
+                print val C_RST
+            } else {
+                print substr(val, 1, available_width) C_RST
+                remaining = substr(val, available_width + 1)
+                while (length(remaining) > 0) {
+                    printf "  %25s    %s%s%s\n", "", C_VAL, substr(remaining, 1, available_width), C_RST
+                    remaining = substr(remaining, available_width + 1)
+                }
+            }
+        }' | less -RFX
     fi
 }
 
@@ -56,6 +93,6 @@ function env() {
     if [[ $# -gt 0 ]]; then
         command env "$@"
     else
-        command env | SearchEnv
+        SearchEnv
     fi
 }
