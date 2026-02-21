@@ -83,6 +83,11 @@ function gitstatus() {
         exit 1
     fi
 
+    if (( ! $+commands[fzf] )) || (( $# > 0 )); then
+        command git status "$@"
+        return
+    fi
+
     local RESET='\e[0m'
     local BLUE='\e[34m'
     local GREEN='\e[32m'
@@ -142,7 +147,15 @@ function gitstatus() {
         done
     fi
 
-    local total=$(( $(echo "$staged" | wc -l | tr -d ' ') + $(echo "$unstaged" | wc -l | tr -d ' ') + $(echo "$untracked" | wc -l | tr -d ' ') ))
+    local staged_count=0
+    local unstaged_count=0
+    local untracked_count=0
+
+    [[ -n "$staged" ]] && staged_count=$(printf "%s\n" "$staged" | wc -l | tr -d ' ')
+    [[ -n "$unstaged" ]] && unstaged_count=$(printf "%s\n" "$unstaged" | wc -l | tr -d ' ')
+    [[ -n "$untracked" ]] && untracked_count=$(printf "%s\n" "$untracked" | wc -l | tr -d ' ')
+
+    local total=$(( staged_count + unstaged_count + untracked_count ))
     if [[ "$total" -eq 0 ]]; then
         print -f "    ${GREEN}${RESET}  ${DIM}Working tree clean.${RESET}\n"
     else
@@ -157,7 +170,7 @@ function gitlog() {
         exit 1
     fi
 
-    if (( ! $+commands[fzf] )); then
+    if (( ! $+commands[fzf] )) || (( $# > 0 )); then
         command git log "$@"
         return
     fi
@@ -179,18 +192,18 @@ function gitlog() {
     local color_pipe="%C(dim)"
     local reset="%C(reset)"
 
-    local fmt="${color_hash}%h${reset} ${color_pipe}│${reset} ${color_date}%<(14,trunc)%ar${reset} ${color_pipe}│${reset} ${color_auth}%<(15,trunc)%an${reset} ${color_pipe}│${reset}%C(auto)%d${reset} %s"
+    local fmt="${color_hash}%h${reset} ${color_pipe}│${reset} %<(40,trunc)%s ${color_pipe}│${reset} ${color_date}%<(14,trunc)%ar${reset} ${color_pipe}│${reset} ${color_auth}%<(18,trunc)%an${reset}"
 
     local get_hash="grep -oE '[a-f0-9]{7,}' | head -1"
 
-    HEADERS=$'\033[1;4;31mHash\033[0m       \033[1;4;31mAge\033[0m              \033[1;4;31mAuthor\033[0m            \033[1;4;31mMessage\033[0m\n'
+    HEADERS=$'\033[1;4;31mHash\033[0m       \033[1;4;31mMessage\033[0m                                    \033[1;4;31mAge\033[0m               \033[1;4;31mAuthor\033[0m\n'
     KEYS=$'\033[1;33m• Enter:\033[0m  View      \033[1;33m• Ctrl-Y:\033[0m Copy Hash \n\033[1;33m• Ctrl-X:\033[0m Copy Msg  \033[1;33m• Ctrl-O:\033[0m Checkout\n\n'
 
     git log --graph --color=always --format="$fmt" "$@" | \
     fzf --ansi --no-sort --reverse --tiebreak=index \
         --height=100% --border --layout=reverse --info=inline \
         --header="${KEYS}${HEADERS}" \
-        --preview-window=right:60%:wrap \
+        --preview-window=right:42%:wrap \
         --preview "print {} | $get_hash | xargs -I % git show --color=always %" \
         --bind "enter:execute(print {} | $get_hash | xargs -I % sh -c 'git show --color=always % | less -R')" \
         --bind "ctrl-y:execute-silent(print {} | $get_hash | tr -d '\n' | $copy_cmd)+abort" \
