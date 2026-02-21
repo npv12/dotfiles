@@ -79,8 +79,8 @@ EOF
 
 function gitstatus() {
     if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        print "\e[31m\e[? Not a git repository.\e[0m"
-        exit 1
+        print "\e[31m Not a git repository.\e[0m"
+        return 1
     fi
 
     if (( ! $+commands[fzf] )) || (( $# > 0 )); then
@@ -97,81 +97,191 @@ function gitstatus() {
     local CYAN='\e[36m'
     local DIM='\e[2m'
     local BOLD='\e[1m'
+    local BRIGHT_GREEN='\e[92m'
+    local BRIGHT_YELLOW='\e[93m'
+    local BRIGHT_BLUE='\e[94m'
+    local BRIGHT_RED='\e[91m'
 
-    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    local remote=$(git remote 2>/dev/null | head -n1)
-    local ahead behind
-    eval "$(git rev-list --left-right --count HEAD...origin/$branch 2>/dev/null | awk '{print "ahead="$1"; behind="$2}')"
+    local ICON_BRANCH=$'\ue0a0'
+    local ICON_REMOTE=$'\uf02b'
+    local ICON_AHEAD=$'\uf062'
+    local ICON_BEHIND=$'\uf063'
+    local ICON_SYNC=$'\uf00c'
+    local ICON_STAGED=$'\uf00c'
+    local ICON_UNSTAGED=$'\uf040'
+    local ICON_UNTRACKED=$'\uf128'
+    local ICON_CONFLICT=$'\uf00d'
+    local ICON_FILE_ADDED=$'\uf067'
+    local ICON_FILE_MODIFIED=$'\uf044'
+    local ICON_FILE_DELETED=$'\uf068'
+    local ICON_FILE_RENAMED=$'\uf074'
+    local ICON_FILE_COPIED=$'\uf0c5'
+    local ICON_FILE_UNTRACKED=$'\uf128'
+    local ICON_FILE_CONFLICT=$'\uf12a'
 
-    print -f "\n${MAGENTA}${BOLD} %s${RESET}" "$branch"
-    if [[ -n "$remote" ]]; then
-        [[ "$ahead" -gt 0 ]] && print -n " ${GREEN}⇡$ahead${RESET}"
-        [[ "$behind" -gt 0 ]] && print -n " ${RED}⇣$behind${RESET}"
-    fi
-    print -f "\n${DIM}────────────────────────────────────────────${RESET}\n"
+    local branch upstream
+    branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null)
+    [[ -z "$branch" ]] && branch=$(git rev-parse --short HEAD 2>/dev/null)
+    upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)
 
-    local staged unstaged untracked conflicts
-    staged=$(git diff --cached --name-status 2>/dev/null)
-    unstaged=$(git diff --name-status 2>/dev/null | grep -v "^$" | comm -13 <(echo "$staged" | sort) <(git diff --name-status 2>/dev/null | sort))
-    untracked=$(git ls-files --others --exclude-standard 2>/dev/null)
-    conflicts=$(git diff --name-only --diff-filter=U 2>/dev/null)
-
-    if [[ -n "$conflicts" ]]; then
-        print -f "${RED}${BOLD} Conflicts (${RESET}$(echo "$conflicts" | wc -l | tr -d ' ')${RED})${RESET}\n"
-        echo "$conflicts" | while read -r file; do
-            print -f "  ${RED}✖${RESET}  %s\n" "$file"
-        done
-    fi
-
-    if [[ -n "$staged" ]]; then
-        print -f "${GREEN}${BOLD} Staged (${RESET}$(echo "$staged" | wc -l | tr -d ' ')${GREEN})${RESET}\n"
-        echo "$staged" | while read -r st file; do
-            case "$st" in
-                A|M) icon=""; color="$GREEN" ;;
-                D)   icon=""; color="$RED" ;;
-                U*|AA|DD|AU|UA|DU|UD) icon="✖"; color="$RED" ;;
-                R)   icon=""; color="$MAGENTA" ;;
-                C)   icon=""; color="$MAGENTA" ;;
-                *)   icon=""; color="$GREEN" ;;
-            esac
-            print -f "  ${color}${icon}${RESET}  %s\n" "$file"
-        done
+    local ahead=0
+    local behind=0
+    if [[ -n "$upstream" ]]; then
+        local ahead_behind
+        ahead_behind=$(git rev-list --left-right --count "HEAD...$upstream" 2>/dev/null)
+        if [[ -n "$ahead_behind" ]]; then
+            ahead=${ahead_behind%%[[:space:]]*}
+            behind=${ahead_behind##*[[:space:]]}
+        fi
     fi
 
-    if [[ -n "$unstaged" ]]; then
-        print -f "\n${YELLOW}${BOLD} Unstaged (${RESET}$(echo "$unstaged" | wc -l | tr -d ' ')${YELLOW})${RESET}\n"
-        echo "$unstaged" | while read -r st file; do
-            case "$st" in
-                U*|AA|DD|AU|UA|DU|UD) icon="✖"; color="$RED" ;;
-                D) icon=""; color="$RED" ;;
-                *) icon=""; color="$YELLOW" ;;
-            esac
-            print -f "  ${color}${icon}${RESET}  %s\n" "$file"
-        done
-    fi
+    local porcelain
+    porcelain=$(git status --porcelain=v1 2>/dev/null)
 
-    if [[ -n "$untracked" ]]; then
-        print -f "\n${CYAN}${BOLD} Untracked (${RESET}$(echo "$untracked" | wc -l | tr -d ' ')${CYAN})${RESET}\n"
-        echo "$untracked" | while read -r file; do
-            print -f "  ${CYAN}${RESET}  %s\n" "$file"
-        done
-    fi
+    local -a staged_lines
+    local -a unstaged_lines
+    local -a untracked_lines
+    local -a conflict_lines
+    local line x y xy
 
-    local staged_count=0
-    local unstaged_count=0
-    local untracked_count=0
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        x=${line[1,1]}
+        y=${line[2,2]}
+        xy="$x$y"
 
-    [[ -n "$staged" ]] && staged_count=$(printf "%s\n" "$staged" | wc -l | tr -d ' ')
-    [[ -n "$unstaged" ]] && unstaged_count=$(printf "%s\n" "$unstaged" | wc -l | tr -d ' ')
-    [[ -n "$untracked" ]] && untracked_count=$(printf "%s\n" "$untracked" | wc -l | tr -d ' ')
+        if [[ "$xy" == "??" ]]; then
+            untracked_lines+=("$line")
+            continue
+        fi
 
+        if [[ "$xy" == "AA" || "$xy" == "DD" || "$x" == "U" || "$y" == "U" ]]; then
+            conflict_lines+=("$line")
+        fi
+
+        [[ "$x" != " " ]] && staged_lines+=("$line")
+        [[ "$y" != " " ]] && unstaged_lines+=("$line")
+    done <<< "$porcelain"
+
+    local staged_count=${#staged_lines[@]}
+    local unstaged_count=${#unstaged_lines[@]}
+    local untracked_count=${#untracked_lines[@]}
+    local conflict_count=${#conflict_lines[@]}
     local total=$(( staged_count + unstaged_count + untracked_count ))
-    if [[ "$total" -eq 0 ]]; then
-        print -f "    ${GREEN}${RESET}  ${DIM}Working tree clean.${RESET}\n"
-    else
-        print -f "\n${DIM}(%d files changed)${RESET}\n" "$total"
-    fi
+
+    local box_width=54
+
     print ""
+    print -f "${CYAN}${BOLD}╭──────────────────────────────────────────────────────╮${RESET}\n"
+
+    # Calculate padding: box is 54 wide, borders are 2 chars, we want 2 spaces padding on each side
+    # So content area is 54 - 2 - 4 = 48 characters
+    local content_width=52
+    local left_pad="  "
+    local right_pad=""
+
+    # Branch line
+    local branch_content="${ICON_BRANCH}  ${branch}"
+    local branch_padding=$((content_width - ${#branch_content}))
+    printf -v right_pad '%*s' "$branch_padding" ''
+    print -f "${CYAN}${BOLD}│${RESET}${left_pad}${CYAN}${ICON_BRANCH}${RESET}  ${BOLD}%s${RESET}%s${CYAN}${BOLD}│${RESET}\n" "$branch" "$right_pad"
+
+    if [[ -n "$upstream" ]]; then
+        local sync_status=""
+        local sync_icon="$ICON_SYNC"
+        local sync_color="$GREEN"
+
+        if (( ahead > 0 && behind > 0 )); then
+            sync_status="diverged"
+            sync_icon="$ICON_CONFLICT"
+            sync_color="$RED"
+        elif (( ahead > 0 )); then
+            sync_status="ahead $ahead"
+            sync_icon="$ICON_AHEAD"
+            sync_color="$YELLOW"
+        elif (( behind > 0 )); then
+            sync_status="behind $behind"
+            sync_icon="$ICON_BEHIND"
+            sync_color="$RED"
+        else
+            sync_status="in sync"
+        fi
+
+        local remote_content="${ICON_REMOTE}  ${upstream}  ${sync_icon} ${sync_status}"
+        local remote_padding=$((content_width - ${#remote_content}))
+        printf -v right_pad '%*s' "$remote_padding" ''
+        print -f "${CYAN}${BOLD}│${RESET}${left_pad}${DIM}${ICON_REMOTE}${RESET}  ${DIM}%s${RESET}  ${sync_color}%s${RESET} %s%s${CYAN}${BOLD}│${RESET}\n" "$upstream" "$sync_icon" "$sync_status" "$right_pad"
+    else
+        local no_upstream_content="${ICON_REMOTE}  no upstream configured"
+        local no_upstream_padding=$((content_width - ${#no_upstream_content}))
+        printf -v right_pad '%*s' "$no_upstream_padding" ''
+        print -f "${CYAN}${BOLD}│${RESET}${left_pad}${DIM}${ICON_REMOTE}${RESET}  ${DIM}no upstream configured${RESET}%s${CYAN}${BOLD}│${RESET}\n" "$right_pad"
+    fi
+
+    print -f "${CYAN}${BOLD}╰──────────────────────────────────────────────────────╯${RESET}\n"
+    print ""
+
+    local icon status_code path color section_icon
+
+    if (( conflict_count > 0 )); then
+        print -f "  ${BRIGHT_RED}${BOLD}${ICON_CONFLICT}${RESET} ${BOLD}CONFLICTS${RESET} ${DIM}(%d)${RESET}\n" "$conflict_count"
+        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
+        for line in "${conflict_lines[@]}"; do
+            path=${line[4,-1]}
+            print -f "    ${BRIGHT_RED}${ICON_FILE_CONFLICT}${RESET}  %s\n" "$path"
+        done
+        print ""
+    fi
+
+    if (( staged_count > 0 )); then
+        print -f "  ${BRIGHT_GREEN}${BOLD}${ICON_STAGED}${RESET} ${BOLD}STAGED${RESET} ${DIM}(%d)${RESET}\n" "$staged_count"
+        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
+        for line in "${staged_lines[@]}"; do
+            status_code=${line[1,1]}
+            path=${line[4,-1]}
+            case "$status_code" in
+                A) icon="$ICON_FILE_ADDED"; color="$BRIGHT_GREEN" ;;
+                M) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_GREEN" ;;
+                D) icon="$ICON_FILE_DELETED"; color="$BRIGHT_RED" ;;
+                R) icon="$ICON_FILE_RENAMED"; color="$MAGENTA" ;;
+                C) icon="$ICON_FILE_COPIED"; color="$MAGENTA" ;;
+                *) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_GREEN" ;;
+            esac
+            print -f "    ${color}%s${RESET}  %s\n" "$icon" "$path"
+        done
+        print ""
+    fi
+
+    if (( unstaged_count > 0 )); then
+        print -f "  ${BRIGHT_YELLOW}${BOLD}${ICON_UNSTAGED}${RESET} ${BOLD}UNSTAGED${RESET} ${DIM}(%d)${RESET}\n" "$unstaged_count"
+        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
+        for line in "${unstaged_lines[@]}"; do
+            status_code=${line[2,2]}
+            path=${line[4,-1]}
+            case "$status_code" in
+                M) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_YELLOW" ;;
+                D) icon="$ICON_FILE_DELETED"; color="$BRIGHT_RED" ;;
+                *) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_YELLOW" ;;
+            esac
+            print -f "    ${color}%s${RESET}  %s\n" "$icon" "$path"
+        done
+        print ""
+    fi
+
+    if (( untracked_count > 0 )); then
+        print -f "  ${BRIGHT_BLUE}${BOLD}${ICON_UNTRACKED}${RESET} ${BOLD}UNTRACKED${RESET} ${DIM}(%d)${RESET}\n" "$untracked_count"
+        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
+        for line in "${untracked_lines[@]}"; do
+            path=${line[4,-1]}
+            print -f "    ${BRIGHT_BLUE}${ICON_FILE_UNTRACKED}${RESET}  %s\n" "$path"
+        done
+        print ""
+    fi
+
+    if (( total == 0 )); then
+        print -f "  ${BRIGHT_GREEN}${BOLD}${ICON_SYNC}${RESET} ${BOLD}Working tree clean${RESET}\n"
+        print ""
+    fi
 }
 
 function gitlog() {
