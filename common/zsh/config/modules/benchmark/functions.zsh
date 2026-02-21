@@ -85,7 +85,8 @@ _benchmark_report() {
     printf "  ${ready_color}${BOLD}${final_icon} ${ready_rating}${RESET}  ${GRAY}│${RESET}  ${BOLD}%.2fms${RESET}\n" "$ready_ms"
     printf "  ${DIM}ready:${RESET} ${ready_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}defer:${RESET} ${defer_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}final:${RESET} ${final_color}%s${RESET} ${CYAN}%.2fms${RESET}\n\n" "$ready_rating" "$ready_ms" "$defer_rating" "$defer_ms" "$final_rating" "$final_ms"
 
-    printf "  ${GRAY}${BOLD}TOP FUNCTIONS${RESET}${GRAY} (by execution time)${RESET}\n\n"
+    printf "  ${GRAY}${BOLD}FUNCTION                         CALLS      TIME   SHARE  GRAPH${RESET}\n"
+    printf "  ${DIM}────────────────────────────────────────────────────────────────────${RESET}\n"
 
     zprof | awk -v C_NAME="${BLUE}" \
                 -v C_TIME="${CYAN}" \
@@ -109,7 +110,7 @@ _benchmark_report() {
         percent = $5 + 0
 
         if (length(fn_name) > 32) {
-            fn_name = substr(fn_name, 1, 30) "…"
+            fn_name = substr(fn_name, 1, 29) "..."
         }
 
         bar_len = int((percent / 100) * max_width)
@@ -123,9 +124,8 @@ _benchmark_report() {
         bar = ""
         for(i=0; i<bar_len; i++) bar = bar "▪"
 
-        printf "  %s%-32s%s %s%7.2fms%s %s%5.1f%%%s\n",
-            C_NAME, fn_name, C_RESET, C_TIME, time_ms, C_RESET, C_PERCENT, percent, C_RESET
-        printf "  %s%s%s\n\n", bar_color, bar, C_RESET
+        printf "  %s%-32s%s %s%5d%s %s%9.2fms%s %s%6.1f%%%s  %s%s%s\n",
+            C_NAME, fn_name, C_RESET, C_DIM, calls, C_RESET, C_TIME, time_ms, C_RESET, C_PERCENT, percent, C_RESET, bar_color, bar, C_RESET
     }'
 
     printf "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"

@@ -110,10 +110,18 @@ function gitstatus() {
     fi
     print -f "\n${DIM}────────────────────────────────────────────${RESET}\n"
 
-    local staged unstaged untracked
+    local staged unstaged untracked conflicts
     staged=$(git diff --cached --name-status 2>/dev/null)
     unstaged=$(git diff --name-status 2>/dev/null | grep -v "^$" | comm -13 <(echo "$staged" | sort) <(git diff --name-status 2>/dev/null | sort))
     untracked=$(git ls-files --others --exclude-standard 2>/dev/null)
+    conflicts=$(git diff --name-only --diff-filter=U 2>/dev/null)
+
+    if [[ -n "$conflicts" ]]; then
+        print -f "${RED}${BOLD} Conflicts (${RESET}$(echo "$conflicts" | wc -l | tr -d ' ')${RED})${RESET}\n"
+        echo "$conflicts" | while read -r file; do
+            print -f "  ${RED}✖${RESET}  %s\n" "$file"
+        done
+    fi
 
     if [[ -n "$staged" ]]; then
         print -f "${GREEN}${BOLD} Staged (${RESET}$(echo "$staged" | wc -l | tr -d ' ')${GREEN})${RESET}\n"
@@ -121,6 +129,7 @@ function gitstatus() {
             case "$st" in
                 A|M) icon=""; color="$GREEN" ;;
                 D)   icon=""; color="$RED" ;;
+                U*|AA|DD|AU|UA|DU|UD) icon="✖"; color="$RED" ;;
                 R)   icon=""; color="$MAGENTA" ;;
                 C)   icon=""; color="$MAGENTA" ;;
                 *)   icon=""; color="$GREEN" ;;
@@ -133,6 +142,7 @@ function gitstatus() {
         print -f "\n${YELLOW}${BOLD} Unstaged (${RESET}$(echo "$unstaged" | wc -l | tr -d ' ')${YELLOW})${RESET}\n"
         echo "$unstaged" | while read -r st file; do
             case "$st" in
+                U*|AA|DD|AU|UA|DU|UD) icon="✖"; color="$RED" ;;
                 D) icon=""; color="$RED" ;;
                 *) icon=""; color="$YELLOW" ;;
             esac
