@@ -133,8 +133,8 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt correct_all
 
+z4h source "$ZSH_DIR/p10k.zsh"
 zsh_defer_add 'zsh_add_file "controller"'
-zsh_defer_add 'z4h source "$ZSH_DIR/p10k.zsh"'
 
 # Display benchmark results if profiling enabled
 if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
