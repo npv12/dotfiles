@@ -1,21 +1,37 @@
 #!/bin/zsh
 
-# Initialize profiling if ZSH_PROFILE is set
+# Initialize profiling if ZSH_BENCHMARK is set
 _benchmark_init() {
-    if [[ "${ZSH_PROFILE:-}" == "1" ]]; then
+    if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
         zmodload zsh/zprof 2>/dev/null
-        typeset -g ZSH_PROFILE_START=$EPOCHREALTIME
+        typeset -g ZSH_BENCHMARK_START=$EPOCHREALTIME
+        typeset -g ZSH_BENCHMARK_READY_MS=""
+        typeset -g ZSH_BENCHMARK_DEFER_MS="0"
     fi
+}
+
+_benchmark_set_ready_time() {
+    [[ "${ZSH_BENCHMARK:-}" == "1" ]] || return 0
+    typeset -g ZSH_BENCHMARK_READY_MS="$1"
+}
+
+_benchmark_add_defer_time() {
+    [[ "${ZSH_BENCHMARK:-}" == "1" ]] || return 0
+    local delta_ms="${1:-0}"
+    typeset -g ZSH_BENCHMARK_DEFER_MS=$(( ${ZSH_BENCHMARK_DEFER_MS:-0} + delta_ms ))
 }
 
 # Display profiling results
 _benchmark_report() {
-    if [[ "${ZSH_PROFILE:-}" != "1" ]] || [[ -z "$ZSH_PROFILE_START" ]]; then
+    if [[ "${ZSH_BENCHMARK:-}" != "1" ]] || [[ -z "$ZSH_BENCHMARK_START" ]]; then
         return
     fi
 
     local end_time=$EPOCHREALTIME
-    local duration=$(( (end_time - ZSH_PROFILE_START) * 1000 ))
+    local duration=$(( (end_time - ZSH_BENCHMARK_START) * 1000 ))
+    local ready_ms="${ZSH_BENCHMARK_READY_MS:-$duration}"
+    local defer_ms="${ZSH_BENCHMARK_DEFER_MS:-0}"
+    local final_ms=$(( ready_ms + defer_ms ))
 
     local BLUE=$'\e[38;5;75m'
     local GREEN=$'\e[38;5;42m'
@@ -30,15 +46,35 @@ _benchmark_report() {
     local BOLD=$'\e[1m'
     local RESET=$'\e[0m'
 
-    local rating="⚡ Lightning"
-    local rating_color="$GREEN"
-    local rating_icon="●"
-    if (( duration > 200 )); then
-        rating="🐌 Sluggish"; rating_color="$RED"; rating_icon="●"
-    elif (( duration > 100 )); then
-        rating="⚠ Slow"; rating_color="$ORANGE"; rating_icon="●"
-    elif (( duration > 40 )); then
-        rating="✓ Normal"; rating_color="$CYAN"; rating_icon="●"
+    local ready_rating="⚡ Lightning"
+    local ready_color="$GREEN"
+    if (( ready_ms > 120 )); then
+        ready_rating="🐌 Sluggish"; ready_color="$RED"
+    elif (( ready_ms > 60 )); then
+        ready_rating="⚠ Slow"; ready_color="$ORANGE"
+    elif (( ready_ms > 30 )); then
+        ready_rating="✓ Normal"; ready_color="$CYAN"
+    fi
+
+    local defer_rating="⚡ Lightning"
+    local defer_color="$GREEN"
+    if (( defer_ms > 160 )); then
+        defer_rating="🐌 Sluggish"; defer_color="$RED"
+    elif (( defer_ms > 80 )); then
+        defer_rating="⚠ Slow"; defer_color="$ORANGE"
+    elif (( defer_ms > 30 )); then
+        defer_rating="✓ Normal"; defer_color="$CYAN"
+    fi
+
+    local final_rating="⚡ Lightning"
+    local final_color="$GREEN"
+    local final_icon="●"
+    if (( final_ms > 200 )); then
+        final_rating="🐌 Sluggish"; final_color="$RED"
+    elif (( final_ms > 100 )); then
+        final_rating="⚠ Slow"; final_color="$ORANGE"
+    elif (( final_ms > 40 )); then
+        final_rating="✓ Normal"; final_color="$CYAN"
     fi
 
     printf "\n"
@@ -46,7 +82,8 @@ _benchmark_report() {
     printf "${PURPLE}${BOLD}  ⚙  ZSH Startup Profile${RESET}\n"
     printf "${PURPLE}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}\n\n"
 
-    printf "  ${rating_color}${BOLD}${rating_icon} ${rating}${RESET}  ${GRAY}│${RESET}  ${BOLD}%.2fms${RESET}\n\n" "$duration"
+    printf "  ${final_color}${BOLD}${final_icon} ${final_rating}${RESET}  ${GRAY}│${RESET}  ${BOLD}%.2fms${RESET}\n" "$final_ms"
+    printf "  ${DIM}ready:${RESET} ${ready_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}defer:${RESET} ${defer_color}%s${RESET} ${CYAN}%.2fms${RESET}  ${DIM}final:${RESET} ${final_color}%s${RESET} ${CYAN}%.2fms${RESET}\n\n" "$ready_rating" "$ready_ms" "$defer_rating" "$defer_ms" "$final_rating" "$final_ms"
 
     printf "  ${GRAY}${BOLD}TOP FUNCTIONS${RESET}${GRAY} (by execution time)${RESET}\n\n"
 
@@ -93,5 +130,5 @@ _benchmark_report() {
 
     printf "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
     printf "  ${DIM}Tip: Run ${RESET}${CYAN}zprof${RESET}${DIM} for detailed analysis${RESET}\n"
-    printf "  ${DIM}To disable profiling: ${RESET}${CYAN}unset ZSH_PROFILE${RESET}\n\n"
+    printf "  ${DIM}To disable profiling: ${RESET}${CYAN}unset ZSH_BENCHMARK${RESET}\n\n"
 }

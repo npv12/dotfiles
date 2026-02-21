@@ -1,7 +1,7 @@
 export ZSH_DIR="${ZDOTDIR}/.config/zsh"
 
 # Initialize benchmark module if profiling enabled
-if [[ "${ZSH_PROFILE:-}" == "1" ]]; then
+if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
     source "$ZSH_DIR/modules/benchmark/functions.zsh"
     _benchmark_init
 fi
@@ -54,6 +54,58 @@ function zsh_add_file() {
     [ -f "$ZSH_DIR/$filename.zsh" ] && z4h source "$ZSH_DIR/$filename.zsh"
 }
 
+typeset -ga __ZSH_DEFER_QUEUE=()
+typeset -gi __ZSH_DEFER_RAN=0
+
+function zsh_defer_add() {
+    [[ -n "$1" ]] || return 0
+
+    if [[ "${ZSH_BENCHMARK:-}" != "1" ]] && (( $+functions[zsh-defer] )); then
+        zsh-defer eval "$1"
+        return 0
+    fi
+
+    __ZSH_DEFER_QUEUE+=("$1")
+}
+
+function _zsh_run_deferred_queue() {
+    emulate -L zsh
+    (( __ZSH_DEFER_RAN )) && return 0
+    __ZSH_DEFER_RAN=1
+
+    local cmd
+    local start_time
+    local end_time
+    local elapsed_ms
+
+    while (( ${#__ZSH_DEFER_QUEUE[@]} > 0 )); do
+        cmd="${__ZSH_DEFER_QUEUE[1]}"
+
+        if (( ${#__ZSH_DEFER_QUEUE[@]} > 1 )); then
+            __ZSH_DEFER_QUEUE=("${__ZSH_DEFER_QUEUE[@]:1}")
+        else
+            __ZSH_DEFER_QUEUE=()
+        fi
+
+        if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
+            start_time=$EPOCHREALTIME
+        fi
+
+        eval "$cmd"
+
+        if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
+            end_time=$EPOCHREALTIME
+            elapsed_ms=$(( (end_time - start_time) * 1000 ))
+            (( $+functions[_benchmark_add_defer_time] )) && _benchmark_add_defer_time "$elapsed_ms"
+        fi
+    done
+
+    add-zsh-hook -d precmd _zsh_run_deferred_queue 2>/dev/null
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _zsh_run_deferred_queue
+
 zsh_add_file "zsh-binding"
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
@@ -81,10 +133,12 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt correct_all
 
-zsh_add_file "controller"
-z4h source "$ZSH_DIR/p10k.zsh"
+zsh_defer_add 'zsh_add_file "controller"'
+zsh_defer_add 'z4h source "$ZSH_DIR/p10k.zsh"'
 
 # Display benchmark results if profiling enabled
-if [[ "${ZSH_PROFILE:-}" == "1" ]]; then
+if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
+    _benchmark_set_ready_time $(( ($EPOCHREALTIME - ZSH_BENCHMARK_START) * 1000 ))
+    _zsh_run_deferred_queue
     _benchmark_report
 fi
