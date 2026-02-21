@@ -7,47 +7,6 @@ alias code="code-insiders"
 alias zed="zed-preview"
 alias opencode="CONTEXT7_API_KEY=\$(pass tokens/context7) SYNTHETIC_API_KEY=\$(pass tokens/synthetic/simbian) opencode"
 
-# DNF
-if command -v dnf &> /dev/null; then
-    alias pkg-clean="sudo dnf clean all"    # Cleans the cache.
-    alias pkg-install="sudo dnf install"      # Installs package(s).
-    alias pkg-list="dnf list installed"    # Lists installed packages.
-    alias pkg-info="dnf info"              # Displays package information.
-    alias pkg-remove="sudo dnf remove"       # Removes package(s).
-    alias pkg-search="dnf search"            # Searches for a package.
-    alias os-update="sudo dnf update"       # Updates packages.
-    alias os-upgrade="sudo dnf upgrade"      # Upgrades packages.
-fi
-
-# If yay exists, treat it as paru
-if command -v yay &> /dev/null; then
-    alias paru=yay
-    alias install-apps="yay -Slq | fzf --multi --preview 'yay -Si {1}' | xargs -ro yay -S"
-    alias view-apps="yay -Qq | fzf --preview 'yay -Qil {}' --layout=reverse --bind 'enter:execute(yay -Qil {} | less)'"
-fi
-
-# Paru for arch
-if command -v paru &> /dev/null; then
-    alias pkg-clean="paru -Y --clean"    # Cleans the pkgs.
-    alias pkg-install="paru -S"      # Installs package(s).
-    alias pkg-list="paru -Q"    # Lists installed packages.
-    alias pkg-remove="paru -Rns"       # Removes package(s).
-    alias pkg-search="paru -Ss"            # Searches for a package.
-    alias os-update="paru && flatpak update"       # Updates packages.
-    alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
-fi
-
-# Zypper for arch
-if command -v zypper &> /dev/null; then
-    alias pkg-clean="sudo zypper clean && sudo zypper -q pa --orphaned | awk '{ print $5 }' | grep -v Name | xargs sudo zypper rm"    # Cleans the pkgs.
-    alias pkg-install="sudo zypper install"      # Installs package(s).
-    alias pkg-list="zypper list"    # Lists installed packages.
-    alias pkg-remove="zypper remove"       # Removes package(s).
-    alias pkg-search="zypper search"            # Searches for a package.
-    alias os-update="sudo zypper dup"       # Updates packages.
-    alias os-upgrade="os-update && pkg-clean"      # Upgrades packages.
-fi
-
 # Eza
 if command -v eza &> /dev/null; then
     alias ls="eza --group-directories-first --icons=always"
@@ -57,22 +16,6 @@ alias ll="ls -lh"
 alias la="ll -a"
 alias tree="ls --tree --level=2 --icons=never"
 alias lh="la -h"
-
-# Flutter
-alias fl="flutter"
-alias flattach="flutter attach"
-alias flb="flutter build"
-alias flchnl="flutter channel"
-alias flc="flutter clean"
-alias fldvcs="flutter devices"
-alias fldoc="flutter doctor"
-alias flpub="flutter pub"
-alias flget="flutter pub get"
-alias flr="flutter run"
-alias flrd="flutter run --debug"
-alias flrp="flutter run --profile"
-alias flrr="flutter run --release"
-alias flupgrd="flutter upgrade"
 
 # Grep
 alias pygrep="grep -nr --include='*.py'"
@@ -111,20 +54,11 @@ alias python="python3"
 # Rclone
 alias rcp="rclone copy --progress"
 
-# React native
-alias rn="react-native"
-alias rns="react-native start"
-alias rnlink="react-native link"
-alias rnland="react-native log-android"
-alias rnlios="react-native log-ios"
-alias rnand="react-native run-android"
-alias rnios="react-native run-ios"
-
 # systemd
 alias list_systemctl="systemctl list-unit-files --state=enabled"
 
 # Zsh core
-alias zshconfig="open ${ZSH_DIR}/controller.zsh"
+alias zshconfig="zed ${ZSH_DIR}/"
 
 # Pbcopy replacement
 if ! command -v pbcopy &> /dev/null; then

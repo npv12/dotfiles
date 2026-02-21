@@ -33,6 +33,3 @@ export AUTOSWITCH_DEFAULT_PYTHON=python3
 if command -v vivid &> /dev/null; then
     export LS_COLORS="$(vivid generate catppuccin-mocha)"
 fi
-
-# Yarn
-export PATH="~/.yarn/bin:$PATH"

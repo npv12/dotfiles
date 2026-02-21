@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-# Expands ... to ../..
 function expand-dot-to-parent-directory-path {
   if [[ $LBUFFER = *.. ]]; then
     LBUFFER+='/..'
@@ -10,7 +9,6 @@ function expand-dot-to-parent-directory-path {
 }
 zle -N expand-dot-to-parent-directory-path
 
-# Keybinds for emacs and vi insert mode
 for keymap in 'emacs' 'viins'; do
   bindkey -M "$keymap" "." expand-dot-to-parent-directory-path
 done

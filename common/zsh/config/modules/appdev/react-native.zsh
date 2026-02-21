@@ -1,0 +1,7 @@
+alias rn="react-native"
+alias rns="react-native start"
+alias rnlink="react-native link"
+alias rnland="react-native log-android"
+alias rnlios="react-native log-ios"
+alias rnand="react-native run-android"
+alias rnios="react-native run-ios"
