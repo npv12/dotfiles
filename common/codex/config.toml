@@ -1,18 +1,15 @@
-model = "gpt-5.2"
+model = "gpt-5.3-codex"
 model_reasoning_effort = "medium"
 web_search = "cached"
+
+[features]
+multi_agent = true
 
 [mcp_servers.context7]
 http_headers = {"CONTEXT7_API_KEY" = "$(pass tokens/context7)"}
 url = "https://mcp.context7.com/mcp"
 
-[notice.model_migrations]
-"gpt-5.2" = "gpt-5.3-codex"
-
 [projects."/Users/npv12/dotfiles"]
-trust_level = "trusted"
-
-[projects."/Users/npv12/projects/personal/AeroSpace"]
 trust_level = "trusted"
 
 [projects."/Users/npv12/projects/simbian/SimbianOS"]
