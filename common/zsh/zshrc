@@ -118,8 +118,7 @@ zsh_add_file "zsh-binding"
 z4h init || return
 
 # Additional repos
-z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer wfxr/forgit npv12/zsh-ai-cmd
-z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
+z4h load romkatv/zsh-defer
 
 # Define key bindings.
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
@@ -137,6 +136,10 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt correct_all
 
 z4h source "$ZSH_DIR/p10k.zsh"
+
+# Load the modules defer
+zsh_defer_add 'z4h load wfxr/forgit npv12/zsh-ai-cmd hlissner/zsh-autopair bigH/git-fuzzy'
+zsh_defer_add 'z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh' # Manually load it instead since z4h doesn't support it
 zsh_defer_add 'zsh_add_file "controller"'
 
 # Display benchmark results if profiling enabled
