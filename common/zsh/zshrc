@@ -50,7 +50,7 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
 
 # Clone additional Git repositories from GitHub.
-z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use || return
+z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use wfxr/forgit || return
 
 function zsh_add_file() {
     local filename=$(echo "$1" | sed 's/\(.*\)\..*/\1/') # Strip out any extension
@@ -118,7 +118,7 @@ zsh_add_file "zsh-binding"
 z4h init || return
 
 # Additional repos
-z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer
+z4h load hlissner/zsh-autopair bigH/git-fuzzy romkatv/zsh-defer wfxr/forgit
 z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh # Manually load it instead since z4h doesn't support it
 
 # Define key bindings.

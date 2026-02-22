@@ -1,6 +1,9 @@
 # tabtab source for packages
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
+# Add custom completions to fpath
+fpath+=("$ZSH_DIR/completions")
+
 typeset -gi __ZSH_COMPLETIONS_NGROK_LOADED=0
 typeset -gi __ZSH_COMPLETIONS_JUST_LOADED=0
 typeset -gi __ZSH_COMPLETIONS_NGROK_AVAILABLE=-1
