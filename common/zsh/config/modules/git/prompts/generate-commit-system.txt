@@ -31,9 +31,11 @@ BODY RULES:
 - Optional. If present: bullet lines starting with "* ".
 - No code blocks or diff snippets.
 - Max ~6 bullets, <= 120 chars each.
+- CRITICAL: For line breaks in the body field, use the literal backslash character followed by n. This is ASCII 92 followed by ASCII 110.
 
 PARSE SAFETY:
 - Output MUST be valid JSON. Nothing before or after it.
+- CRITICAL: Inside JSON strings, newlines must be escaped. Use: backslash + n (not forward slash + n).
 - If you are unable to generate a commit message, return an empty string for title.
 
 SECRETS:
@@ -41,5 +43,14 @@ SECRETS:
 - Only treat it as a secret if the diff contains an actual secret value (e.g., API keys/tokens, private key material, passwords).
 
 EXAMPLES:
-{"title":"feat: auth: add token refresh","body":"- add refresh logic\n- update tests","module":"auth"}
-{"title":"fix: db: prevent null dereference","body":"","module":"db"}
+Example 1 - Single line body:
+{"title":"feat: auth: add token refresh","body":"* Implement OAuth2 token refresh","module":"auth"}
+
+Example 2 - Two bullets (note the newline escape):
+{"title":"fix: db: prevent null dereference","body":"* Add null checks before accessing pointer\n* Add regression test for edge case","module":"db"}
+
+Example 3 - No body:
+{"title":"refactor: -: simplify parsing","body":"","module":"-"}
+
+Example 4 - Multiple bullets:
+{"title":"feat: api: add user endpoints","body":"* Add GET /users endpoint\n* Add POST /users endpoint\n* Add input validation\n* Update OpenAPI spec","module":"api"}
