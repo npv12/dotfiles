@@ -1,123 +1,32 @@
-function _ai_chat() {
-  emulate -L zsh
+# AI module - Minimal wrapper around zsh-ai-cmd
+# Provides: ai() function for general shell command queries
+# Note: generate_commit() is in the git module
+# Note: zsh-ai-cmd is loaded in zshrc before modules
 
-  local system_prompt="${1:-}"
-  local user_prompt="${2:-}"
-
-  if [[ -z "$system_prompt" || -z "$user_prompt" ]]; then
-    echo "Error: missing prompts."
-    echo "Usage: _ai_chat <system_prompt> <user_prompt>"
+# Verify zsh-ai-cmd is available
+if ! whence _zsh_ai_cmd_chat > /dev/null; then
+  # Try to source it if not already loaded
+  ZSH_AI_CMD_PLUGIN="${HOME}/.zsh-ai-cmd/zsh-ai-cmd.plugin.zsh"
+  if [[ -f "$ZSH_AI_CMD_PLUGIN" ]]; then
+    source "$ZSH_AI_CMD_PLUGIN"
+  else
+    print -u2 "Error: zsh-ai-cmd not found at $ZSH_AI_CMD_PLUGIN"
+    print -u2 "Install with: git clone https://github.com/npv12/zsh-ai-cmd ~/.zsh-ai-cmd"
     return 1
   fi
-
-  for bin in curl jq pass; do
-    if ! command -v "$bin" >/dev/null; then
-      echo "Error: '$bin' not found."
-      echo "Fix: install with your package manager (e.g., 'brew install $bin' or 'sudo apt -y install $bin')."
-      return 127
-    fi
-  done
-
-  local model="${AI_MODEL:-openai/gpt-oss-120b:free}"
-  local temp="${AI_TEMP:-0.5}"
-  local openrouter_api_key
-  openrouter_api_key="$(pass tokens/openrouter 2>/dev/null || echo "")"
-
-  local synthetic_api_key
-  synthetic_api_key="$(pass tokens/synthetic/simbian 2>/dev/null || echo "")"
-
-  local synthetic_model="${AI_SYNTHETIC_MODEL:-hf:moonshotai/Kimi-K2.5}"
-  local synthetic_temp="${AI_SYNTHETIC_TEMP:-$temp}"
-  local fallback_to_synthetic="${AI_FALLBACK_TO_SYNTHETIC:-}"
-
-  local payload response content
-
-  if [[ -n "$openrouter_api_key" ]]; then
-    payload="$(jq -n \
-      --arg model "$model" \
-      --arg sys "$system_prompt" \
-      --arg usr "$user_prompt" \
-      --arg temp "$temp" \
-      '{model:$model, temperature: ($temp|tonumber),
-        messages: [
-          {role:"system", content:$sys},
-          {role:"user",   content:$usr}
-        ] }' )" || {
-          echo "Error: failed to build JSON payload."
-          return 1
-        }
-
-    response="$(curl -sS https://openrouter.ai/api/v1/chat/completions \
-      -H "Authorization: Bearer $openrouter_api_key" \
-      -H 'Content-Type: application/json' \
-      --data-binary "$payload")" || {
-        response=""
-      }
-
-    content="$(printf "%s" "$response" | jq -r '.choices[0].message.content' 2>/dev/null)" || content=""
-
-    if [[ -z "$content" || "$content" == "null" ]]; then
-      if [[ -n "$fallback_to_synthetic" && -n "$synthetic_api_key" ]]; then
-        printf "OpenRouter failed, falling back to Synthetic... "
-      else
-        printf "%s\n" "$response" >&2
-        return 1
-      fi
-    else
-      printf "%s\n" "$content"
-      return 0
-    fi
-  fi
-
-  if [[ -n "$synthetic_api_key" ]]; then
-    payload="$(jq -n \
-      --arg model "$synthetic_model" \
-      --arg sys "$system_prompt" \
-      --arg usr "$user_prompt" \
-      --arg temp "$synthetic_temp" \
-      '{model:$model, temperature: ($temp|tonumber),
-        messages: [
-          {role:"system", content:$sys},
-          {role:"user",   content:$usr}
-        ] }' )" || {
-          echo "Error: failed to build JSON payload for Synthetic."
-          return 1
-        }
-
-    response="$(curl -sS https://api.synthetic.ai/v1/chat/completions \
-      -H "Authorization: Bearer $synthetic_api_key" \
-      -H 'Content-Type: application/json' \
-      --data-binary "$payload")" || {
-        echo "Error: curl failed." >&2
-        return 1
-      }
-
-    content="$(printf "%s" "$response" | jq -r '.choices[0].message.content' 2>/dev/null)" || content=""
-
-    if [[ -z "$content" || "$content" == "null" ]]; then
-      printf "%s\n" "$response" >&2
-      return 1
-    fi
-
-    printf "%s\n" "$content"
-    return 0
-  fi
-
-  echo "Error: no API key found." >&2
-  return 1
-}
+fi
 
 function ai() {
   emulate -L zsh
 
   if (( $# == 0 )); then
     echo 'Usage: ai "your command-related question"'
-    echo 'Env: AI_MODEL, AI_TEMP, AI_FALLBACK_TO_SYNTHETIC=1, AI_SYNTHETIC_MODEL'
+    echo 'Env: AI_MODEL (sets ZSH_AI_CMD_*_MODEL for the provider)'
     return 1
   fi
   local query="$*"
 
-  local prompts_dir="${0:A:h}/prompts"
+  local prompts_dir="${ZSH_MODULES_DIR}/ai/prompts"
   local system_prompt_file="$prompts_dir/ai-system.txt"
 
   if [[ ! -f "$system_prompt_file" ]]; then
@@ -128,5 +37,5 @@ function ai() {
   local SYSTEM_PROMPT
   SYSTEM_PROMPT=$(cat "$system_prompt_file")
 
-  _ai_chat "$SYSTEM_PROMPT" "$query"
+  _zsh_ai_cmd_chat "$SYSTEM_PROMPT" "$query"
 }

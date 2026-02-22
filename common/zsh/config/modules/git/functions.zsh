@@ -9,8 +9,10 @@ function del-multiple-remotes() {
 function generate_commit() {
     emulate -L zsh
 
-    if ! whence _ai_chat > /dev/null; then
-        echo "Error: _ai_chat function not found. Load the ai module first."
+    # Ensure zsh-ai-cmd is available (loaded in zshrc, but check anyway)
+    if ! whence _zsh_ai_cmd_chat > /dev/null; then
+        print -u2 "Error: zsh-ai-cmd not loaded."
+        print -u2 "Install with: git clone https://github.com/npv12/zsh-ai-cmd ~/.zsh-ai-cmd"
         return 1
     fi
 
@@ -58,7 +60,7 @@ Instructions:
 EOF
 
     local ai_output
-    ai_output="$(_ai_chat "$SYSTEM_PROMPT" "$USER_PROMPT")" || return $?
+    ai_output="$(_zsh_ai_cmd_chat "$SYSTEM_PROMPT" "$USER_PROMPT")" || return $?
 
     if [ -z "$ai_output" ] || [ "$ai_output" = "null" ]; then
         echo "AI returned no commit message."
