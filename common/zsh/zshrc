@@ -15,6 +15,9 @@ zstyle ':z4h:' auto-update-days '28'
 # Keyboard type: 'mac' or 'pc'.
 zstyle ':z4h:bindkey' keyboard  'pc'
 
+# Use brew installed fzf
+zstyle ':z4h:*' fzf-command fzf
+
 # Linux keybindings
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
