@@ -3,7 +3,7 @@
 # Stores varies aliases we use
 
 # Code
-alias code="code-insiders"
+alias code="cursor"
 alias zed="zed-preview"
 alias opencode="CONTEXT7_API_KEY=\$(pass tokens/context7) SYNTHETIC_API_KEY=\$(pass tokens/synthetic/simbian) opencode"
 
