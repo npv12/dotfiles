@@ -4,6 +4,9 @@ web_search = "cached"
 
 [features]
 multi_agent = true
+prevent_idle_sleep = true
+shell_snapshot = true
+voice_transcription = true
 
 [mcp_servers.context7]
 http_headers = {"CONTEXT7_API_KEY" = "$(pass tokens/context7)"}
@@ -12,5 +15,14 @@ url = "https://mcp.context7.com/mcp"
 [projects."/Users/npv12/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/npv12/dotfiles/zsh-ai-cmd"]
+trust_level = "trusted"
+
 [projects."/Users/npv12/projects/simbian/SimbianOS"]
 trust_level = "trusted"
+
+[projects."/Users/npv12/projects/taroo/canopy"]
+trust_level = "trusted"
+
+[tui]
+theme = "catppuccin-mocha"
