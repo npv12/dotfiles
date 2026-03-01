@@ -6,6 +6,58 @@ function del-multiple-remotes() {
     git remote -v | grep "$1" | xargs git remote remove
 }
 
+function gitcheckout() {
+    emulate -L zsh
+
+    if (( $# > 0 )) || (( ! $+commands[fzf] )); then
+        command git checkout "$@"
+        return
+    fi
+
+    if ! command git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        print -u2 "Not a git repository."
+        return 1
+    fi
+
+    local selection branch
+    selection=$(
+        command git for-each-ref \
+            --sort=-committerdate \
+            --format=$'%(refname:short)\t%(refname)\t%(committerdate:relative)\t%(subject)' \
+            refs/heads refs/remotes |
+            awk -F'\t' '$1 !~ /\/HEAD$/ { print }' |
+            fzf --ansi \
+                --height=100% \
+                --layout=reverse \
+                --border \
+                --delimiter=$'\t' \
+                --with-nth=1,3,4 \
+                --prompt="Checkout branch > " \
+                --preview='git log --graph --decorate --color=always --oneline --max-count=60 {1}' \
+                --preview-window='right,65%,border-left'
+    ) || return
+
+    branch=${selection%%$'\t'*}
+    [[ -z "$branch" ]] && return
+
+    if command git show-ref --verify --quiet "refs/heads/$branch"; then
+        command git checkout "$branch"
+        return
+    fi
+
+    if [[ "$branch" == */* ]] && command git show-ref --verify --quiet "refs/remotes/$branch"; then
+        local local_branch="${branch#*/}"
+        if command git show-ref --verify --quiet "refs/heads/$local_branch"; then
+            command git checkout "$local_branch"
+        else
+            command git checkout --track -b "$local_branch" "$branch"
+        fi
+        return
+    fi
+
+    command git checkout "$branch"
+}
+
 function generate_commit() {
     emulate -L zsh
 
@@ -80,208 +132,182 @@ EOF
 }
 
 function gitstatus() {
-    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        print "\e[31m Not a git repository.\e[0m"
+    emulate -L zsh
+
+    if ! command git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        print -u2 "Not a git repository."
         return 1
     fi
 
-    if (( ! $+commands[fzf] )) || (( $# > 0 )); then
+    if (( $# > 0 )) || (( ! $+commands[fzf] )); then
         command git status "$@"
         return
     fi
 
-    local RESET='\e[0m'
-    local BLUE='\e[34m'
-    local GREEN='\e[32m'
-    local RED='\e[31m'
-    local YELLOW='\e[33m'
-    local MAGENTA='\e[35m'
-    local CYAN='\e[36m'
-    local DIM='\e[2m'
-    local BOLD='\e[1m'
-    local BRIGHT_GREEN='\e[92m'
-    local BRIGHT_YELLOW='\e[93m'
-    local BRIGHT_BLUE='\e[94m'
-    local BRIGHT_RED='\e[91m'
+    local entries
+    entries=$(
+        command git status --porcelain=v1 --untracked-files=all |
+            awk '{
+                x = substr($0, 1, 1)
+                status = substr($0, 1, 2)
+                path = substr($0, 4)
+                icon = (x != " " && status != "??") ? "\033[32m+\033[0m" : " "
+                if (status != "??" && index(path, " -> ") > 0) {
+                    path = substr(path, index(path, " -> ") + 4)
+                }
+                print icon "\t" status "\t" path
+            }'
+    )
 
-    local ICON_BRANCH=$'\ue0a0'
-    local ICON_REMOTE=$'\uf02b'
-    local ICON_AHEAD=$'\uf062'
-    local ICON_BEHIND=$'\uf063'
-    local ICON_SYNC=$'\uf00c'
-    local ICON_STAGED=$'\uf00c'
-    local ICON_UNSTAGED=$'\uf040'
-    local ICON_UNTRACKED=$'\uf128'
-    local ICON_CONFLICT=$'\uf00d'
-    local ICON_FILE_ADDED=$'\uf067'
-    local ICON_FILE_MODIFIED=$'\uf044'
-    local ICON_FILE_DELETED=$'\uf068'
-    local ICON_FILE_RENAMED=$'\uf074'
-    local ICON_FILE_COPIED=$'\uf0c5'
-    local ICON_FILE_UNTRACKED=$'\uf128'
-    local ICON_FILE_CONFLICT=$'\uf12a'
-
-    local branch upstream
-    branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null)
-    [[ -z "$branch" ]] && branch=$(git rev-parse --short HEAD 2>/dev/null)
-    upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)
-
-    local ahead=0
-    local behind=0
-    if [[ -n "$upstream" ]]; then
-        local ahead_behind
-        ahead_behind=$(git rev-list --left-right --count "HEAD...$upstream" 2>/dev/null)
-        if [[ -n "$ahead_behind" ]]; then
-            ahead=${ahead_behind%%[[:space:]]*}
-            behind=${ahead_behind##*[[:space:]]}
-        fi
+    if [[ -z "$entries" ]]; then
+        print "Working tree clean."
+        return
     fi
 
-    local porcelain
-    porcelain=$(git status --porcelain=v1 2>/dev/null)
+    print -r -- "$entries" |
+        fzf --ansi \
+            --height=100% \
+            --layout=reverse \
+            --border \
+            --delimiter=$'\t' \
+            --with-nth=1,3 \
+            --multi \
+            --prompt="Status > " \
+            --bind='enter:execute-silent(
+                while IFS=$'\''\t'\'' read -r _icon file_status file; do
+                    if [[ -z "$file" ]]; then
+                        continue
+                    fi
+                    if [[ "${file_status:0:1}" != " " && "$file_status" != "??" ]]; then
+                        git restore --staged -- "$file" 2>/dev/null || git reset HEAD -- "$file"
+                    else
+                        git add -- "$file"
+                    fi
+                done < {+f}
+            )+abort' \
+            --preview='
+                line_status=$(printf "%s" {} | cut -f2)
+                file=$(printf "%s" {} | cut -f3-)
 
-    local -a staged_lines
-    local -a unstaged_lines
-    local -a untracked_lines
-    local -a conflict_lines
-    local line x y xy
+                if [[ "$line_status" == "??" ]]; then
+                    git diff --no-index --color=always -- /dev/null "$file" 2>/dev/null || sed -n "1,200p" "$file"
+                    exit 0
+                fi
 
-    while IFS= read -r line; do
-        [[ -z "$line" ]] && continue
-        x=${line[1,1]}
-        y=${line[2,2]}
-        xy="$x$y"
+                echo "UNSTAGED"
+                git diff --color=always -- "$file"
+                echo
+                echo "STAGED"
+                git diff --cached --color=always -- "$file"
+            ' \
+            --preview-window='right,65%,border-left'
+}
 
-        if [[ "$xy" == "??" ]]; then
-            untracked_lines+=("$line")
-            continue
-        fi
+function gitdiff() {
+    emulate -L zsh
 
-        if [[ "$xy" == "AA" || "$xy" == "DD" || "$x" == "U" || "$y" == "U" ]]; then
-            conflict_lines+=("$line")
-        fi
-
-        [[ "$x" != " " ]] && staged_lines+=("$line")
-        [[ "$y" != " " ]] && unstaged_lines+=("$line")
-    done <<< "$porcelain"
-
-    local staged_count=${#staged_lines[@]}
-    local unstaged_count=${#unstaged_lines[@]}
-    local untracked_count=${#untracked_lines[@]}
-    local conflict_count=${#conflict_lines[@]}
-    local total=$(( staged_count + unstaged_count + untracked_count ))
-
-    local box_width=54
-
-    print ""
-    print -f "${CYAN}${BOLD}╭──────────────────────────────────────────────────────╮${RESET}\n"
-
-    # Calculate padding: box is 54 wide, borders are 2 chars, we want 2 spaces padding on each side
-    # So content area is 54 - 2 - 4 = 48 characters
-    local content_width=52
-    local left_pad="  "
-    local right_pad=""
-
-    # Branch line
-    local branch_content="${ICON_BRANCH}  ${branch}"
-    local branch_padding=$((content_width - ${#branch_content}))
-    printf -v right_pad '%*s' "$branch_padding" ''
-    print -f "${CYAN}${BOLD}│${RESET}${left_pad}${CYAN}${ICON_BRANCH}${RESET}  ${BOLD}%s${RESET}%s${CYAN}${BOLD}│${RESET}\n" "$branch" "$right_pad"
-
-    if [[ -n "$upstream" ]]; then
-        local sync_status=""
-        local sync_icon="$ICON_SYNC"
-        local sync_color="$GREEN"
-
-        if (( ahead > 0 && behind > 0 )); then
-            sync_status="diverged"
-            sync_icon="$ICON_CONFLICT"
-            sync_color="$RED"
-        elif (( ahead > 0 )); then
-            sync_status="ahead $ahead"
-            sync_icon="$ICON_AHEAD"
-            sync_color="$YELLOW"
-        elif (( behind > 0 )); then
-            sync_status="behind $behind"
-            sync_icon="$ICON_BEHIND"
-            sync_color="$RED"
-        else
-            sync_status="in sync"
-        fi
-
-        local remote_content="${ICON_REMOTE}  ${upstream}  ${sync_icon} ${sync_status}"
-        local remote_padding=$((content_width - ${#remote_content}))
-        printf -v right_pad '%*s' "$remote_padding" ''
-        print -f "${CYAN}${BOLD}│${RESET}${left_pad}${DIM}${ICON_REMOTE}${RESET}  ${DIM}%s${RESET}  ${sync_color}%s${RESET} %s%s${CYAN}${BOLD}│${RESET}\n" "$upstream" "$sync_icon" "$sync_status" "$right_pad"
-    else
-        local no_upstream_content="${ICON_REMOTE}  no upstream configured"
-        local no_upstream_padding=$((content_width - ${#no_upstream_content}))
-        printf -v right_pad '%*s' "$no_upstream_padding" ''
-        print -f "${CYAN}${BOLD}│${RESET}${left_pad}${DIM}${ICON_REMOTE}${RESET}  ${DIM}no upstream configured${RESET}%s${CYAN}${BOLD}│${RESET}\n" "$right_pad"
+    if ! command git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        print -u2 "Not a git repository."
+        return 1
     fi
 
-    print -f "${CYAN}${BOLD}╰──────────────────────────────────────────────────────╯${RESET}\n"
-    print ""
-
-    local icon status_code path color section_icon
-
-    if (( conflict_count > 0 )); then
-        print -f "  ${BRIGHT_RED}${BOLD}${ICON_CONFLICT}${RESET} ${BOLD}CONFLICTS${RESET} ${DIM}(%d)${RESET}\n" "$conflict_count"
-        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
-        for line in "${conflict_lines[@]}"; do
-            path=${line[4,-1]}
-            print -f "    ${BRIGHT_RED}${ICON_FILE_CONFLICT}${RESET}  %s\n" "$path"
-        done
-        print ""
+    if (( $# > 0 )) || (( ! $+commands[fzf] )); then
+        command git diff "$@"
+        return
     fi
 
-    if (( staged_count > 0 )); then
-        print -f "  ${BRIGHT_GREEN}${BOLD}${ICON_STAGED}${RESET} ${BOLD}STAGED${RESET} ${DIM}(%d)${RESET}\n" "$staged_count"
-        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
-        for line in "${staged_lines[@]}"; do
-            status_code=${line[1,1]}
-            path=${line[4,-1]}
-            case "$status_code" in
-                A) icon="$ICON_FILE_ADDED"; color="$BRIGHT_GREEN" ;;
-                M) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_GREEN" ;;
-                D) icon="$ICON_FILE_DELETED"; color="$BRIGHT_RED" ;;
-                R) icon="$ICON_FILE_RENAMED"; color="$MAGENTA" ;;
-                C) icon="$ICON_FILE_COPIED"; color="$MAGENTA" ;;
-                *) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_GREEN" ;;
-            esac
-            print -f "    ${color}%s${RESET}  %s\n" "$icon" "$path"
-        done
-        print ""
+    local files
+    files=$(
+        {
+            command git diff --name-only
+            command git diff --cached --name-only
+        } | awk 'NF && !seen[$0]++'
+    )
+
+    if [[ -z "$files" ]]; then
+        print "No changes to diff."
+        return
     fi
 
-    if (( unstaged_count > 0 )); then
-        print -f "  ${BRIGHT_YELLOW}${BOLD}${ICON_UNSTAGED}${RESET} ${BOLD}UNSTAGED${RESET} ${DIM}(%d)${RESET}\n" "$unstaged_count"
-        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
-        for line in "${unstaged_lines[@]}"; do
-            status_code=${line[2,2]}
-            path=${line[4,-1]}
-            case "$status_code" in
-                M) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_YELLOW" ;;
-                D) icon="$ICON_FILE_DELETED"; color="$BRIGHT_RED" ;;
-                *) icon="$ICON_FILE_MODIFIED"; color="$BRIGHT_YELLOW" ;;
-            esac
-            print -f "    ${color}%s${RESET}  %s\n" "$icon" "$path"
-        done
-        print ""
+    print -r -- "$files" |
+        fzf --ansi \
+            --height=100% \
+            --layout=reverse \
+            --border \
+            --prompt="Diff > " \
+            --preview='
+                file={}
+                echo "UNSTAGED"
+                git diff --color=always -- "$file"
+                echo
+                echo "STAGED"
+                git diff --cached --color=always -- "$file"
+            ' \
+            --preview-window='right,65%,border-left'
+}
+
+function gitlog() {
+    emulate -L zsh
+
+    if ! command git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        print -u2 "Not a git repository."
+        return 1
     fi
 
-    if (( untracked_count > 0 )); then
-        print -f "  ${BRIGHT_BLUE}${BOLD}${ICON_UNTRACKED}${RESET} ${BOLD}UNTRACKED${RESET} ${DIM}(%d)${RESET}\n" "$untracked_count"
-        print -f "  ${DIM}──────────────────────────────────────────────────────${RESET}\n"
-        for line in "${untracked_lines[@]}"; do
-            path=${line[4,-1]}
-            print -f "    ${BRIGHT_BLUE}${ICON_FILE_UNTRACKED}${RESET}  %s\n" "$path"
-        done
-        print ""
+    if (( $# > 0 )) || (( ! $+commands[fzf] )); then
+        command git log "$@"
+        return
     fi
 
-    if (( total == 0 )); then
-        print -f "  ${BRIGHT_GREEN}${BOLD}${ICON_SYNC}${RESET} ${BOLD}Working tree clean${RESET}\n"
-        print ""
+    local commits
+    commits=$(
+        command git log --all --date=short \
+            --pretty=format:'%H%x09%h%x09%an%x09%ad%x09%s' |
+            awk -F'\t' '
+                function trunc(s, w) {
+                    if (length(s) <= w) return s
+                    if (w <= 3) return substr(s, 1, w)
+                    return substr(s, 1, w - 3) "..."
+                }
+                BEGIN {
+                    msg_w = 30
+                    esc = sprintf("%c", 27)
+                    c_hash = esc "[36m"
+                    c_author = esc "[33m"
+                    c_date = esc "[32m"
+                    c_reset = esc "[0m"
+                }
+                {
+                    search_key = tolower($1 " " $2 " " $3)
+                    msg = sprintf("%-*s", msg_w, trunc($5, msg_w))
+                    printf "%s\t%s\t%s\t%s%s%s\t%s%s%s %s%s%s\n",
+                        search_key,
+                        $1,
+                        msg,
+                        c_hash, $2, c_reset,
+                        c_date, $4, c_reset,
+                        c_author, $3, c_reset
+                }
+            '
+    )
+
+    if [[ -z "$commits" ]]; then
+        print "No commits found."
+        return
     fi
+
+    print -r -- "$commits" |
+        fzf --ansi \
+            --height=100% \
+            --layout=reverse \
+            --border \
+            --ignore-case \
+            --delimiter=$'\t' \
+            --with-nth=3,4,5 \
+            --nth=1 \
+            --prompt="Log > " \
+            --bind='enter:execute-silent(echo -n {2} | pbcopy)+abort' \
+            --bind='ctrl-o:execute(git checkout {2})+abort' \
+            --preview='git show --color=always --stat --patch --decorate=short {2}' \
+            --preview-window='right,65%,border-left'
 }

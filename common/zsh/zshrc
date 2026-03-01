@@ -57,7 +57,7 @@ zstyle ':completion:*' ignored-patterns '(|*/)(.git|node_modules)'
 
 
 # Clone additional Git repositories from GitHub.
-z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use wfxr/forgit npv12/zsh-ai-cmd || return
+z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use npv12/zsh-ai-cmd || return
 
 function zsh_add_file() {
     local filename=$(echo "$1" | sed 's/\(.*\)\..*/\1/') # Strip out any extension
@@ -145,7 +145,7 @@ setopt correct_all
 z4h source "$ZSH_DIR/p10k.zsh"
 
 # Load the modules defer
-zsh_defer_add 'z4h load wfxr/forgit npv12/zsh-ai-cmd hlissner/zsh-autopair bigH/git-fuzzy'
+zsh_defer_add 'z4h load npv12/zsh-ai-cmd hlissner/zsh-autopair bigH/git-fuzzy'
 zsh_defer_add 'z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh' # Manually load it instead since z4h doesn't support it
 zsh_defer_add 'zsh_add_file "controller"'
 
