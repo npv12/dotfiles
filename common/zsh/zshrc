@@ -48,6 +48,13 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 
 # FZF
 zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
+zstyle ':z4h:*' fzf-flags \
+  --color=hl:1,hl+:2 \
+  --multi \
+  --bind=tab:toggle+down \
+  --bind=shift-tab:toggle+up
+zstyle ':completion:*' ignored-patterns '(|*/)(.git|node_modules)'
+
 
 # Clone additional Git repositories from GitHub.
 z4h install romkatv/zsh-defer hlissner/zsh-autopair bigH/git-fuzzy MichaelAquilina/zsh-you-should-use wfxr/forgit npv12/zsh-ai-cmd || return
