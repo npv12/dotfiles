@@ -31,4 +31,4 @@ paru -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-dejavu \
 chsh -s "$(which zsh)"
 
 # Change default editor to nvim
-export EDITOR=zeditor
+export EDITOR=nvim

@@ -127,7 +127,8 @@ z4h init || return
 # Additional repos
 z4h load romkatv/zsh-defer
 zsh_defer_add 'z4h source $Z4H/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh' # Manually load it instead since z4h doesn't support it
-zsh_defer_add 'z4h load hlissner/zsh-autopair bigH/git-fuzzy npv12/zsh-ai-cmd'
+zsh_defer_add 'z4h load hlissner/zsh-autopair bigH/git-fuzzy'
+z4h load npv12/zsh-ai-cmd
 
 # Define key bindings.
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
