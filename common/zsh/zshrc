@@ -53,7 +53,7 @@ zstyle ':z4h:*' fzf-flags \
   --multi \
   --bind=tab:toggle+down \
   --bind=shift-tab:toggle+up
-zstyle ':completion:*' ignored-patterns '(|*/)(.git|node_modules)'
+zstyle ':completion:*' ignored-patterns '(|*/)(.git|node_modules|dist)'
 
 
 # Clone additional Git repositories from GitHub.
