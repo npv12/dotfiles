@@ -130,3 +130,9 @@ EOF
         git commit -s -S -v -m "$title" -m "$body"
     fi
 }
+
+# Fix up a commit and rebase --autosquash
+# Usage: gfix <commit-hash>
+gfix() {
+  git commit --fixup $1 && git rebase -i --autosquash $1^
+}
