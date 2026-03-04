@@ -13,6 +13,7 @@ keybinds clear-defaults=true {
     normal {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
         bind "Ctrl q" { Detach; }
+        bind "?"   { LaunchOrFocusPlugin "https://github.com/karimould/zellij-forgot/releases/latest/download/zellij_forgot.wasm" { floating true; }; SwitchToMode "Normal"; }
     }
 
     tmux {
@@ -53,7 +54,6 @@ keybinds clear-defaults=true {
         bind "s"   { LaunchOrFocusPlugin "zellij:session-manager" { floating true; }; SwitchToMode "Normal"; }
         bind "w"   { LaunchOrFocusPlugin "zellij:session-manager" { floating true; }; SwitchToMode "Normal"; }
         bind "e"   { LaunchOrFocusPlugin "zellij:strider" { floating false; }; SwitchToMode "Normal"; }
-        bind "?"   { LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij_forgot.wasm" { floating true; }; SwitchToMode "Normal"; }
 
         // Scroll
         bind "["      { SwitchToMode "Scroll"; }
