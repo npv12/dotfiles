@@ -7,6 +7,7 @@ background-blur = true
 
 theme = catppuccin-mocha
 
+macos-titlebar-style = hidden
 bold-is-bright = true
 cursor-style = block_hollow
 cursor-style-blink = true

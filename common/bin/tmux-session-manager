@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# tmux-session-manager
+# Dependencies: fzf, zoxide
+# Usage: bind in .tmux.conf with:
+#   bind s display-popup -E -w 80% -h 60% "tmux-session-manager"
+# CLAUDE generated and not reviewed by a human
+
+set -euo pipefail
+
+# ── helpers ──────────────────────────────────────────────────────────────────
+
+session_exists() { tmux has-session -t "$1" 2>/dev/null; }
+
+switch_to() {
+  local name="$1"
+  if [ -n "${TMUX:-}" ]; then
+    tmux switch-client -t "$name"
+  else
+    tmux attach-session -t "$name"
+  fi
+}
+
+# ── build candidate list ──────────────────────────────────────────────────────
+# Format: <tag> <display> <value>
+#   tag   → [session] or [dir]
+#   value → session name or directory path
+
+candidates() {
+  # Active tmux sessions first
+  if tmux list-sessions -F "#{session_name}" 2>/dev/null | while read -r s; do
+    current=""
+    [ "$(tmux display-message -p '#S' 2>/dev/null)" = "$s" ] && current=" (current)"
+    printf "\033[1;32m[session]\033[0m  %-30s%s\n" "$s" "$current"
+  done; then :; fi
+
+  # Zoxide directories (skip those already open as sessions)
+  zoxide query --list 2>/dev/null | while read -r dir; do
+    name=$(basename "$dir")
+    # dim if session already exists for this dir name
+    if session_exists "$name"; then
+      printf "\033[2;34m[dir]\033[0m      \033[2m%-30s\033[0m  %s\n" "$name" "$dir"
+    else
+      printf "\033[1;34m[dir]\033[0m      %-30s  %s\n" "$name" "$dir"
+    fi
+  done
+}
+
+# ── kill helper (called inline by fzf) ───────────────────────────────────────
+
+do_kill() {
+  # $1 = selected line from fzf
+  local pick="$1"
+  local name=""
+  if echo "$pick" | grep -q '\[session\]'; then
+    name=$(echo "$pick" | awk '{print $2}' | sed 's/(current)//' | xargs)
+  fi
+  [ -n "$name" ] && tmux kill-session -t "$name" 2>/dev/null || true
+}
+
+# ── main ──────────────────────────────────────────────────────────────────────
+
+main() {
+  local selected
+  selected=$(
+    candidates \
+      | fzf \
+          --ansi \
+          --reverse \
+          --prompt="  session/dir > " \
+          --header="ENTER: switch/create  |  CTRL-D: delete sessions  |  CTRL-C: cancel" \
+          --header-first \
+          --color="header:italic:cyan,prompt:green" \
+          --bind "ctrl-d:execute(bash \"$0\" --kill {})+reload(bash \"$0\" --list)" \
+          --print-query \
+          --expect=enter \
+          --no-multi
+  ) || exit 0
+
+  # fzf --print-query outputs: line1=query, line2=key, line3=selection
+  local query key pick
+  query=$(echo "$selected" | sed -n '1p')
+  key=$(echo "$selected"   | sed -n '2p')
+  pick=$(echo "$selected"  | sed -n '3p')
+
+  # Determine what to act on
+  local target=""
+  local target_dir=""
+
+  if [ -n "$pick" ]; then
+    # User selected an existing entry
+    if echo "$pick" | grep -q '^\[session\]\|session\]'; then
+      # Extract session name (first word-like token after the tag)
+      target=$(echo "$pick" | awk '{print $2}' | sed 's/(current)//')
+      target=$(echo "$target" | xargs)  # trim
+    else
+      # It's a dir entry — extract path (last field)
+      target_dir=$(echo "$pick" | awk '{print $NF}')
+      target=$(basename "$target_dir")
+    fi
+  elif [ -n "$query" ]; then
+    # Free-text: treat as new session name
+    target="$query"
+  else
+    exit 0
+  fi
+
+  [ -z "$target" ] && exit 0
+
+  # Create session if it doesn't exist
+  if ! session_exists "$target"; then
+    if [ -n "$target_dir" ] && [ -d "$target_dir" ]; then
+      tmux new-session -d -s "$target" -c "$target_dir"
+      # Inform zoxide about this directory
+      zoxide add "$target_dir" 2>/dev/null || true
+    else
+      tmux new-session -d -s "$target"
+    fi
+  fi
+
+  switch_to "$target"
+}
+
+# ── entry point ───────────────────────────────────────────────────────────────
+
+if [ "${1:-}" = "--kill" ]; then
+  do_kill "${2:-}"
+elif [ "${1:-}" = "--list" ]; then
+  candidates
+else
+  main
+fi

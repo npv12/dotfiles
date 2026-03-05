@@ -6,7 +6,8 @@ brew tap FelixKratz/formulae
 brew install sketchybar borders
 
 brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight mise gpg maccy pass zoxide podman \
-	kubernetes-cli kubectx visual-studio-code@insiders font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font
+	kubernetes-cli kubectx visual-studio-code@insiders font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font \
+	fzf gitmux
 brew install --cask zed@preview ghostty scroll-reverser
 
 # Make it linux initiative

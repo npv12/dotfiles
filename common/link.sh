@@ -27,8 +27,10 @@ declare -a links=(
 	# Misc Apps
 	"$COMMON_DIR/gdu;$CONFIG_DIR/gdu"
 	"$COMMON_DIR/tmux/tmux.conf;$HOME/.tmux.conf"
+	"$COMMON_DIR/tmux/gitmux.conf;$HOME/.gitmux.conf"
 	"$COMMON_DIR/zed/keymap.json;$CONFIG_DIR/zed/keymap.json"
 	"$COMMON_DIR/zed/settings.json;$CONFIG_DIR/zed/settings.json"
+	"$COMMON_DIR/bin/tmux-session-manager;$HOME/.local/bin/tmux-session-manager"
 )
 
 # --- Define conditional links (based on command existence) ---
