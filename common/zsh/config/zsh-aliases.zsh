@@ -5,7 +5,6 @@
 # Code
 alias code="cursor"
 alias zed="zed-preview"
-alias opencode="CONTEXT7_API_KEY=\$(pass tokens/context7) SYNTHETIC_API_KEY=\$(pass tokens/synthetic/simbian) opencode"
 
 # Eza
 if command -v eza &> /dev/null; then
