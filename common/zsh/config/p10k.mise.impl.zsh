@@ -17,10 +17,9 @@ function __p10k_mise_update_cache() {
   local -a parts
   local tool
   local version
-  local source
   local -a current_lines
 
-  current_lines=("${(@f)$(mise ls --current 2>/dev/null)}")
+  current_lines=("${(@f)$(mise ls --current --local --no-header 2>/dev/null || mise ls --current --no-header 2>/dev/null)}")
   __P10K_MISE_CACHE_LINES=()
 
   for line in "${current_lines[@]}"; do
@@ -29,11 +28,8 @@ function __p10k_mise_update_cache() {
     parts=(${=line})
     tool="${parts[1]:-}"
     version="${parts[2]:-}"
-    source="${parts[3]:-}"
-
     [[ -z "$tool" || -z "$version" ]] && continue
     [[ "$tool" == "Tool" && "$version" == "Version" ]] && continue
-    [[ "$source" == "~/.tool-versions" || "$source" == "~/.config/mise/config.toml" ]] && continue
 
     __P10K_MISE_CACHE_LINES+=("$tool $version")
   done
