@@ -49,22 +49,49 @@ function prompt_mise() {
 
   (( ${#__P10K_MISE_CACHE_LINES[@]} )) || return 0
 
-  local -a tools_to_skip=(
-    "asdf"
-    "just"
-    "uv"
-    "opencode"
+  local -A tools_to_show=(
+    [python]=1
+    [java]=1
+    [node]=1
+    [yarn]=1
+    [go]=1
+    [rust]=1
+    # Common language/runtime backends verified from `mise registry`.
+    [bun]=1
+    [clojure]=1
+    [crystal]=1
+    [dart]=1
+    [deno]=1
+    [dotnet]=1
+    [ruby]=1
+    [php]=1
+    [lua]=1
+    [elixir]=1
+    [erlang]=1
+    [ghc]=1
+    [groovy]=1
+    [julia]=1
+    [kotlin]=1
+    [perl]=1
+    [scala]=1
+    [swift]=1
+    [zig]=1
   )
 
   for plugin in "${__P10K_MISE_CACHE_LINES[@]}"; do
     [[ -z "$plugin" ]] && continue
     local parts=("${(@s/ /)plugin}")
-    local tool=${(U)parts[1]}
+    local tool_key=${(L)parts[1]}
     local version=${parts[2]}
+    case "$tool_key" in
+      nodejs) tool_key=node ;;
+      golang) tool_key=go ;;
+      dotnet-core) tool_key=dotnet ;;
+    esac
+    local tool=${(U)tool_key}
     [[ -z "$tool" ]] && continue
-    if [[ ! " ${(U)tools_to_skip[@]} " =~ " ${tool} " ]]; then
-      p10k segment -r -i "${tool}_ICON" -s "$tool" -t "$version"
-    fi
+    [[ -n "${tools_to_show[$tool_key]}" ]] || continue
+    p10k segment -r -i "${tool}_ICON" -s "$tool" -t "$version"
   done
 }
 
@@ -80,6 +107,10 @@ typeset -g POWERLEVEL9K_MISE_PYTHON_FOREGROUND=0
 typeset -g POWERLEVEL9K_MISE_PYTHON_BACKGROUND=3
 typeset -g POWERLEVEL9K_MISE_NODE_FOREGROUND=0
 typeset -g POWERLEVEL9K_MISE_NODE_BACKGROUND=2
+typeset -g POWERLEVEL9K_MISE_JAVA_FOREGROUND=0
+typeset -g POWERLEVEL9K_MISE_JAVA_BACKGROUND=4
+typeset -g POWERLEVEL9K_MISE_YARN_FOREGROUND=0
+typeset -g POWERLEVEL9K_MISE_YARN_BACKGROUND=6
 typeset -g POWERLEVEL9K_MISE_RUST_FOREGROUND=0
 typeset -g POWERLEVEL9K_MISE_RUST_BACKGROUND=215
 typeset -g POWERLEVEL9K_MISE_GO_FOREGROUND=0
