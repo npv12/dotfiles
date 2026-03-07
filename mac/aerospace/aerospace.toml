@@ -88,9 +88,9 @@ start-at-login = true
 inherit-env-vars = true
 
 [exec.env-vars]
-BROWSER = 'Twilight'
+BROWSER = 'Zen'
 # Custom environment variables (examples):
-EDITOR = 'zed'
+EDITOR = 'nvim'
 # Environment variables for executed commands
 # Supports ${VAR} interpolation for existing variables
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
