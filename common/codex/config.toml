@@ -10,6 +10,10 @@ shell_snapshot = true
 undo = true
 voice_transcription = true
 
+[mcp_servers.obsidian]
+args = ["-y", "@mauricio.wolff/mcp-obsidian@latest", "/Users/npv12/projects/obsidian"]
+command = "npx"
+
 [projects."/Users/npv12/dotfiles"]
 trust_level = "trusted"
 
@@ -22,3 +26,6 @@ trust_level = "trusted"
 [tui]
 status_line = ["model-with-reasoning", "context-remaining", "current-dir", "five-hour-limit", "weekly-limit", "context-window-size"]
 theme = "catppuccin-mocha"
+
+[tui.model_availability_nux]
+"gpt-5.3-codex-spark" = 2

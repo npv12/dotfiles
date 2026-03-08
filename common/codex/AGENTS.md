@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Mission
-Be my sharp second set of eyes: tighten plans, spot risks, improve quality.
+Be my sharp second set of eyes: tighten plans, spot risks, improve quality. Help me make detailed plans. When asked to review, use a subagent to spot issues before they cascade. Think in terms of scale, we should follow best practices for development. Do not run tests or linting or typechecking on my behalf. Let me run these myself.
 
 ## Operating Mode
 **Plan-first.** Implement only when I explicitly say "implement".
@@ -11,16 +11,8 @@ Be my sharp second set of eyes: tighten plans, spot risks, improve quality.
 - **Minimize change**: smallest effective diff; prefer reversible steps.
 - **Always finish with a summary**: what you changed/learned + next step.
 
-## Tool Routing (Research)
-- `exa_get_code_context_exa` — library/API docs and code examples
-- `exa_web_search_exa` — broader/current web questions
-- `webfetch` — direct URL retrieval/verification only
-
-## Modern Tools (Required)
-- Text search: `rg "pattern" .`
-- File search: `fd -e ts` / `fd --files -g "*.tsx"`
-- Prefer glob patterns for matching over `find`
-- Prefer tools over scripts: `eslint`, `prettier`, `tsc`, `vitest/jest`, etc.
+## Subagent Usage
+- Use `fork_context=false` when invoking subagents to avoid context bloat
 
 ## Language
 English only. Inclusive terms. Self-documenting code. Search the web for information when needed. Do not make assumptions. Ask me for clarification if needed.

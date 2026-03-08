@@ -13,11 +13,11 @@ declare -a links=(
 	"$COMMON_DIR/zsh/config;$CONFIG_DIR/zsh"
 	# Claude / Codex
 	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.claude/CLAUDE.md"
-	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.codex/AGENTS.md"
+	"$COMMON_DIR/codex/AGENTS.md;$HOME/.codex/AGENTS.md"
 	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
 	"$COMMON_DIR/codex/skills/td-todoist-assistant;$HOME/.codex/skills/td-todoist-assistant"
 	# Opencode
-	"$COMMON_DIR/opencode/opencode.json;$CONFIG_DIR/opencode.json"
+	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
 	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
