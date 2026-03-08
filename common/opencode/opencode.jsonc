@@ -1,7 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    "@mohak34/opencode-notifier"
+    "@mohak34/opencode-notifier",
+    "opencode-qwencode-auth"
   ],
   "provider": {
     "amazon-bedrock": {
@@ -9,50 +10,11 @@
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1": {
           "name": "Claude Opus 4.6"
         },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/14mfriak781u": {
-          "name": "Claude 3 Opus"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/tk90gugo7kjd": {
-          "name": "Llama 3 8B"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/wokleqf1opdg": {
-          "name": "Kimi K2 Thinking"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/v3urwpjzb7hp": {
-          "name": "Claude 3 Sonnet"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/ol493vswmza5": {
-          "name": "Claude 3 Haiku"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/3tlquqtss6a2": {
-          "name": "Llama 3 70B"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/nuudwuswu3jh": {
-          "name": "Claude Sonnet 3.7"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/ozob7d6rxtyk": {
-          "name": "Claude 3.5 Sonnet v2"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/dn03252do266": {
-          "name": "Claude Opus 4"
-        },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/vdbompmrr8ff": {
           "name": "Claude Sonnet 4.5"
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm": {
           "name": "Claude Haiku 4.5"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/f7vobxzh7s9d": {
-          "name": "Claude Sonnet 4"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/ahffj4y9fs4h": {
-          "name": "Claude 3.5 Haiku"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/aaccx2grrcss": {
-          "name": "DeepSeek V3.2"
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/c3rgljqy6w1g": {
-          "name": "DeepSeek R1"
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu": {
           "name": "Kimi K2.5"
