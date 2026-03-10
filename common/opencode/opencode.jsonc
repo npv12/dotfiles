@@ -2,7 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "@mohak34/opencode-notifier",
-    "opencode-qwencode-auth"
+    "opencode-qwencode-auth",
+    "openkilo"
   ],
   "provider": {
     "amazon-bedrock": {
