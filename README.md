@@ -1,42 +1,43 @@
 # Dotfiles
 
-<mark>Warning: Don’t blindly use my settings unless you know what that entails. Use at your own risk!</mark>
+These are my personal dotfiles. They are set up for the way I work, so treat this repo as something to borrow from, not something to copy blindly.
 
-Just my own set of dotfiles to backup and easily restore onto a new system. This is meant for a gnome based desktop environment with arch as the linux base.
+The repo has shared config in `common/` and platform-specific setup in `linux/`, `mac/`, and `wsl/`.
 
-## Components
+## What's here
 
-There's a few special files in the hierarchy.
+- `common/` holds the stuff I use across machines: zsh, tmux, Neovim, git, terminal tools, and a few editor configs.
+- `linux/`, `mac/`, and `wsl/` contain install and linking scripts for each environment.
+- `scripts/setup.sh` detects the current OS and runs the right setup steps.
+- `assets/` has fonts, icons, and a few extras used by the desktop configs.
 
-- **scripts**:- Include some useful scripts to automate stuffs.
-- **zsh**:- It makes use of [zsh4humans](https://github.com/romkatv/zsh4humans)
-- **nvim**:- The base for the setup was taken from [lunarnvim](https://github.com/LunarVim/Neovim-from-scratch) but has been modified for my needs.
-- **icons**:- Includes bibata modern ice theme which was downloaded from [pling](https://www.gnome-look.org/p/1197198)
+Some notes:
 
-## install
+- The zsh setup uses [zsh4humans](https://github.com/romkatv/zsh4humans).
+- The Neovim config started from [LazyVim's starter](https://github.com/LazyVim/starter) and has been tweaked from there.
+- A lot of the color choices were borrowed from [Catppuccin](https://github.com/catppuccin).
 
-Run this:
+## Install
+
+This repo expects to live at `~/dotfiles`.
 
 ```sh
-git clone https://github.com/npv12/dotfiles.git
-cd ~/dotfiles
-script/setup.zsh
+git clone https://github.com/npv12/dotfiles.git "$HOME/dotfiles"
+cd "$HOME/dotfiles"
+./scripts/setup.sh
 ```
 
-This will symlink the appropriate files in `dotfiles` to your home directory.
-Everything is configured and tweaked within `~/dotfiles`.
+The setup script links the right files into your home directory and then runs the platform-specific install script.
 
-## Screenshots
-* Gnome desktop
-<p align="center">
-  <img src="assets/gnome.png"/>
-  <img src="assets/gnome-1.png"/>
-</p>
-* nvim
-<p align="center">
-  <img src="assets/nvim.png"/>
-</p>
+Before you run it:
+
+- On macOS, have Homebrew installed first.
+- On Linux, the install script is written for Arch.
+- On WSL, the setup uses `apt`.
+
+If you only want a few configs, it is probably easier to copy or symlink them by hand from `common/`.
 
 ## Thanks
-* A lot of the dotfiles contains colorschemes which were blatantly kanged from [Catppuccin](https://github.com/catppuccin).
-* [Lunar nvim](https://github.com/LunarVim/)
+
+- [Catppuccin](https://github.com/catppuccin)
+- [LazyVim](https://github.com/LazyVim/LazyVim)
