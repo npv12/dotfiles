@@ -60,24 +60,7 @@ persistent-workspaces = [
   "B",
   "C",
   "D",
-  "E",
-  "F",
-  "G",
-  "I",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z"
+  "E"
 ]
 # Start AeroSpace at login
 start-at-login = true
@@ -156,10 +139,9 @@ alt-e = 'workspace E'
 alt-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
 # Direct resize - immediate size adjustment without entering a mode
 alt-equal = 'resize width -50'
-alt-f = ["layout floating tiling", "exec-and-forget ~/.config/aerospace/center_float.sh"]
+alt-f = ['''exec-and-forget aerospace layout floating && osascript -e 'tell application "System Events" to key code 120 using {control down, option down, command down}' || aerospace layout tiling''', 'mode main']
 alt-h = 'focus left'
 alt-j = 'focus down'
-alt-k = 'focus up'
 alt-l = 'focus right'
 alt-minus = 'resize width +50'
 # Balance window sizes (reset to equal sizes)
