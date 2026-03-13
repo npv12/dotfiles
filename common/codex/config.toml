@@ -14,6 +14,9 @@ voice_transcription = true
 args = ["-y", "@mauricio.wolff/mcp-obsidian@latest", "/Users/npv12/projects/obsidian"]
 command = "npx"
 
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+
 [projects."/Users/npv12/dotfiles"]
 trust_level = "trusted"
 
@@ -28,4 +31,4 @@ status_line = ["model-with-reasoning", "context-remaining", "current-dir", "five
 theme = "catppuccin-mocha"
 
 [tui.model_availability_nux]
-"gpt-5.3-codex-spark" = 2
+"gpt-5.3-codex-spark" = 3

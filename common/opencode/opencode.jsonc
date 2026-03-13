@@ -3,23 +3,23 @@
   "plugin": [
     "@mohak34/opencode-notifier",
     "opencode-qwencode-auth",
-    "openkilo"
+    "openkilo",
   ],
   "provider": {
     "amazon-bedrock": {
       "models": {
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1": {
-          "name": "Claude Opus 4.6"
+          "name": "Claude Opus 4.6",
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/vdbompmrr8ff": {
-          "name": "Claude Sonnet 4.5"
+          "name": "Claude Sonnet 4.5",
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm": {
-          "name": "Claude Haiku 4.5"
+          "name": "Claude Haiku 4.5",
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu": {
-          "name": "Kimi K2.5"
-        }
+          "name": "Kimi K2.5",
+        },
       },
       "blacklist": [
         "ai21.jamba-1-5-large-v1:0",
@@ -120,28 +120,23 @@
         "writer.palmyra-x4-v1:0",
         "writer.palmyra-x5-v1:0",
         "zai.glm-4.7",
-        "zai.glm-4.7-flash"
+        "zai.glm-4.7-flash",
       ],
       "options": {
         "region": "us-west-2",
-        "profile": "bedrock"
-      }
-    }
+        "profile": "bedrock",
+      },
+    },
   },
   "formatter": false,
   "mcp": {
     "exa": {
       "type": "remote",
-      "url": "https://mcp.exa.ai/mcp"
+      "url": "https://mcp.exa.ai/mcp",
     },
-    "obsidian": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@mauricio.wolff/mcp-obsidian@latest",
-        "{env:HOME}/projects/obsidian"
-      ]
-    }
-  }
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+    },
+  },
 }

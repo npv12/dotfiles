@@ -13,9 +13,18 @@
   },
   "agent_servers": {},
   "agent": {
+    "tool_permissions": {
+      "tools": {
+        "web_search": {
+          "default": "allow"
+        }
+      }
+    },
     "default_model": {
+      "effort": "medium",
+      "enable_thinking": true,
       "provider": "zed.dev",
-      "model": "claude-haiku-4-5"
+      "model": "claude-sonnet-4-6"
     },
     "favorite_models": [
       {
