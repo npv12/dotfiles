@@ -16,8 +16,8 @@ if [ -z "$WEATHER_JSON" ]; then
 fi
 
 # Extract data
-TEMPERATURE=$(echo "$WEATHER_JSON" | jq -r '.current_condition[0].temp_C')
-WEATHER_CODE=$(echo "$WEATHER_JSON" | jq -r '.current_condition[0].weatherCode')
+TEMPERATURE=$(echo "$WEATHER_JSON" | jq -r '.data.current_condition[0].temp_C')
+WEATHER_CODE=$(echo "$WEATHER_JSON" | jq -r '.data.current_condition[0].weatherCode')
 
 # Choose icon
 case "$WEATHER_CODE" in
