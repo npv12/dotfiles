@@ -25,8 +25,10 @@ vim.keymap.set("n", "<D-Left>", "^", { desc = "Line start", noremap = true })
 vim.keymap.set("i", "<D-Right>", "<C-o>$", { desc = "Line end", noremap = true })
 vim.keymap.set("n", "<D-Right>", "$", { desc = "Line end", noremap = true })
 
--- Cmd+Backspace: delete to line start (insert)
 vim.keymap.set("i", "<D-BS>", "<C-o>d0", { desc = "Delete to line start", noremap = true })
+
+-- Cmd+B: show/toggle sidebar file explorer (LazyVim Snacks explorer)
+vim.keymap.set("n", "<D-b>", "<cmd>Snacks explorer<cr>", { desc = "Sidebar", noremap = true })
 
 -- Opencode keymaps
 vim.keymap.set("n", "<leader>oa", function()
