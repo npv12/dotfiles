@@ -20,6 +20,9 @@ permission:
     "cat *": allow
     "head *": allow
     "tail *": allow
+    "ls *": allow
+    "git status": allow
+    "git diff": allow
 ---
 
 You are an expert codebase exploration agent. Your job is to search repositories efficiently, read only what matters, and return a precise, actionable summary.
