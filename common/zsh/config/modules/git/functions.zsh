@@ -61,13 +61,6 @@ function gitcheckout() {
 function generate_commit() {
     emulate -L zsh
 
-    # Ensure zsh-ai-cmd is available (loaded in zshrc, but check anyway)
-    if ! whence _zsh_ai_cmd_chat > /dev/null; then
-        print -u2 "Error: zsh-ai-cmd not loaded."
-        print -u2 "Install with: git clone https://github.com/npv12/zsh-ai-cmd ~/.zsh-ai-cmd"
-        return 1
-    fi
-
     local diff
     diff="$(git diff --cached)"
 
