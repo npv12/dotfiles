@@ -67,11 +67,16 @@ function zsh_add_file() {
 typeset -ga __ZSH_DEFER_QUEUE=()
 typeset -gi __ZSH_DEFER_RAN=0
 
+# Queue startup work for zle idle (romkatv/zsh-defer). Caveats:
+# - Deferred code runs from zle: no stdin (do not defer keychain/passphrase prompts).
+# - Function scope + LOCAL_OPTIONS: sourced files should use typeset -g for globals.
+# - Default zsh-defer hides stdout/stderr (+1 +2 to show); plugins that mis-init from zle may need +flags.
+# Prefer fewer, larger -c blocks over many tiny defers to cut prompt redraws unless you want staged UI.
 function zsh_defer_add() {
     [[ -n "$1" ]] || return 0
 
     if [[ "${ZSH_BENCHMARK:-}" != "1" ]] && (( $+functions[zsh-defer] )); then
-        zsh-defer eval "$1"
+        zsh-defer -c "$1"
         return 0
     fi
 
@@ -122,6 +127,10 @@ zsh_add_file "zsh-binding"
 # initialize Zsh. After this point console I/O is unavailable until Zsh
 # is fully initialized. Everything that requires user interaction or can
 # perform network I/O must be done above. Everything else is best done below.
+if command -v keychain &>/dev/null; then
+    eval "$(keychain -q --eval "$HOME/.ssh/id_git" 2>/dev/null)"
+fi
+
 z4h init || return
 
 # Additional repos

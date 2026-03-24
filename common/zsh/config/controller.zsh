@@ -1,18 +1,19 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 # beeping is annoying
 unsetopt BEEP
 
-zsh_defer_add 'zsh_add_file "zsh-aliases"'
-zsh_defer_add 'zsh_add_file "zsh-exports"'
-zsh_defer_add 'zsh_add_file "zsh-functions"'
-zsh_defer_add 'zsh_add_file "zsh-mise"'
-zsh_defer_add 'zsh_add_file "zsh-completion"'
+# One deferred unit: fewer zle idle round-trips than separate zsh_defer_add per file.
+function _zsh_deferred_controller() {
+    zsh_add_file "zsh-aliases"
+    zsh_add_file "zsh-exports"
+    zsh_add_file "zsh-functions"
+    zsh_add_file "zsh-completion"
+    zsh_add_file "zsh-mise"
+    source "$ZSH_DIR/modules/load.zsh"
+    if command -v zoxide &>/dev/null; then
+        eval "$(zoxide init zsh)"
+    fi
+}
 
-# Load modules
-zsh_defer_add 'source "$ZSH_DIR/modules/load.zsh"'
-
-zsh_defer_add 'if command -v keychain &>/dev/null; then eval `keychain -q --eval /home/npv12/.ssh/id_git`; fi'
-
-# Zoxide rocks
-zsh_defer_add 'if command -v zoxide &>/dev/null; then eval "$(zoxide init zsh)"; fi'
+zsh_defer_add _zsh_deferred_controller

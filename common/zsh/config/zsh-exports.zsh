@@ -23,6 +23,11 @@ export HISTORY_IGNORE="(pass * | mise set *)"
 # Micro
 export "MICRO_TRUECOLOR=1"
 
+if command -v opencode &> /dev/null; then
+	export OPENCODE_EXPERIMENTAL_EXA=true
+	export OPENCODE_EXPERIMENTAL_PLAN_MODE=true
+fi
+
 # Python
 export AUTOSWITCH_DEFAULT_PYTHON=python3
 
