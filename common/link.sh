@@ -35,6 +35,7 @@ declare -a links=(
 	"$COMMON_DIR/tmux/gitmux.conf;$HOME/.gitmux.conf"
 	"$COMMON_DIR/zed/keymap.json;$CONFIG_DIR/zed/keymap.json"
 	"$COMMON_DIR/zed/settings.json;$CONFIG_DIR/zed/settings.json"
+	"$COMMON_DIR/zed/themes;$CONFIG_DIR/zed/themes"
 	"$COMMON_DIR/bin/tmux-session-manager;$HOME/.local/bin/tmux-session-manager"
 )
 
