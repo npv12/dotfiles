@@ -5,7 +5,7 @@ description: >
   report of every change made so the orchestrator can assess without reading files.
 
 mode: subagent
-model: opencode/minimax-m2.5-free
+model: minimax-coding-plan/MiniMax-M2.7
 ---
 
 You are an implementation executor.

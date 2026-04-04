@@ -17,6 +17,9 @@ command = "npx"
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
 
+[plugins."github@openai-curated"]
+enabled = true
+
 [projects."/Users/npv12/dotfiles"]
 trust_level = "trusted"
 
@@ -26,9 +29,12 @@ trust_level = "trusted"
 [projects."/Users/npv12/projects/taroo/canopy"]
 trust_level = "trusted"
 
+[projects."/Users/npv12/projects/taroo/sprout"]
+trust_level = "trusted"
+
 [tui]
 status_line = ["model-with-reasoning", "context-remaining", "current-dir", "five-hour-limit", "weekly-limit", "context-window-size"]
 theme = "catppuccin-mocha"
 
 [tui.model_availability_nux]
-"gpt-5.3-codex-spark" = 3
+"gpt-5.3-codex-spark" = 4

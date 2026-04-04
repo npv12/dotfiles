@@ -5,7 +5,7 @@ description: >-
   patterns, and returning a structured summary the orchestrator can act on directly
   without reading any files themselves.
 mode: subagent
-model: opencode/minimax-m2.5-free
+model: minimax-coding-plan/MiniMax-M2.7
 tools:
   write: false
   edit: false

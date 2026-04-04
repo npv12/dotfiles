@@ -1,6 +1,7 @@
 {
   "edit_predictions": {
-    "provider": "copilot"
+    "mode": "eager",
+    "provider": "zed"
   },
   "git": {
     "inline_blame": {}

@@ -5,7 +5,7 @@ description: >-
   final pass after all tasks are complete. Read-only — never modifies files.
   Returns a structured verdict the orchestrator can act on directly.
 mode: subagent
-model: opencode/minimax-m2.5-free
+model: minimax-coding-plan/MiniMax-M2.7
 tools:
   write: false
   edit: false
