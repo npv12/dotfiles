@@ -136,7 +136,11 @@ alt-comma = 'layout accordion horizontal vertical'
 alt-d = 'fullscreen'
 alt-e = 'workspace E'
 # Launch terminal (Ghostty)
-alt-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
+alt-enter = '''exec-and-forget osascript -e '
+tell application "Ghostty"
+    new window
+end tell'
+'''
 # Direct resize - immediate size adjustment without entering a mode
 alt-equal = 'resize width -50'
 alt-f = ['''exec-and-forget aerospace layout floating && osascript -e 'tell application "System Events" to key code 120 using {control down, option down, command down}' || aerospace layout tiling''', 'mode main']
