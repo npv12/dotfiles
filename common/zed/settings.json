@@ -1,4 +1,5 @@
 {
+  "diff_view_style": "split",
   "edit_predictions": {
     "mode": "eager",
     "provider": "zed"
@@ -57,9 +58,9 @@
   },
   "base_keymap": "JetBrains",
   "icon_theme": {
-    "mode": "system",
-    "light": "Catppuccin Latte",
-    "dark": "Catppuccin Mocha"
+    "mode": "light",
+    "light": "JetBrains New UI Icons (Light)",
+    "dark": "JetBrains New UI Icons (Dark)"
   },
   "format_on_save": "off",
   "autosave": {
@@ -81,7 +82,7 @@
   "buffer_font_size": 16,
   "theme": {
     "mode": "dark",
-    "light": "One Light",
-    "dark": "Catppuccin Mocha (Blur) [Heavy]"
+    "light": "Catppuccin Latte (peach)",
+    "dark": "Catppuccin Mocha (peach)"
   }
 }

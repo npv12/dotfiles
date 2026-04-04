@@ -1,14 +1,13 @@
 [
   {
-    "context": "Editor",
     "bindings": {
-      "alt-g": [
-        "task::Spawn",
-        {
-          "task_name": "gitdiff",
-          "reveal_target": "center"
-        }
-      ]
+      "cmd-p": "file_finder::Toggle",
+      "cmd-n": "workspace::NewFile",
+      "alt-up": "editor::MoveLineUp",
+      "alt-down": "editor::MoveLineDown",
+      "cmd-b": "workspace::ToggleLeftDock",
+      "cmd-shift-b": "workspace::ToggleRightDock",
+      "cmd-shift-t": "terminal_panel::Toggle"
     }
   }
 ]
