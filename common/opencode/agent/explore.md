@@ -5,7 +5,7 @@ description: >-
   patterns, and returning a structured summary the orchestrator can act on directly
   without reading any files themselves.
 mode: subagent
-model: minimax-coding-plan/MiniMax-M2.7
+model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
 tools:
   write: false
   edit: false

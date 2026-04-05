@@ -5,7 +5,7 @@ description: >
   report of every change made so the orchestrator can assess without reading files.
 
 mode: subagent
-model: minimax-coding-plan/MiniMax-M2.7
+model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
 ---
 
 You are an implementation executor.

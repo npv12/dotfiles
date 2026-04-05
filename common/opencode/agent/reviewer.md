@@ -5,7 +5,8 @@ description: >-
   final pass after all tasks are complete. Read-only — never modifies files.
   Returns a structured verdict the orchestrator can act on directly.
 mode: subagent
-model: minimax-coding-plan/MiniMax-M2.7
+model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
+
 tools:
   write: false
   edit: false
