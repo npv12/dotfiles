@@ -72,7 +72,7 @@
   },
   "git_panel": {
     "sort_by_path": true,
-    "tree_view": false
+    "tree_view": true
   },
   "base_keymap": "VSCode",
   "icon_theme": {

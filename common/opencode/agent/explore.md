@@ -6,9 +6,6 @@ description: >-
   without reading any files themselves.
 mode: subagent
 model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
-tools:
-  write: false
-  edit: false
 permission:
   edit: deny
   bash:

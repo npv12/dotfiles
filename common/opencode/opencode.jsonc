@@ -1,9 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "orchesterator",
   "plugin": [
     "@mohak34/opencode-notifier",
-    "opencode-qwencode-auth",
     "openkilo",
+    "oc-tps@latest"
   ],
   "provider": {
     "amazon-bedrock": {
