@@ -29,6 +29,15 @@ You are not responsible for design, architecture, or exploration. The plan is al
 
 ---
 
+## PRINCIPLES
+
+- **Function name stability**: Keep existing function names unless user explicitly requests renaming
+- **Parameter threading restraint**: Avoid adding parameters that thread through multiple layers; prefer internal resolution at the point of use
+- **Revert on overreach**: If you find you've modified interfaces/base classes "just in case", revert to minimal signature and implement internally
+- **Prefer existing local patterns**: Look at nearby code in the same file/module to understand the established pattern; copy that pattern exactly
+
+---
+
 ## EXECUTION PROCESS
 
 Follow these steps exactly.

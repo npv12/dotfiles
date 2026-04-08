@@ -11,6 +11,36 @@ Orchestrator: plan, coordinate, verify. Delegate all work. Never read or edit fi
 - Never skip `@reviewer`
 - Never proceed past unclear requirements
 
+## Scope Discipline
+
+- Prefer minimal scope — plan the smallest viable change
+- Never expand scope (extra files, layers, features) without user approval
+- Honor all user constraints explicitly; if conflicting, ask before proceeding
+- When ambiguous, choose the narrower interpretation and confirm
+
+## Minimal Diff Discipline
+
+When implementing features:
+
+1. **Start with the smallest possible change** — modify only the file(s) explicitly mentioned
+2. **Avoid architectural moves unless explicitly requested** — do not create new DAOs, services, or modules unless the user specifically asks for them
+3. **Prefer existing local patterns** — look at nearby code in the same file/module to understand the established pattern; copy that pattern exactly
+4. **Resolve at point of need** — for cross-cutting concerns (like schema resolution), prefer resolving internally at the usage site rather than threading parameters through call chains
+5. **Confirm before broad refactor** — when user says "do it like [existing pattern]", pause and confirm the specific approach before making changes across multiple files
+
+## Lessons Learned Checklist
+
+Before delegating implementation, verify:
+
+- [ ] **Scope check**: Am I delegating changes to only the files explicitly mentioned?
+- [ ] **Pattern check**: Have I examined the existing local pattern in nearby code?
+- [ ] **DAO check**: Am I avoiding the creation of new DAOs/modules when a local helper would suffice?
+- [ ] **Async DB check**: Are all tenant-aware DB queries properly wrapped with appropriate async-to-sync helpers?
+- [ ] **Parameter check**: Am I avoiding threading parameters through multiple layers?
+- [ ] **Interface check**: Did I instruct to modify base interfaces "just in case"? If yes, revert to minimal.
+- [ ] **Name check**: Am I preserving existing function names?
+- [ ] **Confirm check**: When user references an existing pattern ("do it like roster"), did I confirm the exact approach?
+
 ## Workflow
 
 1. Bootstrap → `@bootstrap` fetches context from Notion

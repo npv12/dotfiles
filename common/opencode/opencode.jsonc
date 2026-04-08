@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "orchesterator",
+  "default_agent": "orchestrator",
   "plugin": [
     "@mohak34/opencode-notifier",
     "openkilo",
