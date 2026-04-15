@@ -1,8 +1,18 @@
 {
+  "cli_default_open_behavior": "existing_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
   "diff_view_style": "split",
   "edit_predictions": {
     "mode": "eager",
-    "provider": "zed"
+    "provider": "codestral"
   },
   "git": {
     "inline_blame": {}
@@ -12,19 +22,19 @@
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "language_models": {
     "openai_compatible": {
-      "Minimax": {
-        "api_url": "https://api.minimax.io/v1",
+      "Fireworks": {
+        "api_url": "https://api.fireworks.ai/inference/v1",
         "available_models": [
           {
-            "name": "MiniMax-M2.7",
-            "max_tokens": 200000,
+            "name": "accounts/fireworks/routers/kimi-k2p5-turbo",
+            "max_tokens": 256000,
             "max_output_tokens": 32000,
-            "max_completion_tokens": 200000,
+            "max_completion_tokens": 256000,
             "capabilities": {
               "tools": true,
-              "images": true,
+              "images": false,
               "parallel_tool_calls": true,
-              "prompt_cache_key": true,
+              "prompt_cache_key": false,
               "chat_completions": true
             }
           }
@@ -32,31 +42,41 @@
       }
     }
   },
-  "agent_servers": {},
+  "agent_servers": {
+    "qwen-code": {
+      "type": "registry"
+    },
+    "gemini": {
+      "type": "registry"
+    },
+    "opencode": {
+      "favorite_config_option_values": {
+        "model": [
+          "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo",
+          "openai/gpt-5.3-codex",
+          "openai/gpt-5.4/medium"
+        ]
+      },
+      "type": "registry"
+    }
+  },
   "agent": {
+    "flexible": false,
+    "sidebar_side": "right",
+    "dock": "right",
     "tool_permissions": {
       "tools": {
-        "web_search": {
+        "search_web": {
           "default": "allow"
         }
       }
     },
     "default_model": {
       "enable_thinking": false,
-      "provider": "Minimax",
-      "model": "MiniMax-M2.7"
+      "provider": "Fireworks",
+      "model": "accounts/fireworks/routers/kimi-k2p5-turbo"
     },
     "favorite_models": [
-      {
-        "provider": "Synthetic",
-        "model": "hf:moonshotai/Kimi-K2.5",
-        "enable_thinking": true
-      },
-      {
-        "provider": "copilot_chat",
-        "model": "gpt-5-mini",
-        "enable_thinking": false
-      },
       {
         "provider": "zed.dev",
         "model": "claude-sonnet-4-6",
@@ -66,13 +86,19 @@
         "provider": "zed.dev",
         "model": "claude-haiku-4-5",
         "enable_thinking": false
+      },
+      {
+        "provider": "Fireworks",
+        "model": "accounts/fireworks/routers/kimi-k2p5-turbo",
+        "enable_thinking": false
       }
     ],
     "model_parameters": []
   },
   "git_panel": {
+    "dock": "left",
     "sort_by_path": true,
-    "tree_view": true
+    "tree_view": false
   },
   "base_keymap": "VSCode",
   "icon_theme": {
