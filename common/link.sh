@@ -22,11 +22,6 @@ declare -a links=(
 	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
 	"$COMMON_DIR/opencode/opencode-quota.jsonc;$CONFIG_DIR/opencode/opencode-quota.jsonc"
-	# Kilo
-	"$COMMON_DIR/kilo/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
-	"$COMMON_DIR/kilo/AGENTS.md;$CONFIG_DIR/AGENTS.md"
-	"$COMMON_DIR/kilo/agent;$CONFIG_DIR/opencode/agent"
-	"$COMMON_DIR/kilo/skills;$CONFIG_DIR/opencode/skill"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"
