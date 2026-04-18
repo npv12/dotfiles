@@ -3,8 +3,8 @@
   "default_agent": "orchestrator",
   "plugin": [
     "@mohak34/opencode-notifier",
-    "openkilo",
-    "oc-tps@latest"
+    "oc-tps@latest",
+    "@slkiser/opencode-quota"
   ],
   "provider": {
     "amazon-bedrock": {
@@ -17,10 +17,7 @@
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm": {
           "name": "Claude Haiku 4.5",
-        },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu": {
-          "name": "Kimi K2.5",
-        },
+        }
       },
       "blacklist": [
         "ai21.jamba-1-5-large-v1:0",

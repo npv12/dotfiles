@@ -12,7 +12,7 @@
   "diff_view_style": "split",
   "edit_predictions": {
     "mode": "eager",
-    "provider": "codestral"
+    "provider": "zed"
   },
   "git": {
     "inline_blame": {}

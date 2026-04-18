@@ -9,5 +9,9 @@
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "accounts/fireworks/routers/kimi-k2p5-turbo",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "accounts/fireworks/routers/kimi-k2p5-turbo"
   },
-  "model": "accounts/fireworks/routers/kimi-k2p5-turbo"
+  "model": "accounts/fireworks/routers/kimi-k2p5-turbo",
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true
+  }
 }
