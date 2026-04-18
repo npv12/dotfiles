@@ -5,6 +5,7 @@
     "@mohak34/opencode-notifier",
     "oc-tps@latest",
     "@slkiser/opencode-quota",
+    "@zhafron/opencode-memory-md"
   ],
   "experimental": {
     "quotaToast": {
@@ -136,10 +137,6 @@
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp",
-    },
-    "notion": {
-      "type": "remote",
-      "url": "https://mcp.notion.com/mcp",
     },
   },
 }
