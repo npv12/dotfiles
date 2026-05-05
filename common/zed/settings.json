@@ -21,25 +21,8 @@
   "buffer_font_weight": 500.0,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "language_models": {
-    "openai_compatible": {
-      "Fireworks": {
-        "api_url": "https://api.fireworks.ai/inference/v1",
-        "available_models": [
-          {
-            "name": "accounts/fireworks/routers/kimi-k2p5-turbo",
-            "max_tokens": 256000,
-            "max_output_tokens": 32000,
-            "max_completion_tokens": 256000,
-            "capabilities": {
-              "tools": true,
-              "images": false,
-              "parallel_tool_calls": true,
-              "prompt_cache_key": false,
-              "chat_completions": true
-            }
-          }
-        ]
-      }
+    "opencode": {
+      "show_zen_models": false
     }
   },
   "agent_servers": {
@@ -73,8 +56,8 @@
     },
     "default_model": {
       "enable_thinking": false,
-      "provider": "Fireworks",
-      "model": "accounts/fireworks/routers/kimi-k2p5-turbo"
+      "provider": "opencode",
+      "model": "free/minimax-m2.5-free"
     },
     "favorite_models": [
       {
