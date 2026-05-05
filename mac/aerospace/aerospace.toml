@@ -19,7 +19,7 @@ automatically-unhide-macos-hidden-apps = false
 config-version = 2
 # Default layout for new workspaces
 # Options: 'tiles', 'accordion'
-default-root-container-layout = 'tiles'
+default-root-container-layout = 'accordion'
 # Default container orientation for tiles layout
 # Options: 'horizontal', 'vertical', 'auto'
 # 'auto' - Automatically choose based on screen dimensions
