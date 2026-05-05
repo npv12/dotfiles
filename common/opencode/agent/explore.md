@@ -5,7 +5,7 @@ description: >-
   patterns, and returning a structured summary the orchestrator can act on directly
   without reading any files themselves.
 mode: subagent
-model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
+model: opencode-go/deepseek-v4-flash
 permission:
   edit: deny
   bash:

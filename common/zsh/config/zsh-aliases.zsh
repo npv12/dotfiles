@@ -68,3 +68,6 @@ fi
 if command -v podman &> /dev/null; then
     alias docker=podman
 fi
+
+# OpenCode Go
+alias opencode="OPENCODE_GO_WORKSPACE_ID=\"\$(pass quota/opencode/workspace_id)\" OPENCODE_GO_AUTH_COOKIE=\"\$(pass quota/opencode/cookie)\" opencode"

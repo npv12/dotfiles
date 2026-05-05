@@ -5,7 +5,7 @@ description: >
   report of every change made so the orchestrator can assess without reading files.
 
 mode: subagent
-model: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo
+model: ollama-cloud/kimi-k2.6:cloud
 ---
 
 You are an implementation executor.
