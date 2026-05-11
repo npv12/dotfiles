@@ -5,7 +5,7 @@ description: >-
   patterns, and returning a structured summary the orchestrator can act on directly
   without reading any files themselves.
 mode: subagent
-model: opencode-go/deepseek-v4-flash
+model: opencode-go/deepseek-v4-pro
 permission:
   edit: deny
   bash:

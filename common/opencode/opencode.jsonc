@@ -5,7 +5,14 @@
     "@mohak34/opencode-notifier",
     "oc-tps@latest",
     "@slkiser/opencode-quota",
-    "@zhafron/opencode-memory-md"
+    "@zhafron/opencode-memory-md",
+    [
+      "@plannotator/opencode@latest",
+      {
+        "workflow": "plan-agent",
+        "planningAgents": ["plan", "orchestrator"],
+      },
+    ],
   ],
   "experimental": {
     "quotaToast": {

@@ -3,7 +3,7 @@ description: >
   Pipeline critic agent. Independent code review. Checks git diffs against plan.
   Verifies bugs, security, edge cases, style. Used by orchestrator during REVIEW.
 mode: subagent
-model: ollama-cloud/glm-5.1
+model: opencode-go/qwen3.6-plus
 temperature: 0.2
 color: "#f38ba8"
 ---
