@@ -26,12 +26,6 @@
     }
   },
   "agent_servers": {
-    "qwen-code": {
-      "type": "registry"
-    },
-    "gemini": {
-      "type": "registry"
-    },
     "opencode": {
       "favorite_config_option_values": {
         "model": [
@@ -57,7 +51,7 @@
     "default_model": {
       "enable_thinking": false,
       "provider": "opencode",
-      "model": "free/minimax-m2.5-free"
+      "model": "go/minimax-m2.7"
     },
     "favorite_models": [
       {
