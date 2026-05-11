@@ -5,7 +5,7 @@ description: >
   report of every change made so the orchestrator can assess without reading files.
 
 mode: subagent
-model: ollama-cloud/kimi-k2.6:cloud
+model: ollama-cloud/kimi-k2.5
 ---
 
 You are an implementation executor.
