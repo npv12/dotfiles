@@ -19,7 +19,7 @@ automatically-unhide-macos-hidden-apps = false
 config-version = 2
 # Default layout for new workspaces
 # Options: 'tiles', 'accordion'
-default-root-container-layout = 'accordion'
+# default-root-container-layout = 'accordion'
 # Default container orientation for tiles layout
 # Options: 'horizontal', 'vertical', 'auto'
 # 'auto' - Automatically choose based on screen dimensions
@@ -222,6 +222,10 @@ if.app-id = 'com.apple.calculator'
 check-further-callbacks = false
 run = 'move-node-to-workspace 9'
 if.app-id = 'com.microsoft.teams2'
+
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = "com.mitchellh.ghostty"
 
 # Force specific workspaces to specific monitors
 # Format: workspace-number = "monitor-pattern" or ["pattern1", "pattern2"]
