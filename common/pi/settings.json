@@ -16,7 +16,9 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@juicesharp/rpiv-todo",
     "npm:@tintinweb/pi-subagents",
-    "npm:pi-context"
+    "npm:pi-context",
+    "npm:pi-qq",
+    "npm:pi-usage-bars"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.3-codex",
