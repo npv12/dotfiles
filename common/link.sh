@@ -11,17 +11,6 @@ declare -a links=(
 	"$COMMON_DIR/zsh/zshenv;$HOME/.zshenv"
 	"$COMMON_DIR/zsh/zprofile;$HOME/.zprofile"
 	"$COMMON_DIR/zsh/config;$CONFIG_DIR/zsh"
-	# Claude / Codex
-	"$COMMON_DIR/claude/CLAUDE.md;$HOME/.claude/CLAUDE.md"
-	"$COMMON_DIR/codex/AGENTS.md;$HOME/.codex/AGENTS.md"
-	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
-	"$COMMON_DIR/codex/skills/td-todoist-assistant;$HOME/.codex/skills/td-todoist-assistant"
-	# Opencode
-	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
-	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
-	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
-	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
-	"$COMMON_DIR/opencode/opencode-quota.jsonc;$CONFIG_DIR/opencode/opencode-quota.jsonc"
 	# Pi
 	"$COMMON_DIR/pi/AGENTS.md;$HOME/.pi/agent/AGENTS.md"
 	"$COMMON_DIR/pi/agents;$HOME/.pi/agent/agents"
@@ -35,22 +24,22 @@ declare -a links=(
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"
-	# Misc Apps
-	"$COMMON_DIR/gdu;$CONFIG_DIR/gdu"
+	# Tmux
 	"$COMMON_DIR/tmux/tmux.conf;$HOME/.tmux.conf"
 	"$COMMON_DIR/tmux/gitmux.conf;$HOME/.gitmux.conf"
+	"$COMMON_DIR/bin/tmux-session-manager;$HOME/.local/bin/tmux-session-manager"
+	# Zed
 	"$COMMON_DIR/zed/keymap.json;$CONFIG_DIR/zed/keymap.json"
 	"$COMMON_DIR/zed/settings.json;$CONFIG_DIR/zed/settings.json"
 	"$COMMON_DIR/zed/themes;$CONFIG_DIR/zed/themes"
-	"$COMMON_DIR/bin/tmux-session-manager;$HOME/.local/bin/tmux-session-manager"
+	# Misc Apps
+	"$COMMON_DIR/gdu;$CONFIG_DIR/gdu"
 )
 
 # --- Define conditional links (based on command existence) ---
 # Format: "command;source;destination"
 declare -a conditional_links=(
 	"ghostty;$COMMON_DIR/ghostty;$CONFIG_DIR/ghostty"
-	"alacritty;$COMMON_DIR/alacritty;$CONFIG_DIR/alacritty"
-	"kitty;$COMMON_DIR/kitty;$CONFIG_DIR/kitty"
 	"nvim;$COMMON_DIR/nvim;$CONFIG_DIR/nvim"
 	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
 	"bottom;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
