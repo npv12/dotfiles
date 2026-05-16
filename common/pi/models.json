@@ -1,0 +1,62 @@
+{
+  "providers": {
+    "bedrock": {
+      "name": "Amazon Bedrock",
+      "baseUrl": "https://bedrock-runtime.us-west-2.amazonaws.com",
+      "api": "bedrock-converse-stream",
+      "apiKey": "AWS_PROFILE",
+      "models": [
+        {
+          "id": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1",
+          "name": "Claude Opus 4.6",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 15.0,
+            "output": 75.0,
+            "cacheRead": 1.5,
+            "cacheWrite": 18.75
+          }
+        },
+        {
+          "id": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/vdbompmrr8ff",
+          "name": "Claude Sonnet 4.5",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 3.0,
+            "output": 15.0,
+            "cacheRead": 0.3,
+            "cacheWrite": 3.75
+          }
+        },
+        {
+          "id": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm",
+          "name": "Claude Haiku 4.5",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0.25,
+            "output": 1.25,
+            "cacheRead": 0.025,
+            "cacheWrite": 0.3125
+          }
+        }
+      ]
+    }
+  }
+}

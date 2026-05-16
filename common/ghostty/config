@@ -28,5 +28,6 @@ quick-terminal-space-behavior = remain
 # Secure Input
 macos-auto-secure-input = true
 
-# Opencode Keybind -> Required for opencode shift+enter to work in the terminal
-keybind = shift+enter=text:\x1b\r
+# Shift+Enter sends ESC CR for newline support in terminals/editors
+# Works with tmux when extended-keys is enabled (csi-u format)
+keybind = shift+enter=text:\n

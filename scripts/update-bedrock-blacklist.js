@@ -27,7 +27,6 @@ async function main() {
   console.log(modelIds.join('\n'));
 
   const files = [
-    'common/kilo/opencode.jsonc',
     'common/opencode/opencode.jsonc'
   ];
 

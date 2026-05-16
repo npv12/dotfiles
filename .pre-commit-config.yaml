@@ -59,9 +59,10 @@ repos:
           (?x)^(
             assets/fonts/.*|
             common/bat/themes/.*|
-            .*\.tmTheme|
+            .*\.tmTheme$|
             assets/icons/.*|
-            scripts/deprecated/.*
+            scripts/deprecated/.*|
+            .*lock\.json$$
           )$
 
   # Zsh: syntax-only check (no auto-format) to catch parse errors
