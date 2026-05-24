@@ -11,6 +11,9 @@ declare -a links=(
 	"$COMMON_DIR/zsh/zshenv;$HOME/.zshenv"
 	"$COMMON_DIR/zsh/zprofile;$HOME/.zprofile"
 	"$COMMON_DIR/zsh/config;$CONFIG_DIR/zsh"
+	# Codex
+	"$COMMON_DIR/codex/AGENTS.md;$HOME/.codex/AGENTS.md"
+	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
 	# Opencode
 	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
