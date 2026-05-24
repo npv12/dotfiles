@@ -9,7 +9,8 @@
       "cmd-shift-b": "workspace::ToggleRightDock",
       "cmd-shift-t": "terminal_panel::Toggle",
       "cmd-[": "pane::GoBack",
-      "cmd-]": "pane::GoForward"
+      "cmd-]": "pane::GoForward",
+      "cmd-shift-g": "quick_search::Toggle"
     }
   }
 ]

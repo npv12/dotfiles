@@ -19,28 +19,16 @@
   },
   "ui_font_family": "Inter Variable",
   "buffer_font_weight": 500.0,
-  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "markdown_preview_font_family": "Inter Variable",
+  "markdown_preview_code_font_family": "JetBrainsMono Nerd Font Mono",
   "language_models": {
     "opencode": {
       "show_zen_models": false
     }
   },
-  "agent_servers": {
-    "codex-acp": {
-      "type": "registry"
-    },
-    "opencode": {
-      "favorite_config_option_values": {
-        "model": [
-          "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo",
-          "openai/gpt-5.3-codex",
-          "openai/gpt-5.4/medium"
-        ]
-      },
-      "type": "registry"
-    }
-  },
   "agent": {
+    "default_profile": "write",
     "flexible": false,
     "sidebar_side": "right",
     "dock": "right",
@@ -52,9 +40,10 @@
       }
     },
     "default_model": {
-      "enable_thinking": false,
+      "effort": "max",
+      "enable_thinking": true,
       "provider": "opencode",
-      "model": "go/minimax-m2.7"
+      "model": "go/deepseek-v4-flash"
     },
     "favorite_models": [
       {
@@ -68,9 +57,16 @@
         "enable_thinking": false
       },
       {
-        "provider": "Fireworks",
-        "model": "accounts/fireworks/routers/kimi-k2p5-turbo",
-        "enable_thinking": false
+        "provider": "openai-subscribed",
+        "model": "gpt-5.3-codex",
+        "enable_thinking": true,
+        "effort": "medium"
+      },
+      {
+        "provider": "opencode",
+        "model": "go/deepseek-v4-flash",
+        "enable_thinking": true,
+        "effort": "max"
       }
     ],
     "model_parameters": []
@@ -78,13 +74,13 @@
   "git_panel": {
     "dock": "left",
     "sort_by_path": true,
-    "tree_view": false
+    "tree_view": true
   },
   "base_keymap": "VSCode",
   "icon_theme": {
     "mode": "dark",
-    "light": "JetBrains New UI Icons (Light)",
-    "dark": "JetBrains New UI Icons (Dark)"
+    "light": "Warm Charmed Icons",
+    "dark": "Soft Charmed Icons"
   },
   "format_on_save": "off",
   "autosave": {
@@ -104,6 +100,7 @@
   },
   "ui_font_size": 17.0,
   "buffer_font_size": 16,
+  "completion_menu_item_kind": "symbol",
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Latte (peach)",
