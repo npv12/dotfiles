@@ -11,16 +11,12 @@ declare -a links=(
 	"$COMMON_DIR/zsh/zshenv;$HOME/.zshenv"
 	"$COMMON_DIR/zsh/zprofile;$HOME/.zprofile"
 	"$COMMON_DIR/zsh/config;$CONFIG_DIR/zsh"
-	# Pi
-	"$COMMON_DIR/pi/AGENTS.md;$HOME/.pi/agent/AGENTS.md"
-	"$COMMON_DIR/pi/agents;$HOME/.pi/agent/agents"
-	"$COMMON_DIR/pi/prompts;$HOME/.pi/agent/prompts"
-	"$COMMON_DIR/pi/models.json;$HOME/.pi/agent/models.json"
-	"$COMMON_DIR/pi/settings.json;$HOME/.pi/agent/settings.json"
-	"$COMMON_DIR/pi/permission/config.json;$HOME/.pi/agent/extensions/pi-permission-system/config.json"
-	"$COMMON_DIR/pi/mcp.json;$HOME/.pi/agent/mcp.json"
-	"$COMMON_DIR/pi/keybindings.json;$HOME/.pi/agent/keybindings.json"
-	"$COMMON_DIR/pi/skills;$HOME/.pi/skills"
+	# Opencode
+	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
+	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
+	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
+	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
+	"$COMMON_DIR/opencode/opencode-quota.jsonc;$CONFIG_DIR/opencode/opencode-quota.jsonc"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"

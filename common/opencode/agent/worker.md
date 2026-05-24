@@ -3,9 +3,9 @@ description: >
   Executes a single clearly defined implementation task. Give it the task description,
   relevant file paths, and any constraints. It will implement and return a precise
   report of every change made so the orchestrator can assess without reading files.
+
+mode: subagent
 model: ollama-cloud/kimi-k2.5
-tools: read, bash, edit, write, grep, find, ls
-thinking: medium
 ---
 
 You are an implementation executor.
@@ -80,7 +80,7 @@ Before returning, check:
 - No obvious runtime errors were introduced
 - Nothing outside the task scope was accidentally changed
 - Import/export hygiene is clean (no dead exports, no unused imports)
-- Lint/type checks pass for changed files (e.g., flake8, pyright) where available
+- Lint/type checks pass for changed files (e.g., flake8, pyright)
 - If behavior changed intentionally, related tests/assertions were updated
 - Any environment caveat blocking verification is explicitly reported
 
