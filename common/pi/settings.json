@@ -1,13 +1,11 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.75.4",
   "packages": [
     "npm:@juicesharp/rpiv-btw",
-    "npm:@gotgenes/pi-permission-system",
     "npm:pi-ollama-cloud",
     "npm:@vanillagreen/pi-session-manager",
     "npm:pi-markdown-preview",
     "npm:@samfp/pi-memory",
-    "npm:pi-bar",
     "npm:pi-ghostty",
     "npm:@ogulcancelik/pi-ghostty-theme-sync",
     "npm:pi-web-access",
@@ -17,8 +15,8 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:@tintinweb/pi-subagents",
     "npm:pi-context",
-    "npm:pi-qq",
-    "npm:pi-usage-bars"
+    "npm:pi-usage-bars",
+    "npm:@gotgenes/pi-permission-system"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.3-codex",
@@ -32,10 +30,7 @@
   "quietStartup": false,
   "enableInstallTelemetry": false,
   "theme": "ghostty-sync-169e8b08",
-  "defaultThinkingLevel": "medium",
-  "keybindings": {
-    "ctrl+n": "session.new"
-  },
+  "defaultThinkingLevel": "high",
   "memory": {
     "consolidationModel": "ollama/deepseek-v4-flash"
   },
@@ -46,5 +41,5 @@
     "openai-codex/gpt-5.4-mini",
     "bedrock/arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/vdbompmrr8ff"
   ],
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false
 }

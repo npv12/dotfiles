@@ -31,3 +31,4 @@ macos-auto-secure-input = true
 # Shift+Enter sends ESC CR for newline support in terminals/editors
 # Works with tmux when extended-keys is enabled (csi-u format)
 keybind = shift+enter=text:\n
+keybind = alt+backspace=text:\x1b\x7f
