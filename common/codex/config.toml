@@ -1,22 +1,19 @@
-model = "gpt-5.4-mini"
-model_reasoning_effort = "low"
 web_search = "cached"
 
 [features]
 memories = true
-multi_agent = true
-plugins = true
 prevent_idle_sleep = true
-shell_snapshot = true
-undo = true
 
 [notice.model_migrations]
-"gpt-5.3-codex" = "gpt-5.4"
+"gpt-5.3-codex" = "gpt-5.5"
 
 [plugins."github@openai-curated"]
 enabled = true
 
 [projects."/Users/npv12/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/npv12/projects/personal/mirali"]
 trust_level = "trusted"
 
 [projects."/Users/npv12/projects/simbian/SimbianOS"]
@@ -29,8 +26,15 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [tui]
-status_line = ["model-with-reasoning", "context-remaining", "current-dir", "five-hour-limit", "weekly-limit", "context-window-size"]
+status_line = [
+  "model-with-reasoning",
+  "context-remaining",
+  "current-dir",
+  "five-hour-limit",
+  "weekly-limit",
+  "context-window-size"
+]
 theme = "catppuccin-mocha"
 
 [tui.model_availability_nux]
-"gpt-5.5" = 1
+"gpt-5.5" = 2

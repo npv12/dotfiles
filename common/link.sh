@@ -15,11 +15,12 @@ declare -a links=(
 	"$COMMON_DIR/codex/AGENTS.md;$HOME/.codex/AGENTS.md"
 	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
 	# Opencode
-	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode.jsonc"
+	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode/opencode.jsonc"
+	"$COMMON_DIR/opencode/tui.jsonc;$CONFIG_DIR/opencode/tui.jsonc"
+	"$COMMON_DIR/opencode/opencode-quota/quota-toast.json;$CONFIG_DIR/opencode/opencode-quota/quota-toast.json"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
 	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
-	"$COMMON_DIR/opencode/opencode-quota.jsonc;$CONFIG_DIR/opencode/opencode-quota.jsonc"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"
@@ -41,7 +42,7 @@ declare -a conditional_links=(
 	"ghostty;$COMMON_DIR/ghostty;$CONFIG_DIR/ghostty"
 	"nvim;$COMMON_DIR/nvim;$CONFIG_DIR/nvim"
 	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
-	"bottom;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
+	"btm;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
 	"micro;$COMMON_DIR/micro;$CONFIG_DIR/micro"
 )
 

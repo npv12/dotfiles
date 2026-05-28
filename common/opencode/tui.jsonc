@@ -1,6 +1,14 @@
 {
   "plugin": [
-    "oc-tps@latest",
-    "@slkiser/opencode-quota"
-  ]
+    "@slkiser/opencode-quota",
+    "@npv12/opencode-context-sidebar",
+    "@npv12/opencode-recap",
+  ],
+  "scroll_speed": 2,
+  "scroll_acceleration": {
+    "enabled": true,
+  },
+  "attention": {
+    "enabled": true,
+  },
 }

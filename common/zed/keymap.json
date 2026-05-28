@@ -10,7 +10,9 @@
       "cmd-shift-t": "terminal_panel::Toggle",
       "cmd-[": "pane::GoBack",
       "cmd-]": "pane::GoForward",
-      "cmd-shift-g": "quick_search::Toggle"
+      "cmd-shift-g": "quick_search::Toggle",
+      "cmd-.": "editor::ToggleCodeActions",
+      "cmd-k cmd-i": "editor::Hover"
     }
   }
 ]

@@ -2,26 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "orchestrator",
   "plugin": [
-    "@mohak34/opencode-notifier",
-    "oc-tps@latest",
     "@slkiser/opencode-quota",
-    "/Users/npv12/projects/personal/opencode-memory-md",
-    [
-      "@plannotator/opencode@latest",
-      {
-        "workflow": "plan-agent",
-        "planningAgents": [
-          "plan",
-          "orchestrator"
-        ]
-      }
-    ]
+    "@npv12/opencode-memory-md",
+    "context-mode"
   ],
-  "experimental": {
-    "quotaToast": {
-      "enableToast": false
-    }
-  },
   "provider": {
     "amazon-bedrock": {
       "models": {
@@ -168,6 +152,7 @@
     }
   },
   "formatter": false,
+  "lsp": false,
   "mcp": {
     "exa": {
       "type": "remote",

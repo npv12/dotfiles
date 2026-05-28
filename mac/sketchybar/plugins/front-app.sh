@@ -5,7 +5,7 @@ case $INFO in
 	ICON=
 	ICON_COLOR=0xfff38ba8s
 	;;
-"Zed Preview")
+Zed* | "Visual Studio Code")
 	# shellcheck disable=SC2034
 	ICON_PADDING_RIGHT=2
 	ICON_COLOR=0xffcba6f7
@@ -22,7 +22,7 @@ case $INFO in
 "Messages")
 	ICON=󰍦
 	;;
-"Notion")
+"Notion" | "Obsidian")
 	ICON_COLOR=0xffe0e0e0
 	ICON=󰬕
 	;;
@@ -34,21 +34,25 @@ case $INFO in
 	ICON_COLOR=0xff24D44E
 	ICON=
 	;;
-"Alacritty")
+"Alacritty" | "Ghostty")
 	ICON_COLOR=0xffb4befe
 	ICON=
 	;;
-"Ghostty")
-	ICON_COLOR=0xffb4befe
-	ICON=
-	;;
-"Google Chrome")
+"Google Chrome" | "Twilight" | "Zen")
 	ICON_COLOR=0xffa6e3a1
 	ICON=
 	;;
-"Twilight")
-	ICON_COLOR=0xffa6e3a1
-	ICON=
+"Microsoft Teams" | "MTeams")
+	ICON_COLOR=0xff
+	ICON=󰊻
+	;;
+"Beekeeper Studio")
+	ICON_COLOR=0xff
+	ICON=
+	;;
+"Bruno" | "Postman")
+	ICON_COLOR=0xFF9761c9
+	ICON=
 	;;
 "GitHub Desktop")
 	ICON_COLOR=0xFF9761c9
