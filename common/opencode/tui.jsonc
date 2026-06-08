@@ -1,8 +1,10 @@
 {
   "plugin": [
-    "@slkiser/opencode-quota",
+    "@npv12/opencode-quota",
+    "@npv12/opencode-tps",
     "@npv12/opencode-context-sidebar",
     "@npv12/opencode-recap",
+    ["opencode-mini-session", { "keybind": "<leader>d", "freshKeybind": "<leader>f" }],
   ],
   "scroll_speed": 2,
   "scroll_acceleration": {
@@ -10,5 +12,10 @@
   },
   "attention": {
     "enabled": true,
+  },
+  "keybinds": {
+    "prompt_stash": "<leader>p",
+    "prompt_stash_pop": "<leader>o",
+    "prompt_stash_list": "<leader>i",
   },
 }
