@@ -12,11 +12,14 @@
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1": {
           "name": "Claude Opus 4.6"
         },
-        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/vdbompmrr8ff": {
-          "name": "Claude Sonnet 4.5"
+        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/nhvw1htngqgi": {
+          "name": "Claude Sonnet 4.6"
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm": {
           "name": "Claude Haiku 4.5"
+        },
+        "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu": {
+          "name": "Kimi K2.5"
         }
       },
       "blacklist": [
