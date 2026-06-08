@@ -70,4 +70,4 @@ if command -v podman &> /dev/null; then
 fi
 
 # OpenCode Go
-alias opencode="OPENCODE_GO_WORKSPACE_ID=\"\$(pass quota/opencode/workspace_id)\" OPENCODE_GO_AUTH_COOKIE=\"\$(pass quota/opencode/cookie)\" opencode"
+alias opencode="OPENCODE_GO_WORKSPACE_ID=\"\$(pass quota/opencode/workspace_id)\" OPENCODE_GO_AUTH_COOKIE=\"\$(pass quota/opencode/cookie)\" HYPER_API_KEY=\"\$(pass tokens/hyper)\" opencode"

@@ -44,6 +44,7 @@
         "anthropic.claude-opus-4-6-v1",
         "anthropic.claude-opus-4-6-v1:0",
         "anthropic.claude-opus-4-7",
+        "anthropic.claude-opus-4-8",
         "anthropic.claude-sonnet-4-20250514-v1:0",
         "anthropic.claude-sonnet-4-5-20250929-v1:0",
         "anthropic.claude-sonnet-4-6",
@@ -51,6 +52,7 @@
         "anthropic.claude-v2:1",
         "au.anthropic.claude-haiku-4-5-20251001-v1:0",
         "au.anthropic.claude-opus-4-6-v1",
+        "au.anthropic.claude-opus-4-8",
         "au.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "au.anthropic.claude-sonnet-4-6",
         "cohere.command-light-text-v14",
@@ -66,6 +68,7 @@
         "eu.anthropic.claude-opus-4-6-v1",
         "eu.anthropic.claude-opus-4-6-v1:0",
         "eu.anthropic.claude-opus-4-7",
+        "eu.anthropic.claude-opus-4-8",
         "eu.anthropic.claude-sonnet-4-20250514-v1:0",
         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "eu.anthropic.claude-sonnet-4-6",
@@ -74,6 +77,7 @@
         "global.anthropic.claude-opus-4-6-v1",
         "global.anthropic.claude-opus-4-6-v1:0",
         "global.anthropic.claude-opus-4-7",
+        "global.anthropic.claude-opus-4-8",
         "global.anthropic.claude-sonnet-4-20250514-v1:0",
         "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "global.anthropic.claude-sonnet-4-6",
@@ -81,6 +85,7 @@
         "google.gemma-3-27b-it",
         "google.gemma-3-4b-it",
         "jp.anthropic.claude-opus-4-7",
+        "jp.anthropic.claude-opus-4-8",
         "jp.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "jp.anthropic.claude-sonnet-4-6",
         "meta.llama3-1-70b-instruct-v1:0",
@@ -115,7 +120,11 @@
         "nvidia.nemotron-nano-3-30b",
         "nvidia.nemotron-nano-9b-v2",
         "nvidia.nemotron-super-3-120b",
+        "openai.gpt-5.4",
+        "openai.gpt-5.5",
+        "openai.gpt-oss-120b",
         "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-20b",
         "openai.gpt-oss-20b-1:0",
         "openai.gpt-oss-safeguard-120b",
         "openai.gpt-oss-safeguard-20b",
@@ -133,6 +142,7 @@
         "us.anthropic.claude-opus-4-6-v1",
         "us.anthropic.claude-opus-4-6-v1:0",
         "us.anthropic.claude-opus-4-7",
+        "us.anthropic.claude-opus-4-8",
         "us.anthropic.claude-sonnet-4-20250514-v1:0",
         "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "us.anthropic.claude-sonnet-4-6",
@@ -149,6 +159,534 @@
         "region": "us-west-2",
         "profile": "bedrock"
       }
+    },
+    "hyper": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Charm Hyper",
+      "options": {
+        "baseURL": "https://hyper.charm.land/v1",
+        "apiKey": "{env:HYPER_API_KEY}"
+      },
+      "models": {
+        "deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 384000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.14,
+            "output": 0.28,
+            "cache_read": 0.0028,
+            "cache_write": 0
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "disabled": true
+            }
+          }
+        },
+        "deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 384000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.435,
+            "output": 0.87,
+            "cache_read": 0.0036,
+            "cache_write": 0
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "disabled": true
+            }
+          }
+        },
+        "gemma-4-26b-a4b-it": {
+          "name": "Gemma 4 26B A4B",
+          "limit": {
+            "context": 256000,
+            "input": 256000,
+            "output": 25600
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.116,
+            "output": 0.408,
+            "cache_read": 0.058,
+            "cache_write": 0
+          }
+        },
+        "glm-5": {
+          "name": "GLM-5",
+          "limit": {
+            "context": 202752,
+            "input": 202752,
+            "output": 20275
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.96,
+            "output": 3.036,
+            "cache_read": 0.48,
+            "cache_write": 0
+          }
+        },
+        "glm-5.1": {
+          "name": "GLM 5.1",
+          "limit": {
+            "context": 202800,
+            "input": 202800,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 1.4,
+            "output": 4.4,
+            "cache_read": 0.26,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
+        "gpt-oss-120b": {
+          "name": "gpt-oss-120b",
+          "limit": {
+            "context": 131072,
+            "input": 131072,
+            "output": 13107
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.18,
+            "output": 0.61,
+            "cache_read": 0.09,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
+        "kimi-k2.5": {
+          "name": "Kimi K2.5",
+          "limit": {
+            "context": 262144,
+            "input": 262144,
+            "output": 26214
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.522,
+            "output": 2.69,
+            "cache_read": 0.261,
+            "cache_write": 0
+          }
+        },
+        "kimi-k2.6": {
+          "name": "Kimi K2.6",
+          "limit": {
+            "context": 262000,
+            "input": 262000,
+            "output": 262000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.95,
+            "output": 4,
+            "cache_read": 0.16,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
+        "llama-3.3-70b-instruct": {
+          "name": "Llama 3.3 70B Instruct",
+          "limit": {
+            "context": 128000,
+            "input": 128000,
+            "output": 12800
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.523,
+            "output": 0.786,
+            "cache_read": 0.2615,
+            "cache_write": 0
+          }
+        },
+        "llama-4-maverick-17b-128e-instruct-fp8": {
+          "name": "Llama 4 Maverick 17B 128E Instruct FP8",
+          "limit": {
+            "context": 430000,
+            "input": 430000,
+            "output": 43000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.35,
+            "output": 1.08,
+            "cache_read": 0.175,
+            "cache_write": 0
+          }
+        },
+        "minimax-m2.7": {
+          "name": "MiniMax M2.7",
+          "limit": {
+            "context": 204800,
+            "input": 204800,
+            "output": 131000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.44,
+            "output": 1.76,
+            "cache_read": 0.22,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
+        "qwen3-coder-480b-a35b-instruct-int4-mixed-ar": {
+          "name": "Qwen3 Coder 480B A35B Instruct INT4 Mixed AR",
+          "limit": {
+            "context": 106000,
+            "input": 106000,
+            "output": 10600
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.801,
+            "output": 2.185,
+            "cache_read": 0.4005,
+            "cache_write": 0
+          }
+        },
+        "qwen3-next-80b-a3b-instruct": {
+          "name": "Qwen3 Next 80B A3B Instruct",
+          "limit": {
+            "context": 262144,
+            "input": 262144,
+            "output": 26214
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.1295,
+            "output": 1.216,
+            "cache_read": 0.06475,
+            "cache_write": 0
+          }
+        },
+        "qwen3.6-flash": {
+          "name": "Qwen3.6-Flash",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 1,
+            "output": 4,
+            "cache_read": 1.25,
+            "cache_write": 0.1
+          }
+        },
+        "qwen3.6-max": {
+          "name": "Qwen3.6-Max",
+          "limit": {
+            "context": 256000,
+            "input": 256000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 2,
+            "output": 12,
+            "cache_read": 2.5,
+            "cache_write": 0.2
+          }
+        },
+        "qwen3.6-plus": {
+          "name": "Qwen3.6-Plus",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 2,
+            "output": 6,
+            "cache_read": 2.5,
+            "cache_write": 0.2
+          }
+        },
+        "qwen3.7-max": {
+          "name": "Qwen3.7-Max",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 2.5,
+            "output": 7.5,
+            "cache_read": 3.125,
+            "cache_write": 0.25
+          }
+        }
+      }
     }
   },
   "formatter": false,
@@ -157,6 +695,6 @@
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp"
-    },
-  },
+    }
+  }
 }

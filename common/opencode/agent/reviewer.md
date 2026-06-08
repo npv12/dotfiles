@@ -3,7 +3,8 @@ description: >
   Pipeline critic agent. Independent code review. Checks git diffs against plan.
   Verifies bugs, security, edge cases, style. Used by orchestrator during REVIEW.
 mode: subagent
-model: opencode-go/qwen3.6-plus
+model: hyper/deepseek-v4-pro
+reasoningEffort: medium
 temperature: 0.2
 color: "#f38ba8"
 ---
@@ -18,6 +19,8 @@ Independent code review. Find what worker missed.
 2. Review against plan + requirements
 3. Check: correctness, security, edge cases, style, scope
 4. If behavior changed intentionally (e.g., error mapping/status codes), verify tests/assertions were updated to match contract
+5. Verify code is coherent with the original ask — implementation must fulfill the intent, not just pass checks
+6. Verify tests exist and are meaningful — tests should not mock excessively or exist solely to satisfy coverage
 
 ## Review Guidelines
 
@@ -81,6 +84,9 @@ Flag bugs using these criteria:
 - [ ] No obvious bugs
 - [ ] Intentional API behavior/status-code changes are reflected in tests
 - [ ] Type/lint regressions are addressed in touched files
+- [ ] Code is coherent with the original ask — implementation fulfills the intent
+- [ ] Tests exist and are meaningful (not over-mocked, not added just for coverage)
+- [ ] Code change is minimal and follows the plan — no scope creep
 
 ## Report
 

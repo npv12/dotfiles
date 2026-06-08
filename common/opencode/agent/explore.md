@@ -6,6 +6,7 @@ description: >-
   without reading any files themselves.
 mode: subagent
 model: opencode-go/deepseek-v4-flash
+reasoningEffort: max
 permission:
   edit: deny
   bash:
