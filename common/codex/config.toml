@@ -1,6 +1,7 @@
 web_search = "cached"
 
 [features]
+hooks = true
 memories = true
 prevent_idle_sleep = true
 
