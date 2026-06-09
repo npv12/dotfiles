@@ -44,7 +44,6 @@ declare -a conditional_links=(
 	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
 	"btm;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
 	"micro;$COMMON_DIR/micro;$CONFIG_DIR/micro"
-	"herdr;$COMMON_DIR/herdr/config.toml;$CONFIG_DIR/herdr/config.toml"
 )
 
 # --- Common function to process a link ---

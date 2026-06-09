@@ -71,6 +71,3 @@ fi
 
 # OpenCode Go
 alias opencode="OPENCODE_GO_WORKSPACE_ID=\"\$(pass quota/opencode/workspace_id)\" OPENCODE_GO_AUTH_COOKIE=\"\$(pass quota/opencode/cookie)\" HYPER_API_KEY=\"\$(pass tokens/hyper)\" opencode"
-
-# Herdr: create workspace at current directory
-alias hwc='herdr workspace create --cwd "$(pwd)" --label "${PWD##*/}"'
