@@ -21,6 +21,7 @@ declare -a links=(
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
 	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
+	"$COMMON_DIR/opencode/plugins;$CONFIG_DIR/opencode/plugins"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"

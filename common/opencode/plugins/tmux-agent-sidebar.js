@@ -1,0 +1,1 @@
+/Users/npv12/.tmux/plugins/tmux-agent-sidebar/.opencode/plugins/tmux-agent-sidebar.js
