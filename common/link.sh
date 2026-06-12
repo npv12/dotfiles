@@ -42,7 +42,7 @@ declare -a conditional_links=(
 	"ghostty;$COMMON_DIR/ghostty;$CONFIG_DIR/ghostty"
 	"nvim;$COMMON_DIR/nvim;$CONFIG_DIR/nvim"
 	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
-	"btm;$COMMON_DIR/bottom;$CONFIG_DIR/bottom"
+	"btop;$COMMON_DIR/btop;$CONFIG_DIR/btop"
 	"micro;$COMMON_DIR/micro;$CONFIG_DIR/micro"
 )
 
