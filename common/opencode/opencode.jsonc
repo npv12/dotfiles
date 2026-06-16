@@ -1,10 +1,18 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "orchestrator",
+  "default_agent": "ponytail",
   "plugin": [
     "@npv12/opencode-memory-md",
     "context-mode"
   ],
+  "agent": {
+    "plan": {
+      "disable": true
+    },
+    "build": {
+      "color": "#a6e3a1"
+    }
+  },
   "provider": {
     "amazon-bedrock": {
       "models": {
