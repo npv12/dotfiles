@@ -3,7 +3,7 @@
   "default_agent": "ponytail",
   "plugin": [
     "@npv12/opencode-memory-md",
-    "context-mode"
+    "context-mode",
   ],
   "agent": {
     "plan": {
@@ -699,12 +699,15 @@
       }
     }
   },
-  "formatter": false,
-  "lsp": false,
   "mcp": {
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp"
+    },
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+      "enabled": false
     }
   }
 }
