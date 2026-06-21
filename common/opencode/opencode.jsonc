@@ -3,7 +3,7 @@
   "default_agent": "ponytail",
   "plugin": [
     "@npv12/opencode-memory-md",
-    "context-mode",
+    "context-mode"
   ],
   "agent": {
     "plan": {
@@ -11,6 +11,11 @@
     },
     "build": {
       "color": "#a6e3a1"
+    },
+    "explore": {
+      "color": "#f9e2af",
+      "model": "opencode-go/deepseek-v4-flash",
+      "reasoningEffort": "max"
     }
   },
   "provider": {
@@ -73,6 +78,7 @@
         "deepseek.v3-v1:0",
         "deepseek.v3.2",
         "deepseek.v3.2-v1:0",
+        "eu.anthropic.claude-fable-5",
         "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
         "eu.anthropic.claude-opus-4-5-20251101-v1:0",
         "eu.anthropic.claude-opus-4-6-v1",
@@ -82,6 +88,7 @@
         "eu.anthropic.claude-sonnet-4-20250514-v1:0",
         "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
         "eu.anthropic.claude-sonnet-4-6",
+        "global.anthropic.claude-fable-5",
         "global.anthropic.claude-haiku-4-5-20251001-v1:0",
         "global.anthropic.claude-opus-4-5-20251101-v1:0",
         "global.anthropic.claude-opus-4-6-v1",
@@ -145,6 +152,7 @@
         "qwen.qwen3-coder-next",
         "qwen.qwen3-next-80b-a3b",
         "qwen.qwen3-vl-235b-a22b",
+        "us.anthropic.claude-fable-5",
         "us.anthropic.claude-haiku-4-5-20251001-v1:0",
         "us.anthropic.claude-opus-4-1-20250805-v1:0",
         "us.anthropic.claude-opus-4-20250514-v1:0",
@@ -274,9 +282,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.116,
-            "output": 0.408,
-            "cache_read": 0.058,
+            "input": 0.102,
+            "output": 0.394,
+            "cache_read": 0.051,
             "cache_write": 0
           }
         },
@@ -300,9 +308,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.96,
-            "output": 3.036,
-            "cache_read": 0.48,
+            "input": 0.95,
+            "output": 3.04,
+            "cache_read": 0.475,
             "cache_write": 0
           }
         },
@@ -345,6 +353,43 @@
             }
           }
         },
+        "glm-5.2": {
+          "name": "GLM-5.2",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": false,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 1.5,
+            "output": 4.5,
+            "cache_read": 0.3,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
         "gpt-oss-120b": {
           "name": "gpt-oss-120b",
           "limit": {
@@ -365,9 +410,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.18,
-            "output": 0.61,
-            "cache_read": 0.09,
+            "input": 0.178,
+            "output": 0.68,
+            "cache_read": 0.089,
             "cache_write": 0
           },
           "variants": {
@@ -402,9 +447,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.522,
-            "output": 2.69,
-            "cache_read": 0.261,
+            "input": 0.537,
+            "output": 2.715,
+            "cache_read": 0.2685,
             "cache_write": 0
           }
         },
@@ -447,6 +492,45 @@
             }
           }
         },
+        "kimi-k2.7-code": {
+          "name": "Kimi K2.7 Code",
+          "limit": {
+            "context": 256000,
+            "input": 256000,
+            "output": 32768
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 0.95,
+            "output": 4,
+            "cache_read": 0.19,
+            "cache_write": 0
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            }
+          }
+        },
         "llama-3.3-70b-instruct": {
           "name": "Llama 3.3 70B Instruct",
           "limit": {
@@ -467,9 +551,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.523,
-            "output": 0.786,
-            "cache_read": 0.2615,
+            "input": 0.6066,
+            "output": 1.0386,
+            "cache_read": 0.3033,
             "cache_write": 0
           }
         },
@@ -493,9 +577,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.35,
-            "output": 1.08,
-            "cache_read": 0.175,
+            "input": 0.28,
+            "output": 0.9,
+            "cache_read": 0.14,
             "cache_write": 0
           }
         },
@@ -519,10 +603,10 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.44,
-            "output": 1.76,
-            "cache_read": 0.22,
-            "cache_write": 0
+            "input": 0.3,
+            "output": 1.2,
+            "cache_read": 0.06,
+            "cache_write": 0.375
           },
           "variants": {
             "low": {
@@ -556,9 +640,9 @@
           },
           "status": "active",
           "cost": {
-            "input": 0.801,
-            "output": 2.185,
-            "cache_read": 0.4005,
+            "input": 0.445,
+            "output": 2.145,
+            "cache_read": 0.2225,
             "cache_write": 0
           }
         },
@@ -694,6 +778,34 @@
             "output": 7.5,
             "cache_read": 3.125,
             "cache_write": 0.25
+          }
+        },
+        "qwen3.7-plus": {
+          "name": "Qwen3.7-Plus",
+          "limit": {
+            "context": 1000000,
+            "input": 1000000,
+            "output": 64000
+          },
+          "reasoning": true,
+          "attachment": true,
+          "tool_call": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "status": "active",
+          "cost": {
+            "input": 1.2,
+            "output": 4.8,
+            "cache_read": 1.5,
+            "cache_write": 0.12
           }
         }
       }

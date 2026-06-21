@@ -5,6 +5,7 @@ description: >-
   implementation, @reviewer for validation. Use for complex multi-phase tasks
   that require planning and approval before implementation.
 color: "#cba6f7"
+mode: primary
 ---
 
 # Orchestrator

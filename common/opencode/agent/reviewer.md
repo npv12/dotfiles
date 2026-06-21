@@ -4,8 +4,7 @@ description: >
   Verifies bugs, security, edge cases, style. Used by orchestrator during REVIEW.
 mode: subagent
 model: hyper/deepseek-v4-pro
-reasoningEffort: medium
-temperature: 0.2
+reasoningEffort: high
 color: "#f38ba8"
 ---
 
