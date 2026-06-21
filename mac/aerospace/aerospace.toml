@@ -9,7 +9,7 @@ accordion-padding = 200
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
   'exec-and-forget sketchybar',
-  'exec-and-forget borders active_color=0xfffab387 width=5.0',
+  'exec-and-forget borders active_color=0xff74c7ec width=5.0',
   'workspace 1'
 ]
 # Automatically unhide applications hidden with cmd-h

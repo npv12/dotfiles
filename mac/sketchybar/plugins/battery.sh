@@ -22,7 +22,7 @@ case ${PERCENTAGE} in
 	;;
 [1-2][0-9])
 	ICON=""
-	ICON_COLOR=0xfffab387
+	ICON_COLOR=0xff74c7ec
 	;;
 [0-9])
 	ICON=""

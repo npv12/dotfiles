@@ -13,7 +13,7 @@ SID="${NAME##*.}"
 
 if [ "$SID" = "$FOCUSED_SPACE" ]; then
 	sketchybar --set "$NAME" \
-		background.color=0xFFFAB387 \
+		background.color=0xFFF74C7EC \
 		label.color=0xFF11111B
 else
 	sketchybar --set "$NAME" \
