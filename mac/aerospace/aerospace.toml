@@ -143,7 +143,7 @@ end tell'
 '''
 # Direct resize - immediate size adjustment without entering a mode
 alt-equal = 'resize width -50'
-alt-f = ['''exec-and-forget aerospace layout floating && osascript -e 'tell application "System Events" to key code 120 using {control down, option down, command down}' || aerospace layout tiling''', 'mode main']
+alt-f = ['''exec-and-forget aerospace layout floating --fail-if-noop && osascript -e 'tell application "System Events" to key code 120 using {control down, option down, command down}' || aerospace layout tiling''', 'mode main']
 alt-h = 'focus left'
 alt-j = 'focus down'
 alt-l = 'focus right'
