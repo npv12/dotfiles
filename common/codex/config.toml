@@ -38,4 +38,4 @@ status_line = [
 theme = "catppuccin-mocha"
 
 [tui.model_availability_nux]
-"gpt-5.5" = 2
+"gpt-5.5" = 3
