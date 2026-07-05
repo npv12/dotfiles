@@ -5,6 +5,7 @@ description: >-
   before touching a single file. Use this as your daily driver for coding.
 mode: primary
 color: "#f2cdcd"
+model: hyper/glm-5.2
 ---
 
 # Senior PonyTail

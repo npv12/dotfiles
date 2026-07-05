@@ -40,9 +40,10 @@
       }
     },
     "default_model": {
+      "effort": "xhigh",
       "enable_thinking": true,
-      "provider": "hyper",
-      "model": "hyper:deepseek-v4-flash"
+      "provider": "opencode",
+      "model": "go/deepseek-v4-flash"
     },
     "favorite_models": [
       {

@@ -3,7 +3,7 @@ description: >
   Pipeline critic agent. Independent code review. Checks git diffs against plan.
   Verifies bugs, security, edge cases, style. Used by orchestrator during REVIEW.
 mode: subagent
-model: hyper/deepseek-v4-pro
+model: hyper/glm-5.2
 reasoningEffort: high
 color: "#f38ba8"
 ---

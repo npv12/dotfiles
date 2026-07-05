@@ -5,8 +5,8 @@ description: >
   report of every change made so the orchestrator can assess without reading files.
 
 mode: subagent
-model: opencode-go/deepseek-v4-flash
-reasoningEffort: max
+model: hyper/kimi-k2.7-code
+reasoningEffort: high
 ---
 
 You are an implementation executor.
