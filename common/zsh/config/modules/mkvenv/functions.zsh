@@ -126,7 +126,7 @@ EOF
         mise config set -f "$mf" -y 'env._.python.venv.path' .venv || return 1
         mise config set -f "$mf" -y 'env._.python.venv.create' true || return 1
         mise config set -f "$mf" -y tasks.install-uv.run 'mise install uv@latest' || return 1
-        mise config set -f "$mf" -y settings.python.uv_venv_auto true || return 1
+        mise config set -f "$mf" -y settings.python.uv_venv_auto "create|source" || return 1
         mise config set -f "$mf" -y settings.python.uv_venv_create_args --type list -- '--seed' || return 1
     }
 
