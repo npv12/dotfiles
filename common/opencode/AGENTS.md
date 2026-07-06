@@ -18,7 +18,8 @@ Build agent: implement features, fix bugs, write code. Use subagents when needed
 ## Subagents
 
 - `@explore` — Find files, understand codebase structure
-- `@orchestrator` — Complex multi-phase tasks
+- `@orchestrator` — Complex multi-phase tasks (plan, delegate to @worker, review)
+- `@worker` — Executes a single focused implementation task
 - `@reviewer` — Get a second opinion on changes
 
 ## Principles
