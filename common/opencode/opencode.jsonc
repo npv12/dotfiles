@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "ponytail",
+  "default_agent": "build",
   "plugin": [
     "@npv12/opencode-memory-md",
     "context-mode"

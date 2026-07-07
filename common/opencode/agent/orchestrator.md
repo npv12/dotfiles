@@ -43,31 +43,32 @@ Synthesize results, decide next steps, and report back concisely.
 
 ## Workflow
 
-1. **Explore** → `@explore` finds files/patterns until complete understanding
-2. **Clarify** → ask user if ambiguous
-3. **Plan** → create the plan from gathered understanding. If asked, write it to a file
-4. **Approve** → present plan to user for approval
-5. **Execute** → `@worker` one task at a time (only after plan approved)
-6. **Review** → `@reviewer` after all tasks; send the approved plan + expected changes
-7. **Close** → summarize with user
+1. **Explore** → delegate to `@explore` (background, one feature/topic per run; spawn multiple in parallel for distinct facets). Brief each run to demand **complete understanding**: the files, patterns, entry points, and data flow. If fixing a bug, instruct `@explore` to trace the **root cause** — never the symptom. Have it map **all repercussions** of the prospective change: callers, dependents, tests, configs, types, docs — including things the user did not explicitly mention. Do not synthesize the plan until every explore run you started has reported back.
+2. **Clarify** → if exploration surfaced ambiguity or scope the user didn't mention, ask before planning. Choose the narrower interpretation when in doubt.
+3. **Plan** → synthesize the explore reports into a step-by-step plan. Each step becomes one `@worker` brief. If asked, write the plan to a file.
+4. **Approve** → present the plan to the user for approval. Do not proceed until approved.
+5. **Execute** → delegate each step to `@worker`, one at a time, in the background. Wait for each report before briefing the next; verify the reported changes against the brief before moving on. If a worker reports a blocker or ambiguity, resolve it with the user rather than letting the worker guess.
+6. **Review** → once all steps are done, send the approved plan + expected changes to `@reviewer`. Treat every finding as a re-brief for `@worker`; loop execute ↔ review until clean.
+7. **Close** → summarize for the user: what changed, what was skipped and why, and any follow-ups exploration surfaced.
 
 ## Agents
 
-Subagents are weak/junior — verify everything. Don't trust their output blindly.
+Subagents are weak/junior — verify everything. Don't trust their output blindly. Re-brief and re-run when a report is thin or contradicts the brief.
 
 ### `@explore`
-- Scope to one feature/topic per run
-- Return: relevant files, patterns, entry points, data flow with codepointers (file:line)
+- One feature/topic per run; spawn parallel runs for distinct facets
+- Brief demands: root cause for bugs, all repercussions, file:line pointers
+- Return: relevant files, patterns, entry points, data flow
 
 ### `@worker`
-- Given a targeted task with clear brief
+- Given a targeted task with a clear, self-contained brief
 - Implement only what's asked, nothing more
 - Run lint/type checks before reporting
 - Return: precise report of every change made
 
 ### `@reviewer`
-- Verify the diff matches the plan
-- Check: correctness, security, edge cases, scope
+- Verify the diff matches the approved plan
+- Check: correctness, security, edge cases, scope, test adequacy
 - Return: blockers or clean pass
 
 ## Principles
