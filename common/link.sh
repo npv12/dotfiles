@@ -45,6 +45,7 @@ declare -a conditional_links=(
 	"bat;$COMMON_DIR/bat;$CONFIG_DIR/bat"
 	"btop;$COMMON_DIR/btop;$CONFIG_DIR/btop"
 	"micro;$COMMON_DIR/micro;$CONFIG_DIR/micro"
+	"hunk;$COMMON_DIR/git/hunk.config.toml;$CONFIG_DIR/hunk/config.toml"
 )
 
 # --- Common function to process a link ---
