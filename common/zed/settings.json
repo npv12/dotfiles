@@ -78,8 +78,8 @@
   },
   "base_keymap": "VSCode",
   "icon_theme": {
-    "mode": "light",
-    "light": "Catppuccin Mocha",
+    "mode": "system",
+    "light": "Warm Charmed Icons",
     "dark": "Soft Charmed Icons"
   },
   "format_on_save": "off",
@@ -103,7 +103,7 @@
   "completion_menu_item_kind": "symbol",
   "theme": {
     "mode": "system",
-    "light": "Catppuccin Latte (sapphire)",
-    "dark": "Catppuccin Mocha (sapphire blur)"
+    "light": "Sapphire Haze Light",
+    "dark": "Sapphire Haze Dark"
   }
 }
