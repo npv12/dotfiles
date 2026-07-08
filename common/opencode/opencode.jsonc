@@ -221,6 +221,9 @@
             "cache_write": 0
           },
           "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
             "high": {
               "reasoningEffort": "high"
             },
@@ -258,6 +261,9 @@
             "cache_write": 0
           },
           "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
             "high": {
               "reasoningEffort": "high"
             },
@@ -483,7 +489,7 @@
             "cache_write": 0
           }
         },
-        "kimi-k2.7": {
+        "kimi-k2.7-code": {
           "name": "Kimi K2.7 Code",
           "limit": {
             "context": 262000,
@@ -509,17 +515,6 @@
             "output": 4,
             "cache_read": 0.19,
             "cache_write": 0
-          },
-          "variants": {
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
-            }
           }
         },
         "llama-3.3-70b-instruct": {
