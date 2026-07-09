@@ -1,4 +1,13 @@
 {
+  "command_aliases": {
+    "gd": "git::Diff",
+    "gb": "git::Branch",
+    "gbd": "git::BranchDiff",
+    "gp": "git::Push",
+    "gcp": "git::CreatePullRequest",
+    "tsd": "editor::ToggleSplitDiff",
+    "gg": "git_graph::Open"
+  },
   "use_smartcase_search": true,
   "search": {
     "button": false
@@ -18,7 +27,7 @@
   "edit_predictions": {
     "allow_data_collection": "no",
     "mode": "eager",
-    "provider": "copilot"
+    "provider": "zed"
   },
   "ui_font_family": "Inter Variable",
   "buffer_font_weight": 500.0,
@@ -80,7 +89,7 @@
     "model_parameters": []
   },
   "git_panel": {
-    "sort_by": "name",
+    "sort_by": "path",
     "group_by": "staging",
     "dock": "left",
     "tree_view": false
