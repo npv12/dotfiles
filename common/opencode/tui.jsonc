@@ -1,10 +1,10 @@
 {
   "plugin": [
-    "@npv12/opencode-quota",
-    "@npv12/opencode-tps",
-    "@npv12/opencode-context-sidebar",
-    "@npv12/opencode-recap",
-    ["opencode-mini-session", { "keybind": "<leader>d", "freshKeybind": "<leader>f" }],
+    "file:///Users/npv12/.local/share/opencode/plugins-local/opencode-quota",
+    "file:///Users/npv12/.local/share/opencode/plugins-local/opencode-tps",
+    "file:///Users/npv12/.local/share/opencode/plugins-local/opencode-context-sidebar",
+    "file:///Users/npv12/.local/share/opencode/plugins-local/opencode-recap",
+    ["file:///Users/npv12/.local/share/opencode/plugins-local/opencode-mini-session", { "keybind": "<leader>d", "freshKeybind": "<leader>f" }],
   ],
   "scroll_speed": 2,
   "scroll_acceleration": {
