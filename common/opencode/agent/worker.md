@@ -4,8 +4,8 @@ description: >
   task description, relevant file paths, and any constraints. It will implement
   and return a precise report of every change made.
 mode: subagent
-model: hyper/kimi-k2.7-code
-reasoningEffort: high
+model: opencode-go/deepseek-v4-flash
+reasoningEffort: max
 ---
 
 You are a focused execution subagent for this repository.
