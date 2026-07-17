@@ -84,7 +84,3 @@ Default to doing the work yourself. Delegate only when a subagent genuinely help
 - `@reviewer` — a second opinion on a non-trivial diff before you report done.
 
 Subagents are weak — verify their output, don't trust it blindly.
-
-## Hunk integration
-
-If a live Hunk session exists (`hunk session list` shows one for this repo), load the `hunk-review` skill (`skill` tool, name `hunk-review`) and add an inline comment on **every non-trivial change** explaining **why** you made it — intent, trade-off, or constraint, not what the diff already shows. Skip mechanical/formatting changes. Never launch `hunk diff`/`hunk show` — use `hunk session *` only. The skill has the commands, batch format, and watch-mode gotchas; defer to it.

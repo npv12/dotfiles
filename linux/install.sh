@@ -20,7 +20,7 @@ curl -fsSL https://install.danklinux.com | sh
 
 # Install packages
 paru -S mise zed zen-browser-bin zsh-autosuggestions zsh-syntax-highlighting zsh bat bottom duf \
-	code-insiders kubectx zoxide podman-compose eza gpg pass git-delta hunk-bin yazi micro \
+	code-insiders kubectx zoxide podman-compose eza gpg pass git-delta yazi micro \
 	ripgrep gdu speech-dispatcher espeak-ng festival
 
 # Install fonts

@@ -49,16 +49,7 @@ Synthesize results, decide next steps, and report back concisely.
 4. **Approve** → present the plan to the user for approval. Do not proceed until approved.
 5. **Execute** → delegate each step to `@worker`, one at a time, in the background. Wait for each report before briefing the next; verify the reported changes against the brief before moving on. If a worker reports a blocker or ambiguity, resolve it with the user rather than letting the worker guess.
 6. **Review** → once all steps are done, send the approved plan + expected changes to `@reviewer`. Treat every finding as a re-brief for `@worker`; loop execute ↔ review until clean.
-7. **Hunk feedback** → if a live Hunk session exists, poll for user-authored inline comments before closing. The user reviews the diff in Hunk and may leave notes that supersede or extend the plan:
-   ```bash
-   hunk session comment list --repo . --type user --json
-   ```
-   - `--type user` filters to human-authored notes (excludes build/reviewer agent notes)
-   - Map each comment's `filePath` + line anchor + `summary`/`rationale` to a `@worker` brief
-   - If user comments exist → re-enter Execute (step 5) with the new briefs; do not close
-   - If no user comments → proceed to Close
-   - Watch mode orphans notes on edited lines — re-verify the anchor still exists in the current diff before briefing
-8. **Close** → summarize for the user: what changed, what was skipped and why, and any follow-ups exploration surfaced.
+7. **Close** → summarize for the user: what changed, what was skipped and why, and any follow-ups exploration surfaced.
 
 ## Agents
 

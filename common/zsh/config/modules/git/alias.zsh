@@ -39,12 +39,3 @@ alias glast="git log -1 HEAD"
 alias gclone="git clone"
 alias glo="git log --oneline --decorate"
 alias gcmai="generate_commit"
-
-# Hunk — review-first diff viewer (agent-aware). Watcher runs in a detached sibling tmux pane
-# so the TUI never seizes this shell. Agents talk to it via `hunk session *` through the daemon.
-if command -v hunk &>/dev/null; then
-	alias hunk-watch='tmux split-window -h -d -c "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" "hunk diff --watch --agent-notes"'
-	alias hunk-diff='hunk diff'
-	alias hunk-show='hunk show'
-	alias hunk-clean='hunk session comment clear --repo . --yes'
-fi

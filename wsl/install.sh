@@ -23,6 +23,3 @@ DELTA_RELEASE_FILE="git-delta_${DELTA_RELEASE_VERSION}_amd64.deb"
 curl -LO https://github.com/dandavison/delta/releases/download/${DELTA_RELEASE_VERSION}/${DELTA_RELEASE_FILE}
 sudo dpkg -i ${DELTA_RELEASE_FILE}
 rm ${DELTA_RELEASE_FILE}
-
-# Hunk (agent-aware diff viewer; ships bundled Bun runtime via npm)
-npm install -g hunkdiff
