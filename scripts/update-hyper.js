@@ -4,11 +4,9 @@ const fs = require("fs")
 const https = require("https")
 const path = require("path")
 
-const DEFAULT_FILES = ["common/opencode/opencode.jsonc"]
+const DEFAULT_FILES = ["common/opencode/opencode.jsonc", "common/zed/settings.json"]
 
 const HYPER_MODELS_URL = "https://hyper.charm.land/v1/models"
-const HYPER_COSTS_URL =
-  "https://raw.githubusercontent.com/charmbracelet/crush/refs/heads/main/internal/agent/hyper/provider.json"
 
 const HYPER_BASE_URL = "https://hyper.charm.land/v1"
 
@@ -158,7 +156,6 @@ function parseArgs(argv) {
     baseURL: HYPER_BASE_URL,
     apiKey: DEFAULT_API_KEY,
     replaceModels: true,
-    forceAddExtra: false,
   }
 
   for (let i = 0; i < argv.length; i++) {
@@ -176,11 +173,6 @@ function parseArgs(argv) {
 
     if (arg === "--replace-models") {
       args.replaceModels = true
-      continue
-    }
-
-    if (arg === "--force-add-extra") {
-      args.forceAddExtra = true
       continue
     }
 
@@ -235,43 +227,20 @@ function ensureConfigShape(config) {
   return config
 }
 
-function costFromCrushModel(model) {
-  return {
-    input: numberOrZero(model.cost_per_1m_in),
-    output: numberOrZero(model.cost_per_1m_out),
-    cache_read: numberOrZero(model.cost_per_1m_in_cached),
-    cache_write: numberOrZero(model.cost_per_1m_out_cached),
-  }
-}
-
-function buildCrushCatalog(crushProvider) {
-  if (!crushProvider || !Array.isArray(crushProvider.models)) {
-    throw new Error("Crush Hyper provider JSON did not contain a models array")
-  }
-
-  const byID = {}
-
-  for (const model of crushProvider.models) {
-    if (!model || !model.id) continue
-    byID[model.id] = model
-  }
-
-  return byID
-}
-
-function toOpenCodeModel(liveModel, crushModel) {
-  const supportsAttachments = Boolean(liveModel.supports_attachments)
+function toOpenCodeModel(liveModel) {
+  const supportsAttachments = Boolean(liveModel.capabilities?.vision)
+  const supportsReasoning = Boolean(liveModel.reasoning?.effort_levels?.length > 0)
 
   const result = {
-    name: liveModel.display_name || crushModel?.name || liveModel.id,
+    name: liveModel.display_name || liveModel.id,
 
     limit: {
-      context: numberOrZero(liveModel.context_window ?? crushModel?.context_window),
-      input: numberOrZero(liveModel.context_window ?? crushModel?.context_window),
-      output: numberOrZero(liveModel.max_output_tokens ?? crushModel?.default_max_tokens),
+      context: numberOrZero(liveModel.context_window),
+      input: numberOrZero(liveModel.context_window),
+      output: numberOrZero(liveModel.max_output_tokens),
     },
 
-    reasoning: Boolean(liveModel.supports_reasoning ?? crushModel?.can_reason),
+    reasoning: supportsReasoning,
     attachment: supportsAttachments,
     tool_call: true,
 
@@ -283,27 +252,26 @@ function toOpenCodeModel(liveModel, crushModel) {
     status: "active",
   }
 
-  if (crushModel) {
-    result.cost = costFromCrushModel(crushModel)
+  result.cost = {
+    input: numberOrZero(liveModel.pricing?.input),
+    output: numberOrZero(liveModel.pricing?.output),
+    cache_read: numberOrZero(liveModel.pricing?.cache_hit),
+    cache_write: numberOrZero(liveModel.pricing?.cache_create),
   }
 
-  if (
-    liveModel.supports_reasoning_effort &&
-    Array.isArray(liveModel.reasoning_effort_levels) &&
-    liveModel.reasoning_effort_levels.length > 0
-  ) {
+  if (liveModel.reasoning?.effort_levels?.length > 0) {
     result.variants = {}
 
-    for (const effort of liveModel.reasoning_effort_levels) {
-      result.variants[effort] = {
-        reasoningEffort: effort,
+    for (const level of liveModel.reasoning.effort_levels) {
+      result.variants[level.value] = {
+        reasoningEffort: level.value,
       }
     }
 
     if (
       liveModel.id.toLowerCase().includes("deepseek-v4") &&
-      liveModel.reasoning_effort_levels.includes("xhigh") &&
-      !liveModel.reasoning_effort_levels.includes("max")
+      liveModel.reasoning.effort_levels.some((l) => l.value === "xhigh") &&
+      !liveModel.reasoning.effort_levels.some((l) => l.value === "max")
     ) {
       result.variants.max = {
         disabled: true,
@@ -314,7 +282,41 @@ function toOpenCodeModel(liveModel, crushModel) {
   return result
 }
 
-function updateConfig(config, hyperModels, options) {
+function toZedModel(liveModel) {
+  const supportsAttachments = Boolean(liveModel.capabilities?.vision)
+  const supportsReasoning = Boolean(liveModel.reasoning?.effort_levels?.length > 0)
+
+  let reasoningEffort = null
+  if (liveModel.reasoning?.effort_levels?.length > 0) {
+    reasoningEffort = liveModel.reasoning.effort_levels[0].value
+  }
+
+  return {
+    name: liveModel.display_name || liveModel.id,
+    max_tokens: numberOrZero(liveModel.context_window),
+    max_output_tokens: numberOrZero(liveModel.max_output_tokens),
+    max_completion_tokens: numberOrZero(liveModel.context_window),
+    reasoning_effort: reasoningEffort || "high",
+    capabilities: {
+      tools: true,
+      images: supportsAttachments,
+      parallel_tool_calls: true,
+      prompt_cache_key: true,
+      chat_completions: true,
+      interleaved_reasoning: supportsReasoning,
+      max_tokens_parameter: true,
+    },
+  }
+}
+
+function detectConfigFormat(config, filePath) {
+  if (config.language_models?.openai_compatible) return "zed"
+  if (config.provider) return "opencode"
+  if (filePath && filePath.includes("zed")) return "zed"
+  return "opencode"
+}
+
+function updateOpenCodeConfig(config, hyperModels, options) {
   ensureConfigShape(config)
 
   const existing = config.provider[options.providerID] || {}
@@ -341,6 +343,27 @@ function updateConfig(config, hyperModels, options) {
   return config
 }
 
+function updateZedConfig(config, zedModels, options) {
+  config.language_models ||= {}
+  config.language_models.openai_compatible ||= {}
+  config.language_models.openai_compatible.Hyper ||= {}
+
+  config.language_models.openai_compatible.Hyper.api_url ||= options.baseURL
+
+  if (options.replaceModels) {
+    config.language_models.openai_compatible.Hyper.available_models = zedModels
+  } else {
+    const existing = config.language_models.openai_compatible.Hyper.available_models || []
+    const existingByName = {}
+    for (const m of existing) existingByName[m.name] = m
+    for (const m of zedModels) existingByName[m.name] = m
+    config.language_models.openai_compatible.Hyper.available_models =
+      Object.values(existingByName)
+  }
+
+  return config
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2))
 
@@ -351,62 +374,38 @@ async function main() {
     throw new Error("Hyper models response did not contain a data array")
   }
 
-  console.log(`Fetching Hyper costs from ${HYPER_COSTS_URL}`)
-  const crushProvider = await fetchJSON(HYPER_COSTS_URL)
-  const crushCatalog = buildCrushCatalog(crushProvider)
-
   const liveModels = livePayload.data
     .filter((model) => model && model.id)
     .sort((a, b) => a.id.localeCompare(b.id))
 
-  const hyperModels = {}
-  const skipped = []
-  const forceAdded = []
+  const openCodeModels = {}
+  const zedModels = []
 
   for (const liveModel of liveModels) {
-    const crushModel = crushCatalog[liveModel.id]
-
-    if (!crushModel && !args.forceAddExtra) {
-      skipped.push(liveModel.id)
-      continue
-    }
-
-    if (!crushModel && args.forceAddExtra) {
-      forceAdded.push(liveModel.id)
-    }
-
-    hyperModels[liveModel.id] = toOpenCodeModel(liveModel, crushModel)
+    openCodeModels[liveModel.id] = toOpenCodeModel(liveModel)
+    zedModels.push(toZedModel(liveModel))
   }
 
-  console.log(`Found live Hyper models: ${liveModels.length}`)
-  console.log(`Found priced Crush models: ${Object.keys(crushCatalog).length}`)
-  console.log(`Will write models: ${Object.keys(hyperModels).length}`)
+  const withCost = liveModels.filter((m) => m.pricing).length
 
-  if (skipped.length > 0) {
-    console.warn("")
-    console.warn(`Skipped ${skipped.length} live model(s) missing from Crush pricing catalog:`)
-    for (const id of skipped) console.warn(`  - ${id}`)
-    console.warn("")
-    console.warn("Use --force-add-extra to add them anyway with no cost field.")
-  }
-
-  if (forceAdded.length > 0) {
-    console.warn("")
-    console.warn(`Force-added ${forceAdded.length} unpriced live model(s):`)
-    for (const id of forceAdded) console.warn(`  - ${id}`)
-  }
-
+  console.log(`Found ${liveModels.length} Hyper models (${withCost} with pricing)`)
   console.log("")
-  console.log(Object.keys(hyperModels).sort().join("\n"))
+  console.log(Object.keys(openCodeModels).sort().join("\n"))
 
   for (const file of args.files) {
     const config = readJsonc(file)
-    updateConfig(config, hyperModels, args)
+    const format = detectConfigFormat(config, file)
+
+    if (format === "zed") {
+      updateZedConfig(config, zedModels, args)
+    } else {
+      updateOpenCodeConfig(config, openCodeModels, args)
+    }
 
     const newContent = JSON.stringify(config, null, 2) + "\n"
 
     if (args.dryRun) {
-      console.log(`\n--- ${file} ---`)
+      console.log(`\n--- ${file} (${format}) ---`)
       console.log(newContent)
       continue
     }
@@ -414,9 +413,15 @@ async function main() {
     fs.mkdirSync(path.dirname(file), { recursive: true })
     fs.writeFileSync(file, newContent)
 
-    console.log(
-      `Updated ${file}: provider.${args.providerID} with ${Object.keys(hyperModels).length} Hyper models`,
-    )
+    if (format === "zed") {
+      console.log(
+        `Updated ${file}: language_models.openai_compatible.Hyper.available_models with ${zedModels.length} models`,
+      )
+    } else {
+      console.log(
+        `Updated ${file}: provider.${args.providerID} with ${Object.keys(openCodeModels).length} Hyper models`,
+      )
+    }
   }
 }
 

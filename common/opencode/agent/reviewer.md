@@ -1,6 +1,6 @@
 ---
 description: >
-  Pipeline critic agent. Independent code review.   Checks git diffs against plan.
+  Pipeline critic agent. Independent code review.Checks git diffs against plan.
   Verifies bugs, security, edge cases, style. Independent quality gate.
 mode: subagent
 model: hyper/glm-5.2
