@@ -33,6 +33,7 @@ declare -a links=(
 	"$COMMON_DIR/zed/keymap.json;$CONFIG_DIR/zed/keymap.json"
 	"$COMMON_DIR/zed/settings.json;$CONFIG_DIR/zed/settings.json"
 	"$COMMON_DIR/zed/themes;$CONFIG_DIR/zed/themes"
+	"$COMMON_DIR/zed/tasks.json;$CONFIG_DIR/zed/tasks.json"
 	# Misc Apps
 	"$COMMON_DIR/gdu;$CONFIG_DIR/gdu"
 )

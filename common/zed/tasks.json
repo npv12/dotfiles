@@ -1,0 +1,117 @@
+[
+  {
+    "label": "Checkout commit: $ZED_GIT_SHA_SHORT (detached HEAD)",
+    "command": "git",
+    "args": [
+      "checkout",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Cherry-pick commit: $ZED_GIT_SHA_SHORT",
+    "command": "git",
+    "args": [
+      "cherry-pick",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Revert commit: $ZED_GIT_SHA_SHORT",
+    "command": "git",
+    "args": [
+      "revert",
+      "--no-edit",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Drop commit: $ZED_GIT_SHA_SHORT",
+    "command": "git",
+    "args": [
+      "rebase",
+      "--onto",
+      "$ZED_GIT_SHA^",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Merge commit: $ZED_GIT_SHA_SHORT into current branch",
+    "command": "git",
+    "args": [
+      "merge",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Rebase current branch onto $ZED_GIT_SHA_SHORT",
+    "command": "git",
+    "args": [
+      "rebase",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Reset to commit: $ZED_GIT_SHA_SHORT (soft)",
+    "command": "git",
+    "args": [
+      "reset",
+      "--soft",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Reset to commit: $ZED_GIT_SHA_SHORT (mixed)",
+    "command": "git",
+    "args": [
+      "reset",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Reset to commit: $ZED_GIT_SHA_SHORT (hard)",
+    "command": "git",
+    "args": [
+      "reset",
+      "--hard",
+      "$ZED_GIT_SHA"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  },
+  {
+    "label": "Check out $ZED_GIT_REF",
+    "command": "git",
+    "args": [
+      "checkout",
+      "$ZED_GIT_REF"
+    ],
+    "tags": [
+      "git-command"
+    ]
+  }
+]
