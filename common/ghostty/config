@@ -8,8 +8,17 @@ background-blur = true
 theme = catppuccin-mocha
 
 bold-is-bright = true
-cursor-style = block_hollow
-cursor-style-blink = true
+
+# Cursor
+custom-shader = ~/.config/ghostty/shaders/sweep.glsl
+custom-shader = ~/.config/ghostty/shaders/ripple.glsl
+custom-shader-animation = true
+
+cursor-style = block
+cursor-style-blink = false
+
+# Prevent Ghostty's shell integration from changing the prompt cursor to a bar
+shell-integration-features = no-cursor
 
 # Padding
 window-padding-x = 10
