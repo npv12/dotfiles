@@ -2,13 +2,21 @@
 
 # Contains custom exports
 # FZF
-export FZF_DEFAULT_OPTS="--layout=reverse --info=inline --multi --border=top --height=65% \
+export FZF_DEFAULT_OPTS="--layout=reverse --info=inline \
+--no-border \
+--list-border=rounded \
+--list-label-pos=2 \
+--highlight-line \
 --pointer=' ' \
 --marker='󰄲 ' \
---color=bg+:#1e1e2e,bg:#1e1e2e,spinner:#f5e0dc,hl:#af5fff \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#a6e3a1,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---margin=2%,1%,2%,1%"
+--color=bg:#1e1e2e,bg+:#45475a \
+--color=fg:#cdd6f4,fg+:#cdd6f4 \
+--color=spinner:#74c7ec,hl:#94e2d5,hl+:#94e2d5 \
+--color=header:#74c7ec,info:#74c7ec,prompt:#74c7ec \
+--color=pointer:#a6e3a1,marker:#a6e3a1 \
+--color=list-border:#74c7ec,list-label:#74c7ec \
+--margin=2%,1%,2%,1% \
+--padding=0,1"
 
 # GPG
 export GPG_TTY=$TTY

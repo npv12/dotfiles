@@ -47,13 +47,19 @@ zstyle ':z4h:direnv:success' notify 'no'
 zstyle ':z4h:ssh:*' send-extra-files '~/.config/zsh'
 
 # FZF
-zstyle ':z4h:*' fzf-flags --color=hl:1,hl+:2
-zstyle ':z4h:*' fzf-flags \
-  --color=hl:1,hl+:2 \
-  --multi \
-  --bind=tab:toggle+down \
-  --bind=shift-tab:toggle+up
-zstyle ':completion:*' ignored-patterns '(|*/)(.git|node_modules|dist)'
+# Zsh4Humans-specific FZF presentation.
+zstyle ':z4h:fzf-complete' fzf-bindings \
+  'enter:accept' \
+  'tab:toggle+down' \
+  'btab:toggle+up'
+
+zstyle ':z4h:fzf-history' fzf-bindings \
+  'enter:accept'
+
+zstyle ':z4h:fzf-history' fzf-preview no
+
+zstyle ':completion:*' ignored-patterns \
+  '(|*/)(.git|node_modules|dist)'
 
 
 # Clone additional Git repositories from GitHub.
