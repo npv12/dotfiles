@@ -3,8 +3,8 @@ description: >
   Pipeline critic agent. Independent code review.Checks git diffs against plan.
   Verifies bugs, security, edge cases, style. Independent quality gate.
 mode: subagent
-model: hyper/glm-5.2
-reasoningEffort: high
+model: openai/gpt-5.6-luna
+reasoningEffort: xhigh
 color: "#f38ba8"
 ---
 
