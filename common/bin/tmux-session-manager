@@ -69,7 +69,7 @@ main() {
           --prompt="  session/dir > " \
           --header="ENTER: switch/create  |  CTRL-D: delete sessions  |  CTRL-C: cancel" \
           --header-first \
-          --color="header:italic:cyan,prompt:green" \
+          --color="header:italic:#74c7ec,prompt:#74c7ec" \
           --bind "ctrl-d:execute(bash \"$0\" --kill {})+reload(bash \"$0\" --list)" \
           --print-query \
           --expect=enter \

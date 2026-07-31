@@ -21,7 +21,7 @@
 # US is safe in argv and exceptionally unlikely to occur in filenames/history.
 typeset -gr _FZF_UI_FIELD_SEP=$'\x1f'
 
-typeset -gr _FZF_UI_ICON_COLOR=$'\e[38;2;166;227;161m'
+typeset -gr _FZF_UI_ICON_COLOR=$'\e[38;2;148;226;213m'
 typeset -gr _FZF_UI_RESET=$'\e[0m'
 typeset -g  _fzf_ui_icon='󰒕'
 
@@ -323,8 +323,8 @@ typeset -ga _fzf_ui_base_flags=(
   --tabstop=4
   '--bind=result:transform-list-label:printf " %s/%s " "$FZF_MATCH_COUNT" "$FZF_TOTAL_COUNT"'
   '--color=bg:#1e1e2e,bg+:#45475a,fg:#cdd6f4,fg+:#cdd6f4'
-  '--color=hl:#af5fff,hl+:#f38ba8,prompt:#cba6f7,info:#cba6f7'
-  '--color=pointer:#a6e3a1,marker:#a6e3a1,list-border:#cba6f7,list-label:#cba6f7'
+  '--color=hl:#74c7ec,hl+:#89dceb,prompt:#74c7ec,info:#74c7ec'
+  '--color=pointer:#89b4fa,marker:#94e2d5,list-border:#74c7ec,list-label:#74c7ec'
 )
 
 # Search field 3 only. Field 2 is the icon and can never affect matching.

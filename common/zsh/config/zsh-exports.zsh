@@ -11,9 +11,9 @@ export FZF_DEFAULT_OPTS="--layout=reverse --info=inline \
 --marker='󰄲 ' \
 --color=bg:#1e1e2e,bg+:#45475a \
 --color=fg:#cdd6f4,fg+:#cdd6f4 \
---color=spinner:#74c7ec,hl:#94e2d5,hl+:#94e2d5 \
+--color=spinner:#89dceb,hl:#74c7ec,hl+:#89dceb \
 --color=header:#74c7ec,info:#74c7ec,prompt:#74c7ec \
---color=pointer:#a6e3a1,marker:#a6e3a1 \
+--color=pointer:#89b4fa,marker:#94e2d5 \
 --color=list-border:#74c7ec,list-label:#74c7ec \
 --margin=2%,1%,2%,1% \
 --padding=0,1"
