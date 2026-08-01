@@ -1,18 +1,22 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import {
+  AUTO_RECAP_MESSAGE_COUNT,
   buildBar,
   computeUsage,
+  countUserAssistant,
   formatElapsed,
   formatInt,
   formatMoney,
   lastAssistantMessage,
   mcpStatusInfo,
   messageTokenCount,
+  resolveRecapModel,
   runningAgents,
   runningShells,
   safeNumber,
   sanitizeCommand,
+  shouldAutoRecap,
   type MessageLike,
 } from "./sidebar.ts"
 
@@ -174,4 +178,47 @@ test("runningShells lists in-flight shells, newest first", () => {
     { id: "sh_1", command: "npm test", label: "12s" },
     { id: "sh_2", command: "git status", label: "1m" },
   ])
+})
+
+test("countUserAssistant counts only user and assistant messages", () => {
+  const messages = [
+    { id: "u1", type: "user" },
+    assistant("a1"),
+    { id: "c1", type: "compaction", status: "completed" },
+    { id: "t1", type: "tool" },
+    assistant("a2"),
+  ]
+  assert.equal(countUserAssistant(messages), 3)
+  assert.equal(countUserAssistant([]), 0)
+  assert.equal(countUserAssistant([{ id: "u1" }]), 0)
+})
+
+test("shouldAutoRecap fires at every 20-message boundary", () => {
+  assert.equal(AUTO_RECAP_MESSAGE_COUNT, 20)
+  assert.equal(shouldAutoRecap({ total: 19, lastAutoRecapCount: 0 }), false)
+  assert.equal(shouldAutoRecap({ total: 20, lastAutoRecapCount: 0 }), true)
+  assert.equal(shouldAutoRecap({ total: 35, lastAutoRecapCount: 20 }), false)
+  assert.equal(shouldAutoRecap({ total: 40, lastAutoRecapCount: 20 }), true)
+  assert.equal(shouldAutoRecap({ total: 45, lastAutoRecapCount: 40 }), false)
+  assert.equal(shouldAutoRecap({ total: 60, lastAutoRecapCount: 40 }), true)
+  // A fresh session with a long history recaps immediately.
+  assert.equal(shouldAutoRecap({ total: 100, lastAutoRecapCount: 0 }), true)
+})
+
+test("resolveRecapModel prefers the session's provider, else the first match", () => {
+  const models = [
+    { providerID: "other", id: "deepseek-v4-flash" },
+    { providerID: "second", id: "deepseek-v4-flash" },
+  ]
+  const sessionModel = { providerID: "pro", id: "deepseek-v4-flash" }
+  assert.deepEqual(
+    resolveRecapModel({ sessionModel, models, id: "deepseek-v4-flash" }),
+    { providerID: "pro", id: "deepseek-v4-flash" },
+  )
+  assert.deepEqual(resolveRecapModel({ models, id: "deepseek-v4-flash" }), models[0])
+  assert.equal(resolveRecapModel({ models: [], id: "deepseek-v4-flash" }), undefined)
+  assert.equal(
+    resolveRecapModel({ sessionModel: { providerID: "pro", id: "other" }, models: [], id: "deepseek-v4-flash" }),
+    undefined,
+  )
 })

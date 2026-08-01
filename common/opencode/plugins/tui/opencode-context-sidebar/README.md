@@ -1,8 +1,10 @@
 # opencode-context-sidebar
 
 OpenCode2 (next-16650+) TUI plugin: a context-usage panel in the sidebar —
-progress bar of the context window, token count vs limit, session cost, plus
-live panels for running subagents and in-flight shell commands.
+progress bar of the context window, token count vs limit, session cost, live
+panels for running subagents and in-flight shell commands, and a session
+recap panel that auto-generates a one-sentence summary every 20
+user/assistant messages.
 
 ```
 Context
@@ -14,8 +16,10 @@ Agents
 Shells
 $ npm test   45s
 $ git status 2s
+[ Recap ]
+Recap: Reworked the sidebar plugin to fold the session recap in, removed the
+standalone recap plugin, and pinned generation to deepseek-v4-flash.
 ```
-
 - Bar color: blue → warning yellow at 70% → error red at 90% (theme-driven;
   `hue.blue[200]` is the dark-mode shade — light mode would use 700).
 - Tokens/percent mirror the built-in sidebar exactly: the last completed
@@ -37,6 +41,18 @@ $ git status 2s
   `ctx.data.location.mcp.server.list(location)`), colored like the built-in
   panel: connected → success, failed / needs client ID → error,
   needs auth → warning, disabled → subdued.
+- Recap panel at the bottom: the "Recap" header doubles as the button
+  (white background, muted text; click to generate) with a one-sentence
+  recap line below it. Generation runs through the stateless `generate.text`
+  route pinned to `deepseek-v4-flash` on the session's own provider, capped
+  at 60 s, with the last 20 messages as context. An automatic recap fires at
+  every 20 user/assistant messages (20, 40, 60, …); the boundary advances
+  when the attempt starts, so a failed round cools down until the next
+  boundary instead of retrying. The boundary and last recap text persist per
+  session in `~/.local/state/opencode/recap-state.json`, so re-rendered
+  views, plugin reloads, and TUI restarts cannot regenerate or wipe the
+  recap while the session is idle. Manual failures surface as a toast;
+  automatic failures stay silent.
 
 ## Install
 
@@ -46,8 +62,8 @@ Registered in `common/opencode/cli.json` (symlinked to
 ```json
 {
   "plugins": [
-    "./plugins/tui/opencode-tps/src/index.tsx",
     "./plugins/tui/opencode-context-sidebar/src/index.tsx",
+    "./plugins/tui/opencode-footer/src/tui.tsx",
     "-internal:sidebar-context",
     "-internal:sidebar-mcp"
   ]

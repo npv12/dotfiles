@@ -12,6 +12,8 @@ export type MessageLike = {
   id: string
   type?: string
   status?: string
+  text?: string
+  content?: readonly { type?: string; text?: string }[]
   tokens?: {
     input?: number
     output?: number
@@ -221,4 +223,55 @@ export function runningShells(shells: readonly ShellLike[], now: number): Runnin
       command: sanitizeCommand(shell.command),
       label: formatElapsed(shell.time?.started ?? now, now),
     }))
+}
+
+// === recap ================================================================
+
+/** Recaps regenerate automatically every AUTO_RECAP_MESSAGE_COUNT
+ *  user/assistant messages (20, 40, 60, …). */
+export const AUTO_RECAP_MESSAGE_COUNT = 20
+
+/** Per-attempt cap for a recap generation; a timeout counts as a failed
+ *  round, retried at the next boundary or by clicking the Recap button. */
+export const RECAP_TIMEOUT_MS = 60 * 1_000
+
+/** The model recaps are pinned to, served via the stateless generate.text
+ *  route so recaps stay cheap even when the session itself runs a costlier
+ *  model. */
+export const RECAP_MODEL_ID_DEFAULT = "deepseek-v4-flash"
+
+export type ModelRef = { providerID: string; id: string; variant?: string }
+
+/** User + assistant messages only — tool and compaction messages don't
+ *  count toward the recap cadence. */
+export function countUserAssistant(messages: readonly MessageLike[]): number {
+  return messages.reduce(
+    (sum, message) => sum + (message.type === "user" || message.type === "assistant" ? 1 : 0),
+    0,
+  )
+}
+
+/** An automatic recap fires once the session has at least 20 user/assistant
+ *  messages and 20 more have arrived since the previous automatic recap. */
+export function shouldAutoRecap(input: { total: number; lastAutoRecapCount: number }): boolean {
+  return (
+    input.total >= AUTO_RECAP_MESSAGE_COUNT &&
+    input.total - input.lastAutoRecapCount >= AUTO_RECAP_MESSAGE_COUNT
+  )
+}
+
+/** Resolve the pinned model to one provider: the session's own provider when
+ *  it already serves the model (proven working), else the first location
+ *  provider that serves it. No fallback chain: an unavailable model is a
+ *  failed round, retried at the next boundary. */
+export function resolveRecapModel(input: {
+  sessionModel?: ModelRef
+  models: readonly { providerID?: string; id?: string }[]
+  id: string
+}): ModelRef | undefined {
+  if (input.sessionModel?.id === input.id) {
+    return { providerID: input.sessionModel.providerID, id: input.sessionModel.id }
+  }
+  const match = input.models.find((model) => model.id === input.id)
+  return match?.providerID && match.id ? { providerID: match.providerID, id: match.id } : undefined
 }

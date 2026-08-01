@@ -1,16 +1,25 @@
 /** @jsxImportSource @opentui/solid */
+import { readFileSync, writeFileSync, mkdirSync } from "fs"
+import { join } from "path"
+import { homedir } from "os"
 import {
+  RECAP_MODEL_ID_DEFAULT,
+  RECAP_TIMEOUT_MS,
   buildBar,
   computeUsage,
+  countUserAssistant,
   formatInt,
   formatMoney,
   mcpStatusInfo,
+  resolveRecapModel,
   runningAgents,
   runningShells,
   safeNumber,
+  shouldAutoRecap,
   type McpServer,
   type MessageLike,
   type ModelLike,
+  type ModelRef,
   type RunningAgent,
   type RunningShell,
   type SessionLike,
@@ -39,11 +48,24 @@ type Theme = {
   hue?: { blue?: Record<number, Color> }
 }
 
+type LocationInfo = { directory?: string; workspaceID?: string }
+
+type Toast = {
+  show: (input: {
+    variant?: "info" | "success" | "warning" | "error"
+    title?: string
+    message: string
+  }) => void
+}
+
 type PluginCtx = {
+  location: LocationInfo
   theme: Theme
   data: {
     session: {
-      get: (sessionID: string) => (SessionLike & { location?: unknown; revert?: { messageID?: string } }) | undefined
+      get: (sessionID: string) =>
+        | (SessionLike & { location?: LocationInfo; model?: ModelRef; revert?: { messageID?: string } })
+        | undefined
       list: () => readonly SessionLike[]
       status: (sessionID: string) => string
       cost: (sessionID: string) => number
@@ -55,8 +77,21 @@ type PluginCtx = {
       mcp: { server: { list: (location: unknown) => readonly McpServer[] } }
     }
   }
+  client: {
+    generate: {
+      text: (
+        input: {
+          location?: { directory?: string; workspace?: string } | undefined
+          prompt: string
+          model?: ModelRef | null
+        },
+        options?: { signal?: AbortSignal },
+      ) => Promise<{ text: string }>
+    }
+  }
   ui: {
     slot: (name: string, render: (props: { sessionID?: string }) => unknown) => void
+    toast: Toast["show"]
   }
 }
 
@@ -202,6 +237,167 @@ function computeDisplay(ctx: PluginCtx, sessionID: string): Display {
   }
 }
 
+// === recap ================================================================
+
+const RECAP_PROMPT = [
+  "Write one concrete 25-to-40-word sentence recapping the current coding work.",
+  "State what changed, was decided, or was learned, then mention the next step only when concrete.",
+  "Return only the sentence with no label or Markdown.",
+  "Do not mention the recap, session, user, or assistant.",
+].join(" ")
+
+/** The session's messages, or [] when the accessor is unavailable. */
+function sessionMessages(ctx: PluginCtx, sessionID: string): readonly MessageLike[] {
+  try {
+    return ctx.data.session.message.list(sessionID) ?? []
+  } catch {
+    return []
+  }
+}
+
+/** The session's location (data shape: {directory, workspaceID}). */
+function sessionLocation(ctx: PluginCtx, sessionID: string): LocationInfo | undefined {
+  try {
+    return ctx.data.session.get(sessionID)?.location ?? ctx.location
+  } catch {
+    return ctx.location
+  }
+}
+
+/** The model recaps are pinned to: RECAP_MODEL_ID_DEFAULT (deepseek-v4-flash)
+ *  on the session's own provider when it already serves the model, else the
+ *  first location provider that serves it. */
+function recapModel(ctx: PluginCtx, sessionID: string): ModelRef | undefined {
+  try {
+    return resolveRecapModel({
+      sessionModel: ctx.data.session.get(sessionID)?.model,
+      models: ctx.data.location.model.list(sessionLocation(ctx, sessionID)) ?? [],
+      id: RECAP_MODEL_ID_DEFAULT,
+    })
+  } catch {
+    return undefined
+  }
+}
+
+/** Recent user/assistant text for the stateless generate.text route, which
+ *  only sees the prompt, so the recap has to carry its own context. */
+function sessionTranscript(messages: readonly MessageLike[]): string {
+  const lines: string[] = []
+  for (const message of messages.slice(-20)) {
+    if (message.type === "user") {
+      const value = message.text?.trim()
+      if (value) lines.push(`user: ${value}`)
+    } else if (message.type === "assistant") {
+      const parts = (message.content ?? [])
+        .filter((part) => part.type === "text")
+        .map((part) => part.text ?? "")
+        .join("\n")
+        .trim()
+      const value = parts || message.text?.trim() || ""
+      if (value) lines.push(`assistant: ${value}`)
+    }
+  }
+  return lines.join("\n").slice(-4_000)
+}
+
+/** Push the recap line into the renderable directly — the only update path
+ *  that re-renders for external plugins (see the Node note above). */
+function setRecapLine(view: View, text: string | undefined) {
+  if (!view.recapTextNode || view.recapTextNode.isDestroyed) return
+  const value = text ?? ""
+  if (view.recapTextNode.content !== value) view.recapTextNode.content = value
+  if (view.recapTextNode.visible !== Boolean(value)) view.recapTextNode.visible = Boolean(value)
+}
+
+/** Generate a recap through the stateless generate.text route, pinned to the
+ *  recap model, capped at RECAP_TIMEOUT_MS so a hung provider cannot pin the
+ *  spinner. Manual failures surface as a toast; automatic rounds stay silent
+ *  — the boundary already advanced when the attempt started, so a failed
+ *  round cools down until the next 20-message boundary instead of retrying
+ *  every tick. Manual clicks never move the automatic boundary. */
+function generateRecap(ctx: PluginCtx, view: View, trigger: "manual" | "automatic") {
+  if (view.recapBusy) return
+  const messages = sessionMessages(ctx, view.sessionID)
+  if (!messages.some((message) => message.type === "user")) {
+    if (trigger === "manual") {
+      try {
+        ctx.ui.toast({
+          variant: "warning",
+          title: "Recap",
+          message: `No user messages in session (${messages.length} total)`,
+        })
+      } catch {
+        // toast unavailable — keep the failure silent
+      }
+    }
+    return
+  }
+  const previous = view.recapTextNode?.content
+  view.recapBusy = true
+  const controller = new AbortController()
+  setRecapLine(view, "Generating recap…")
+  const activity = sessionTranscript(messages)
+  const prompt = activity ? `${RECAP_PROMPT}\n\nRecent session activity:\n${activity}` : RECAP_PROMPT
+  const model = recapModel(ctx, view.sessionID)
+  const location = sessionLocation(ctx, view.sessionID)
+  const request = location
+    ? { directory: location.directory, workspace: location.workspaceID }
+    : undefined
+  const generation = model
+    ? ctx.client.generate.text(
+        { location: request, prompt, model },
+        { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(RECAP_TIMEOUT_MS)]) },
+      )
+    : Promise.reject(new Error("Recap model unavailable"))
+  generation
+    .then((response) => {
+      if (controller.signal.aborted) return
+      const value = response.text.trim().replaceAll(/\s+/g, " ")
+      if (value) {
+        setRecapLine(view, `Recap: ${value}`)
+        recapTexts.set(view.sessionID, `Recap: ${value}`)
+        saveRecapState()
+      } else {
+        setRecapLine(view, previous)
+      }
+    })
+    .catch((error) => {
+      if (controller.signal.aborted) return
+      console.error("[sidebar] recap generation failed", error)
+      setRecapLine(view, previous)
+      if (trigger === "manual") {
+        try {
+          ctx.ui.toast({
+            variant: "error",
+            title: "Recap failed",
+            message: error instanceof Error ? error.message : String(error),
+          })
+        } catch {
+          // toast unavailable — keep the failure silent
+        }
+      }
+    })
+    .finally(() => {
+      view.recapBusy = false
+    })
+}
+
+/** Automatic recap cadence: one recap per AUTO_RECAP_MESSAGE_COUNT
+ *  user/assistant messages (20, 40, 60, …). The boundary advances when the
+ *  attempt STARTS, so a failed or dropped round cools down until the next
+ *  boundary instead of retrying every tick. */
+function maybeAutoRecap(ctx: PluginCtx, view: View) {
+  if (view.recapBusy) return
+  if (!view.recapTextNode || view.recapTextNode.isDestroyed) return
+  const messages = sessionMessages(ctx, view.sessionID)
+  const total = countUserAssistant(messages)
+  if (!shouldAutoRecap({ total, lastAutoRecapCount: view.lastAutoRecapCount })) return
+  view.lastAutoRecapCount = total
+  autoRecapCounts.set(view.sessionID, total)
+  saveRecapState()
+  generateRecap(ctx, view, "automatic")
+}
+
 type Node = { content: string; fg?: Color; visible?: boolean; isDestroyed?: boolean }
 type McpNode = { bulletNode: Node | undefined; labelNode: Node | undefined; name: string }
 // Fixed pre-rendered rows for the agents/shells sections; row i shows list
@@ -217,6 +413,10 @@ type View = {
   agentRows: RowNodes[]
   shellsHeaderNode: Node | undefined
   shellRows: RowNodes[]
+  recapButtonNode: Node | undefined
+  recapTextNode: Node | undefined
+  recapBusy: boolean
+  lastAutoRecapCount: number
   sessionID: string
 }
 
@@ -255,9 +455,52 @@ function updateSection<T extends { label: string }>(
 const views = new Map<string, View>()
 let intervalId: ReturnType<typeof setInterval> | undefined
 
+// === recap persistence ====================================================
+// The auto boundary and last recap text live per session at module level and
+// are mirrored to a JSON file in the state dir, so a re-rendered slot body,
+// a hot-reloaded module, or a TUI restart cannot reset the auto cadence or
+// wipe the recap while the session is idle.
+
+const MAX_STATE_SESSIONS = 30
+const STATE_PATH = join(homedir(), ".local", "state", "opencode", "recap-state.json")
+const autoRecapCounts = new Map<string, number>()
+const recapTexts = new Map<string, string>()
+
+function loadRecapState() {
+  try {
+    const parsed = JSON.parse(readFileSync(STATE_PATH, "utf-8")) as Record<
+      string,
+      { count?: unknown; text?: unknown }
+    >
+    for (const [id, entry] of Object.entries(parsed)) {
+      if (typeof entry?.count === "number") autoRecapCounts.set(id, entry.count)
+      if (typeof entry?.text === "string" && entry.text) recapTexts.set(id, entry.text)
+    }
+  } catch {
+    // missing or corrupt state file — start fresh
+  }
+}
+
+function saveRecapState() {
+  try {
+    mkdirSync(join(homedir(), ".local", "state", "opencode"), { recursive: true })
+    const entries = Object.fromEntries(
+      [...autoRecapCounts.keys()]
+        .slice(-MAX_STATE_SESSIONS)
+        .map((id) => [id, { count: autoRecapCounts.get(id), text: recapTexts.get(id) ?? "" }] as const),
+    )
+    writeFileSync(STATE_PATH, JSON.stringify(entries))
+  } catch {
+    // state file unwritable — keep running without persistence
+  }
+}
+
 export default {
   id: "npv12.context-sidebar",
   setup(ctx: PluginCtx) {
+    // Restore the per-session auto boundary and last recap text, then the
+    // tick below can never regenerate while the session is idle.
+    loadRecapState()
     // Hot reload re-runs setup in a fresh module instance; guard against
     // leaked intervals from a previous generation.
     if (intervalId !== undefined) clearInterval(intervalId)
@@ -272,7 +515,9 @@ export default {
           !alive(view.agentsHeaderNode) &&
           view.agentRows.every((row) => !alive(row.bulletNode) && !alive(row.nameNode) && !alive(row.labelNode)) &&
           !alive(view.shellsHeaderNode) &&
-          view.shellRows.every((row) => !alive(row.bulletNode) && !alive(row.nameNode) && !alive(row.labelNode))
+          view.shellRows.every((row) => !alive(row.bulletNode) && !alive(row.nameNode) && !alive(row.labelNode)) &&
+          !alive(view.recapButtonNode) &&
+          !alive(view.recapTextNode)
         ) {
           views.delete(sessionID)
           continue
@@ -309,6 +554,7 @@ export default {
         } catch {
           views.delete(sessionID)
         }
+        maybeAutoRecap(ctx, view)
       }
     }, TICK_MS)
 
@@ -331,10 +577,15 @@ export default {
           nameNode: undefined,
           labelNode: undefined,
         })),
+        recapButtonNode: undefined,
+        recapTextNode: undefined,
+        recapBusy: false,
+        lastAutoRecapCount: autoRecapCounts.get(props.sessionID) ?? 0,
         sessionID: props.sessionID,
       }
       views.set(props.sessionID, view)
       const initial = computeDisplay(ctx, props.sessionID)
+      const initialRecapText = recapTexts.get(props.sessionID) ?? ""
       return (
         <box flexDirection="column">
           <text fg={ctx.theme.text.default}>
@@ -506,6 +757,27 @@ export default {
               ))}
             </>
           ) : null}
+          <text
+            ref={(node: any) => {
+              view.recapButtonNode = node
+            }}
+            fg={ctx.theme.text.default}
+            marginTop={1}
+            onMouseUp={() => generateRecap(ctx, view, "manual")}
+          >
+            <b>Recap</b>
+          </text>
+          <text
+            ref={(node: any) => {
+              view.recapTextNode = node
+              node.visible = Boolean(initialRecapText)
+            }}
+            fg={ctx.theme.text.subdued}
+            wrapMode="word"
+            flexShrink={1}
+          >
+            {initialRecapText}
+          </text>
         </box>
       )
     })
