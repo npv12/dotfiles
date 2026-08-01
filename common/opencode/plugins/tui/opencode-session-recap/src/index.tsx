@@ -14,13 +14,20 @@
 // { id, tui(api) } + session_prompt; 16665 restored this legacy contract,
 // verified against the 16665 binary).
 //
+// Rendering: external plugins load with their own solid-js copy, so signals
+// created here are invisible to the host renderer and slot bodies never
+// re-run on state changes (same constraint opencode-footer documents, and
+// it works on this build). Updates therefore go straight into the
+// renderables via their `content`/`visible` setters, and all logic lives in
+// a plain view object created from the slot body — nothing depends on
+// onMount/onCleanup, which the host never runs for external plugins.
+//
 // Generation runs mid-flight through the stateless generate.text route,
 // pinned to RECAP_MODEL_ID (default deepseek-v4-flash) on the session's own
 // provider, so recaps stay cheap even when the session itself runs a
 // costlier model. The route never mutates session history. New input
 // dismisses the recap; a dismissed, failed, or dropped attempt cools down
 // until the next interval instead of retrying immediately.
-import { createSignal, onCleanup, onMount, Show } from "solid-js"
 import {
   automaticRecapEligible,
   recapIntervalMs,
@@ -94,14 +101,26 @@ type PluginCtx = {
 
 type Route = { type?: string; sessionID?: string }
 
-type RecapHandle = {
+/** Renderable node: external plugins load with their own solid-js copy, so
+ *  signals never re-render the slot body; updates go straight into the
+ *  renderables through these setters (same mechanism as opencode-footer). */
+type Node = { content?: unknown; visible?: boolean; isDestroyed?: boolean }
+
+type RecapView = {
   generate: (trigger: "manual" | "automatic") => void
   dismiss: (handled: boolean) => void
+  boxNode?: Node
+  textNode?: Node
+  lastAutoRecapAt: number
+  lastAutomaticUserID?: string
+  controller?: AbortController
+  spinnerTimer?: ReturnType<typeof setInterval>
 }
 
-// The palette/slash commands need to reach the focused session's recap
-// component; components register themselves on mount.
-const recaps = new Map<string, RecapHandle>()
+// The palette/slash commands need to reach the focused session's recap view;
+// views are created when the slot body renders (not in onMount, which the
+// dual solid-js-copy host never runs for external plugins).
+const views = new Map<string, RecapView>()
 let keymapRegistered = false
 
 type Toast = {
@@ -203,81 +222,113 @@ function generateText(
   )
 }
 
-function Recap(props: { ctx: PluginCtx; sessionID: string }) {
-  const [loading, setLoading] = createSignal(false)
-  const [text, setText] = createSignal<string>()
-  const [frame, setFrame] = createSignal(0)
-  let lastAutoRecapAt = Date.now()
-  let lastAutomaticUserID: string | undefined
-  let controller: AbortController | undefined
-  let spinnerTimer: ReturnType<typeof setInterval> | undefined
+function createRecapView(ctx: PluginCtx, sessionID: string): RecapView {
+  const view: RecapView = {
+    generate,
+    dismiss,
+    lastAutoRecapAt: Date.now(),
+  }
 
-  const users = () => userMessages(props.ctx, props.sessionID)
+  const users = () => userMessages(ctx, sessionID)
+
+  /** Push a line into the renderables directly — the only update path that
+   *  re-renders for external plugins (see the Node note above). */
+  function setLine(text: string | undefined) {
+    if (!view.textNode || view.textNode.isDestroyed) return
+    view.textNode.content = text ?? ""
+    if (view.boxNode && !view.boxNode.isDestroyed) view.boxNode.visible = Boolean(text)
+  }
 
   function setGenerating(value: boolean) {
-    setLoading(value)
-    if (spinnerTimer !== undefined) {
-      clearInterval(spinnerTimer)
-      spinnerTimer = undefined
+    if (view.spinnerTimer !== undefined) {
+      clearInterval(view.spinnerTimer)
+      view.spinnerTimer = undefined
     }
     if (!value) return
-    spinnerTimer = setInterval(() => setFrame((current) => (current + 1) % SPINNER_FRAMES.length), SPINNER_MS)
+    let frame = 0
+    setLine(`${SPINNER_FRAMES[0]} Generating recap...`)
+    view.spinnerTimer = setInterval(() => {
+      frame = (frame + 1) % SPINNER_FRAMES.length
+      setLine(`${SPINNER_FRAMES[frame]} Generating recap...`)
+    }, SPINNER_MS)
   }
 
   /** Push the next automatic attempt to the next interval boundary so a
    *  dismissed, failed, or dropped recap cannot restart immediately. */
   function coolDown() {
-    lastAutoRecapAt = Date.now()
+    view.lastAutoRecapAt = Date.now()
   }
 
   function dismiss(handled: boolean) {
-    controller?.abort()
-    controller = undefined
-    if (handled) lastAutomaticUserID = users().at(-1)?.id
+    view.controller?.abort()
+    view.controller = undefined
+    if (handled) view.lastAutomaticUserID = users().at(-1)?.id
     coolDown()
-    setText(undefined)
     setGenerating(false)
+    setLine(undefined)
   }
 
   function generate(trigger: "manual" | "automatic") {
     const latest = users().at(-1)
-    if (!latest) return
-    controller?.abort()
+    if (!latest) {
+      if (trigger === "manual") {
+        let total = 0
+        try {
+          total = ctx.data.session.message.list(sessionID).length
+        } catch {
+          // message list unavailable — keep the count at 0
+        }
+        try {
+          ctx.ui.toast({
+            variant: "warning",
+            title: "Recap",
+            message: `No user messages in session data (${total} total)`,
+          })
+        } catch {
+          // toast unavailable — keep the failure silent
+        }
+      }
+      return
+    }
+    view.controller?.abort()
     const request = new AbortController()
-    controller = request
+    view.controller = request
     // Mid-flight snapshot: generate.text is a stateless side request, and
     // the revision check below drops the recap if a new user turn arrived
     // while it was being generated.
-    const before = revision(props.ctx, props.sessionID)
-    const activity = sessionTranscript(props.ctx, props.sessionID)
+    const before = revision(ctx, sessionID)
+    const activity = sessionTranscript(ctx, sessionID)
     const prompt = activity ? `${RECAP_PROMPT}\n\nRecent session activity:\n${activity}` : RECAP_PROMPT
     setGenerating(true)
-    void generateText(props.ctx, props.sessionID, prompt, request.signal)
+    void generateText(ctx, sessionID, prompt, request.signal)
       .then((response) => {
         if (request.signal.aborted) return
         const value = response.text.trim().replaceAll(/\s+/g, " ")
-        if (before !== revision(props.ctx, props.sessionID)) {
+        if (before !== revision(ctx, sessionID)) {
           setGenerating(false)
           coolDown()
           return
         }
-        if (value) setText(value)
         setGenerating(false)
-        if (value && trigger === "automatic") {
-          lastAutomaticUserID = latest.id
-          lastAutoRecapAt = Date.now()
+        if (value) {
+          setLine(`Recap: ${value}`)
+          if (trigger === "automatic") {
+            view.lastAutomaticUserID = latest.id
+            view.lastAutoRecapAt = Date.now()
+          }
         }
       })
       .catch((error) => {
         if (request.signal.aborted) return
         setGenerating(false)
+        setLine(undefined)
         coolDown()
         console.error("[recap] generation failed", error)
         // Surface manual failures; automatic rounds stay silent and retry
         // at the next interval.
         if (trigger === "manual") {
           try {
-            props.ctx.ui.toast({
+            ctx.ui.toast({
               variant: "error",
               title: "Recap failed",
               message: error instanceof Error ? error.message : String(error),
@@ -290,50 +341,62 @@ function Recap(props: { ctx: PluginCtx; sessionID: string }) {
   }
 
   function generateAutomatic() {
-    if (loading()) return
+    // A hot-reloaded plugin leaves the old module's view with destroyed
+    // nodes; stop generating once the renderables are gone.
+    if (!view.textNode || view.textNode.isDestroyed) return
+    if (view.spinnerTimer !== undefined) return
     if (
       !automaticRecapEligible({
         userIDs: users().map((message) => message.id),
-        lastAutomaticUserID,
+        lastAutomaticUserID: view.lastAutomaticUserID,
       })
     )
       return
     generate("automatic")
   }
 
-  onMount(() => {
-    recaps.set(props.sessionID, { generate, dismiss })
-    // New input dismisses the recap; it is also the activity that makes
-    // the next timer tick eligible again.
-    const stop = props.ctx.data.on("session.input.admitted", (event) => {
-      if (event.data.sessionID !== props.sessionID || event.data.input?.type !== "user") return
-      dismiss(false)
-    })
-    const tick = setInterval(() => {
-      if (Date.now() - lastAutoRecapAt >= RECAP_INTERVAL_MS) generateAutomatic()
-    }, TICK_MS)
-    onCleanup(() => {
-      stop()
-      recaps.delete(props.sessionID)
-      clearInterval(tick)
-      controller?.abort()
-      if (spinnerTimer !== undefined) clearInterval(spinnerTimer)
-    })
+  // New input dismisses the recap; it is also the activity that makes the
+  // next timer tick eligible again. The subscription and the tick live for
+  // the module instance; after a hot reload the old view's renderables are
+  // destroyed and generateAutomatic stops on its own.
+  ctx.data.on("session.input.admitted", (event) => {
+    if (event.data.sessionID !== sessionID || event.data.input?.type !== "user") return
+    dismiss(false)
   })
+  const tick = setInterval(() => {
+    if (Date.now() - view.lastAutoRecapAt >= RECAP_INTERVAL_MS) generateAutomatic()
+  }, TICK_MS)
 
+  return view
+}
+
+/** Render-only: the host never re-runs this on state changes, so the view
+ *  drives the renderables directly through the refs. */
+function Recap(props: { view: RecapView }) {
   return (
-    <Show when={loading() || text()}>
-      <box width="100%" paddingLeft={3} paddingRight={3} paddingBottom={1} onMouseUp={() => dismiss(true)}>
-        <Show when={loading()} fallback={<text wrapMode="word">Recap: {text()}</text>}>
-          <text>{SPINNER_FRAMES[frame()]} Generating recap...</text>
-        </Show>
-      </box>
-    </Show>
+    <box
+      width="100%"
+      paddingLeft={3}
+      paddingRight={3}
+      paddingBottom={1}
+      onMouseUp={() => props.view.dismiss(true)}
+      ref={(node: unknown) => {
+        props.view.boxNode = node as Node
+        props.view.boxNode.visible = false
+      }}
+    >
+      <text
+        ref={(node: unknown) => {
+          props.view.textNode = node as Node
+        }}
+        wrapMode="word"
+      />
+    </box>
   )
 }
 
 /** The session whose composer is currently focused, if it has a recap view. */
-function focusedRecap(ctx: PluginCtx): RecapHandle | undefined {
+function focusedRecap(ctx: PluginCtx): RecapView | undefined {
   let sessionID: string | undefined
   try {
     const route = ctx.ui.router.current()
@@ -341,7 +404,7 @@ function focusedRecap(ctx: PluginCtx): RecapHandle | undefined {
   } catch {
     sessionID = undefined
   }
-  return sessionID === undefined ? undefined : recaps.get(sessionID)
+  return sessionID === undefined ? undefined : views.get(sessionID)
 }
 
 export default {
@@ -365,14 +428,21 @@ export default {
               palette: true,
               slash: { name: "recap" },
               run: () => {
-                const handle = focusedRecap(ctx)
-                if (handle) {
-                  handle.generate("manual")
+                const view = focusedRecap(ctx)
+                if (view) {
+                  view.generate("manual")
                 } else {
+                  let routeDesc = "unknown"
+                  try {
+                    const route = ctx.ui.router.current()
+                    routeDesc = route?.type ? String(route.type) : "none"
+                  } catch {
+                    routeDesc = "unknown"
+                  }
                   ctx.ui.toast({
                     variant: "warning",
                     title: "Recap",
-                    message: "No recap view for the focused session",
+                    message: `No recap view (route=${routeDesc}, mounted=${views.size})`,
                   })
                 }
               },
@@ -387,7 +457,15 @@ export default {
           ],
         }))
       }
-      return <Recap ctx={ctx} sessionID={props.sessionID} />
+      // The view owns all recapping logic and is created when the slot body
+      // renders — the dual-copy host never runs onMount for external
+      // plugins, so nothing may depend on solid lifecycle hooks.
+      let view = views.get(props.sessionID)
+      if (!view) {
+        view = createRecapView(ctx, props.sessionID)
+        views.set(props.sessionID, view)
+      }
+      return <Recap view={view} />
     })
   },
 }
