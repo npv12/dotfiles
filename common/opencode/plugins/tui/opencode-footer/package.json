@@ -1,0 +1,23 @@
+{
+  "name": "@npv12/opencode-footer",
+  "version": "1.1.0",
+  "private": true,
+  "description": "OpenCode2 prompt footer + quota status. Merges the opencode-tps prompt stats (TPS/TTFT) with the opencode-quota compact status into one footer plugin, plus the quota_status server tool. Ported from @npv12/opencode-quota v1 (server + TUI entries) to the opencode2 next-16664/16665 Promise-plugin API. Providers trimmed to opencode-go, hyper, and openai (Codex).",
+  "type": "module",
+  "scripts": {
+    "check": "npm run typecheck && npm test",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@opentui/solid": "0.4.5",
+    "comment-json": "^5.0.0",
+    "solid-js": "1.9.12",
+    "xdg-basedir": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^4.0.17"
+  }
+}

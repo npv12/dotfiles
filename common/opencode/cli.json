@@ -1,8 +1,8 @@
 {
   "plugins": [
-    "./plugins/tui/opencode-tps/src/index.tsx",
     "./plugins/tui/opencode-context-sidebar/src/index.tsx",
     "./plugins/tui/opencode-session-recap/src/index.tsx",
+    "./plugins/tui/opencode-footer/src/tui.tsx",
     "-internal:sidebar-context",
     "-internal:sidebar-mcp"
   ],
