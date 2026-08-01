@@ -11,7 +11,8 @@
   "animations": true,
   "tabs": {
     "enabled": true,
-    "scope": "global"
+    "scope": "cwd",
+    "vertical": false
   },
   "diffs": {
     "single": true
@@ -21,7 +22,8 @@
   },
   "session": {
     "scrollbar": true,
-    "grouping": "auto"
+    "grouping": "auto",
+    "sidebar": "auto"
   },
   "prompt": {
     "paste": "compact"
