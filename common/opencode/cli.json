@@ -2,6 +2,7 @@
   "plugins": [
     "./plugins/tui/opencode-tps/src/index.tsx",
     "./plugins/tui/opencode-context-sidebar/src/index.tsx",
+    "./plugins/tui/opencode-session-recap/src/index.tsx",
     "-internal:sidebar-context",
     "-internal:sidebar-mcp"
   ],
