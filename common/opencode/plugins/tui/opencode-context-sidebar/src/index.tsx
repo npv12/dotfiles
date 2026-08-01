@@ -5,10 +5,16 @@ import {
   formatInt,
   formatMoney,
   mcpStatusInfo,
+  runningAgents,
+  runningShells,
   safeNumber,
   type McpServer,
   type MessageLike,
   type ModelLike,
+  type RunningAgent,
+  type RunningShell,
+  type SessionLike,
+  type ShellLike,
 } from "./sidebar.ts"
 
 // Local plugin-context types matching the TUI plugin runtime bundled in
@@ -37,10 +43,13 @@ type PluginCtx = {
   theme: Theme
   data: {
     session: {
-      get: (sessionID: string) => { location?: unknown; revert?: { messageID?: string } } | undefined
+      get: (sessionID: string) => (SessionLike & { location?: unknown; revert?: { messageID?: string } }) | undefined
+      list: () => readonly SessionLike[]
+      status: (sessionID: string) => string
       cost: (sessionID: string) => number
       message: { list: (sessionID: string) => readonly MessageLike[] }
     }
+    shell: { list: (location?: unknown) => readonly ShellLike[] }
     location: {
       model: { list: (location: unknown) => readonly ModelLike[] | undefined }
       mcp: { server: { list: (location: unknown) => readonly McpServer[] } }
@@ -61,6 +70,12 @@ const TICK_MS = 500
 
 const BAR_THRESHOLD_WARNING = 70
 const BAR_THRESHOLD_ERROR = 90
+
+// Rows are pre-rendered and shown/hidden per tick (slot bodies never re-run,
+// so the number of agents/shells cannot grow dynamically). Six each is well
+// past the subagent fan-out of a normal session.
+const MAX_AGENTS = 6
+const MAX_SHELLS = 6
 
 /** Bar color for a healthy context window (blue); falls back to the default
  *  text color when the theme does not expose the hue scale. The 200 shade is
@@ -108,6 +123,8 @@ type Display = {
   detail: string
   barColor: Color | undefined
   mcpLines: { name: string; label: string; color: Color | undefined }[]
+  agents: RunningAgent[]
+  shells: RunningShell[]
 }
 
 function computeDisplay(ctx: PluginCtx, sessionID: string): Display {
@@ -147,6 +164,20 @@ function computeDisplay(ctx: PluginCtx, sessionID: string): Display {
     servers = []
   }
 
+  const now = Date.now()
+  let sessions: readonly SessionLike[] = []
+  try {
+    sessions = ctx.data.session.list() ?? []
+  } catch {
+    sessions = []
+  }
+  let shells: readonly ShellLike[] = []
+  try {
+    shells = ctx.data.shell.list(location) ?? []
+  } catch {
+    shells = []
+  }
+
   return {
     // Bar and percent are separate renderables, like the original
     // context-progress plugin: bar chars, then a gap, then the percentage.
@@ -164,18 +195,59 @@ function computeDisplay(ctx: PluginCtx, sessionID: string): Display {
         color: mcpColor(ctx.theme, info.tone),
       }
     }),
+    // Running subagents anywhere in the instance (any session that has a
+    // parent), then in-flight shells for this session's location.
+    agents: runningAgents(sessions, (id) => ctx.data.session.status(id), now),
+    shells: runningShells(shells, now),
   }
 }
 
 type Node = { content: string; fg?: Color; visible?: boolean; isDestroyed?: boolean }
 type McpNode = { bulletNode: Node | undefined; labelNode: Node | undefined; name: string }
+// Fixed pre-rendered rows for the agents/shells sections; row i shows list
+// item i and is hidden when the list is shorter.
+type RowNodes = { bulletNode: Node | undefined; nameNode: Node | undefined; labelNode: Node | undefined }
 
 type View = {
   barNode: Node | undefined
   percentNode: Node | undefined
   detailNode: Node | undefined
   mcpNodes: McpNode[]
+  agentsHeaderNode: Node | undefined
+  agentRows: RowNodes[]
+  shellsHeaderNode: Node | undefined
+  shellRows: RowNodes[]
   sessionID: string
+}
+
+/** Push one pre-rendered row into state for the item at its index. */
+function updateRowNodes<T extends { label: string }>(
+  rows: RowNodes[],
+  items: readonly T[],
+  getName: (item: T) => string,
+): void {
+  for (let index = 0; index < rows.length; index++) {
+    const row = rows[index]
+    const item = items[index]
+    if (!row.bulletNode || !row.nameNode || !row.labelNode) continue
+    if (row.bulletNode.visible !== (item !== undefined)) row.bulletNode.visible = item !== undefined
+    if (row.nameNode.visible !== (item !== undefined)) row.nameNode.visible = item !== undefined
+    if (row.labelNode.visible !== (item !== undefined)) row.labelNode.visible = item !== undefined
+    if (!item) continue
+    const name = getName(item)
+    if (row.nameNode.content !== name) row.nameNode.content = name
+    if (row.labelNode.content !== item.label) row.labelNode.content = item.label
+  }
+}
+
+function updateSection<T extends { label: string }>(
+  header: Node | undefined,
+  rows: RowNodes[],
+  items: readonly T[],
+  getName: (item: T) => string,
+): void {
+  if (header && header.visible !== (items.length > 0)) header.visible = items.length > 0
+  updateRowNodes(rows, items, getName)
 }
 
 // A tab per session; each session view mounts its own sidebar, so track a
@@ -196,7 +268,11 @@ export default {
           !alive(view.barNode) &&
           !alive(view.percentNode) &&
           !alive(view.detailNode) &&
-          view.mcpNodes.every((entry) => !alive(entry.bulletNode) && !alive(entry.labelNode))
+          view.mcpNodes.every((entry) => !alive(entry.bulletNode) && !alive(entry.labelNode)) &&
+          !alive(view.agentsHeaderNode) &&
+          view.agentRows.every((row) => !alive(row.bulletNode) && !alive(row.nameNode) && !alive(row.labelNode)) &&
+          !alive(view.shellsHeaderNode) &&
+          view.shellRows.every((row) => !alive(row.bulletNode) && !alive(row.nameNode) && !alive(row.labelNode))
         ) {
           views.delete(sessionID)
           continue
@@ -228,6 +304,8 @@ export default {
             if (entry.bulletNode.fg !== line.color) entry.bulletNode.fg = line.color
             if (entry.labelNode.content !== line.label) entry.labelNode.content = line.label
           }
+          updateSection(view.agentsHeaderNode, view.agentRows, display.agents, (agent) => agent.name)
+          updateSection(view.shellsHeaderNode, view.shellRows, display.shells, (shell) => shell.command)
         } catch {
           views.delete(sessionID)
         }
@@ -241,6 +319,18 @@ export default {
         percentNode: undefined,
         detailNode: undefined,
         mcpNodes: [],
+        agentsHeaderNode: undefined,
+        agentRows: Array.from({ length: MAX_AGENTS }, () => ({
+          bulletNode: undefined,
+          nameNode: undefined,
+          labelNode: undefined,
+        })),
+        shellsHeaderNode: undefined,
+        shellRows: Array.from({ length: MAX_SHELLS }, () => ({
+          bulletNode: undefined,
+          nameNode: undefined,
+          labelNode: undefined,
+        })),
         sessionID: props.sessionID,
       }
       views.set(props.sessionID, view)
@@ -285,6 +375,102 @@ export default {
           >
             {initial.detail}
           </text>
+          <text
+            ref={(node: any) => {
+              view.agentsHeaderNode = node
+              node.visible = initial.agents.length > 0
+            }}
+            fg={ctx.theme.text.default}
+            marginTop={1}
+          >
+            <b>Agents</b>
+          </text>
+          {view.agentRows.map((row, index) => (
+            <box flexDirection="row" gap={1}>
+              <text
+                ref={(node: any) => {
+                  row.bulletNode = node
+                  node.visible = index < initial.agents.length
+                }}
+                fg={healthyColor(ctx.theme)}
+                flexShrink={0}
+              >
+                ●
+              </text>
+              <text
+                ref={(node: any) => {
+                  row.nameNode = node
+                  node.visible = index < initial.agents.length
+                }}
+                fg={ctx.theme.text.default}
+                wrapMode="none"
+                truncate
+                flexShrink={1}
+              >
+                {initial.agents[index]?.name ?? ""}
+              </text>
+              <text
+                ref={(node: any) => {
+                  row.labelNode = node
+                  node.visible = index < initial.agents.length
+                }}
+                fg={ctx.theme.text.subdued}
+                wrapMode="none"
+                truncate
+                flexShrink={1}
+              >
+                {initial.agents[index]?.label ?? ""}
+              </text>
+            </box>
+          ))}
+          <text
+            ref={(node: any) => {
+              view.shellsHeaderNode = node
+              node.visible = initial.shells.length > 0
+            }}
+            fg={ctx.theme.text.default}
+            marginTop={1}
+          >
+            <b>Shells</b>
+          </text>
+          {view.shellRows.map((row, index) => (
+            <box flexDirection="row" gap={1}>
+              <text
+                ref={(node: any) => {
+                  row.bulletNode = node
+                  node.visible = index < initial.shells.length
+                }}
+                fg={ctx.theme.text.subdued}
+                flexShrink={0}
+              >
+                $
+              </text>
+              <text
+                ref={(node: any) => {
+                  row.nameNode = node
+                  node.visible = index < initial.shells.length
+                }}
+                fg={ctx.theme.text.default}
+                wrapMode="none"
+                truncate
+                flexShrink={1}
+              >
+                {initial.shells[index]?.command ?? ""}
+              </text>
+              <text
+                ref={(node: any) => {
+                  row.labelNode = node
+                  node.visible = index < initial.shells.length
+                }}
+                fg={ctx.theme.text.subdued}
+                wrapMode="none"
+                truncate
+                flexShrink={1}
+              >
+                {initial.shells[index]?.label ?? ""}
+              </text>
+            </box>
+          ))}
           {initial.mcpLines.length > 0 ? (
             <>
               <text fg={ctx.theme.text.default} marginTop={1}>

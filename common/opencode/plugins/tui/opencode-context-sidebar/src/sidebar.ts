@@ -153,3 +153,72 @@ export function formatInt(value: number): string {
 export function formatMoney(value: number): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value)
 }
+
+// === running agents and shells ============================================
+
+export type SessionLike = {
+  id: string
+  parentID?: string
+  agent?: string
+  title?: string
+  time?: { created?: number; updated?: number }
+}
+
+export type ShellLike = {
+  id: string
+  command?: string
+  cwd?: string
+  pid?: number
+  time?: { started?: number }
+}
+
+export type RunningAgent = { id: string; name: string; label: string }
+
+export type RunningShell = { id: string; command: string; label: string }
+
+/** Compact elapsed time: "12s", "3m", "1h". */
+export function formatElapsed(startedMs: number, nowMs: number): string {
+  const seconds = Math.max(0, Math.floor((nowMs - startedMs) / 1000))
+  if (seconds < 60) return `${seconds}s`
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m`
+  return `${Math.floor(minutes / 60)}h`
+}
+
+/** Collapse multi-line shell commands to a single line and cap the length. */
+export function sanitizeCommand(command: string | undefined, maxLength = 60): string {
+  const single = (command ?? "").replace(/\s+/g, " ").trim()
+  if (single.length <= maxLength) return single
+  return `${single.slice(0, maxLength - 1)}…`
+}
+
+/**
+ * Subagent sessions currently running (a session with a parentID whose
+ * status is "running"), most recently active first. The label is how long
+ * the subagent task has been running.
+ */
+export function runningAgents(
+  sessions: readonly SessionLike[],
+  status: (sessionID: string) => string,
+  now: number,
+): RunningAgent[] {
+  return sessions
+    .filter((session) => session.parentID && status(session.id) === "running")
+    .toSorted((a, b) => (b.time?.updated ?? 0) - (a.time?.updated ?? 0))
+    .map((session) => ({
+      id: session.id,
+      name: session.agent ?? "agent",
+      label: formatElapsed(session.time?.created ?? now, now),
+    }))
+}
+
+/** In-flight shells (the data layer drops them on exit), newest first. */
+export function runningShells(shells: readonly ShellLike[], now: number): RunningShell[] {
+  return shells
+    .toSorted((a, b) => (b.time?.started ?? 0) - (a.time?.started ?? 0))
+    .map((shell) => ({
+      id: shell.id,
+      command: sanitizeCommand(shell.command),
+      label: formatElapsed(shell.time?.started ?? now, now),
+    }))
+}

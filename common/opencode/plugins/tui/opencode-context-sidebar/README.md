@@ -1,12 +1,19 @@
 # opencode-context-sidebar
 
-OpenCode2 (next-16650) TUI plugin: a context-usage panel in the sidebar —
-progress bar of the context window, token count vs limit, and session cost.
+OpenCode2 (next-16650+) TUI plugin: a context-usage panel in the sidebar —
+progress bar of the context window, token count vs limit, session cost, plus
+live panels for running subagents and in-flight shell commands.
 
 ```
 Context
 ████████████ ░░░░░░░░░░░  52%
 14,912 / 32,000 / $0.15
+Agents
+● explore    12s
+● worker     3s
+Shells
+$ npm test   45s
+$ git status 2s
 ```
 
 - Bar color: blue → warning yellow at 70% → error red at 90% (theme-driven;
@@ -17,6 +24,15 @@ Context
   current model's context limit from the location model list.
 - Cost comes from `ctx.data.session.cost(sessionID)` (falls back to summing
   assistant message costs).
+- Agents panel: every running subagent session in the instance — a session
+  with a `parentID` whose status is "running" (`ctx.data.session.list()` +
+  `ctx.data.session.status(id)`) — most recently active first, with how long
+  the task has been running.
+- Shells panel: in-flight shell commands for the session's location
+  (`ctx.data.shell.list(location)`; the data layer drops entries once a
+  command exits), newest first, command collapsed to a single line.
+- Both panels hide entirely while empty and cap at 6 rows each (slot bodies
+  never re-run, so rows are pre-rendered and shown/hidden per tick).
 - MCP status list below the Context panel (from
   `ctx.data.location.mcp.server.list(location)`), colored like the built-in
   panel: connected → success, failed / needs client ID → error,

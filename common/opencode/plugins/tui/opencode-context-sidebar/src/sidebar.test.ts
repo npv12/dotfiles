@@ -3,12 +3,16 @@ import assert from "node:assert/strict"
 import {
   buildBar,
   computeUsage,
+  formatElapsed,
   formatInt,
   formatMoney,
   lastAssistantMessage,
   mcpStatusInfo,
   messageTokenCount,
+  runningAgents,
+  runningShells,
   safeNumber,
+  sanitizeCommand,
   type MessageLike,
 } from "./sidebar.ts"
 
@@ -119,4 +123,55 @@ test("mcpStatusInfo maps statuses to labels and tones", () => {
   })
   assert.deepEqual(mcpStatusInfo("weird"), { label: "weird", tone: "subdued" })
   assert.deepEqual(mcpStatusInfo(undefined), { label: "Unknown", tone: "subdued" })
+})
+
+test("formatElapsed renders compact s/m/h", () => {
+  const now = 1_000_000
+  assert.equal(formatElapsed(now, now), "0s")
+  assert.equal(formatElapsed(now - 12_000, now), "12s")
+  assert.equal(formatElapsed(now - 3 * 60_000, now), "3m")
+  assert.equal(formatElapsed(now - 2 * 3_600_000, now), "2h")
+  // Clock skew: never negative.
+  assert.equal(formatElapsed(now + 5_000, now), "0s")
+})
+
+test("sanitizeCommand collapses multi-line commands and caps length", () => {
+  assert.equal(sanitizeCommand("npm test"), "npm test")
+  assert.equal(sanitizeCommand("echo a\n  echo b\necho c"), "echo a echo b echo c")
+  assert.equal(sanitizeCommand("  spaced  out  "), "spaced out")
+  assert.equal(sanitizeCommand(undefined), "")
+  assert.equal(sanitizeCommand("x".repeat(100)).length, 60)
+  assert.ok(sanitizeCommand("x".repeat(100)).endsWith("…"))
+})
+
+test("runningAgents lists only running subagents, newest activity first", () => {
+  const sessions = [
+    { id: "ses_root", time: { created: 100, updated: 400 } },
+    { id: "ses_explore", parentID: "ses_root", agent: "explore", time: { created: 200_000, updated: 500_000 } },
+    { id: "ses_worker", parentID: "ses_root", agent: "worker", time: { created: 750_000, updated: 600_000 } },
+    { id: "ses_done", parentID: "ses_root", agent: "general", time: { created: 300_000, updated: 700_000 } },
+  ]
+  const now = 1_000_000
+  const status = (id: string) => (id === "ses_done" ? "idle" : "running")
+  assert.deepEqual(runningAgents(sessions, status, now), [
+    { id: "ses_worker", name: "worker", label: "4m" },
+    { id: "ses_explore", name: "explore", label: "13m" },
+  ])
+})
+
+test("runningAgents falls back to 'agent' when the agent name is missing", () => {
+  const sessions = [{ id: "ses_x", parentID: "ses_root", time: { created: 0, updated: 1 } }]
+  assert.equal(runningAgents(sessions, () => "running", 10_000)[0].name, "agent")
+})
+
+test("runningShells lists in-flight shells, newest first", () => {
+  const now = 1_000_000
+  const shells = [
+    { id: "sh_1", command: "npm test", time: { started: now - 12_000 } },
+    { id: "sh_2", command: "git status", time: { started: now - 60_000 } },
+  ]
+  assert.deepEqual(runningShells(shells, now), [
+    { id: "sh_1", command: "npm test", label: "12s" },
+    { id: "sh_2", command: "git status", label: "1m" },
+  ])
 })
