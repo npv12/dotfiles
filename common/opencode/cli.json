@@ -8,5 +8,28 @@
   ],
   "theme": {
     "name": "catppuccin"
+  },
+  "animations": true,
+  "tabs": {
+    "enabled": true,
+    "scope": "global"
+  },
+  "diffs": {
+    "single": true
+  },
+  "attention": {
+    "enabled": true
+  },
+  "session": {
+    "scrollbar": true,
+    "grouping": "auto"
+  },
+  "prompt": {
+    "paste": "compact"
+  },
+  "keybinds": {
+    "prompt_stash": "<leader>p",
+    "prompt_stash_pop": "<leader>o",
+    "prompt_stash_list": "<leader>i"
   }
 }
