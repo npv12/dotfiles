@@ -9,6 +9,7 @@ import {
   recapIntervalMs,
   recapModelId,
   recapTimeoutMs,
+  resolveRecapModel,
 } from "./eligibility.ts"
 
 test("requires at least three user turns", () => {
@@ -73,4 +74,43 @@ test("RECAP_MODEL_ID env var overrides the model", () => {
   assert.equal(recapModelId({ RECAP_MODEL_ID: "  deepseek-v4-pro  " }), "deepseek-v4-pro")
   assert.equal(recapModelId({ RECAP_MODEL_ID: " " }), RECAP_MODEL_ID_DEFAULT)
   assert.equal(recapModelId({ RECAP_MODEL_ID: "" }), RECAP_MODEL_ID_DEFAULT)
+})
+
+test("resolves the pinned model to the session's own provider first", () => {
+  const models = [
+    { providerID: "hyper", id: "deepseek-v4-flash" },
+    { providerID: "opencode-go", id: "deepseek-v4-flash" },
+  ]
+  assert.deepEqual(
+    resolveRecapModel({
+      sessionModel: { providerID: "opencode-go", id: "deepseek-v4-flash" },
+      models,
+      id: "deepseek-v4-flash",
+    }),
+    { providerID: "opencode-go", id: "deepseek-v4-flash" },
+  )
+})
+
+test("falls back to the first location provider serving the model", () => {
+  const models = [
+    { providerID: "hyper", id: "deepseek-v4-flash" },
+    { providerID: "opencode-go", id: "deepseek-v4-flash" },
+  ]
+  assert.deepEqual(
+    resolveRecapModel({ sessionModel: undefined, models, id: "deepseek-v4-flash" }),
+    { providerID: "hyper", id: "deepseek-v4-flash" },
+  )
+  assert.deepEqual(
+    resolveRecapModel({
+      sessionModel: { providerID: "opencode-go", id: "other-model" },
+      models,
+      id: "deepseek-v4-flash",
+    }),
+    { providerID: "hyper", id: "deepseek-v4-flash" },
+  )
+})
+
+test("unknown model id resolves to undefined", () => {
+  const models = [{ providerID: "hyper", id: "deepseek-v4-flash" }]
+  assert.equal(resolveRecapModel({ sessionModel: undefined, models, id: "nope" }), undefined)
 })
