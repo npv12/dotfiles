@@ -1,9 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "build",
-  "plugin": [
-    "@npv12/opencode-memory-md",
-    "context-mode"
+  "plugins": [
+    "./opencode-memory-md/src/index.ts"
   ],
   "agent": {
     "plan": {

@@ -1,0 +1,21 @@
+{
+  "name": "@npv12/opencode-memory-md",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Markdown-based persistent memory plugin for opencode2 next-16650 (Promise-plugin API)",
+  "type": "module",
+  "scripts": {
+    "check": "npm run typecheck && npm test",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test src/logic.test.ts"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.0.0-next.4",
+    "onnxruntime-node": "1.23.2",
+    "vectra": "^0.12.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  }
+}
