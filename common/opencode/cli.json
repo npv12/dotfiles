@@ -1,0 +1,5 @@
+{
+  "plugins": [
+    "./plugins/tui/opencode-tps/src/index.tsx"
+  ]
+}
