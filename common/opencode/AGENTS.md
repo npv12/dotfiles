@@ -25,16 +25,6 @@ Code first. Then at most three lines: what was skipped, when to add it.
 
 Subagents are weak — verify their output, don't trust it blindly.
 
-# context-mode
-
-Think in Code — analyze data via `ctx_execute`, never read raw data into context. Only stdout enters context.
-
-## Tests
-
-Run tests via `ctx_execute(language: "shell", code: "npm test")` or the project's equivalent. Only stdout enters context. If the test command is unknown or undocumented, **ask the user** how to run tests for this project.
-
-If anything about context-mode (the `ctx_*` tools, indexed knowledge, auto-memory) is unclear or misbehaving, **ask the user for help** — do not work around it silently.
-
 ## Output
 
 Write artifacts to FILES — never inline. Return: file path + 1-line description.
