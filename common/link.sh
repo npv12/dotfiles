@@ -16,7 +16,6 @@ declare -a links=(
 	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
 	# Opencode
 	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode/opencode.jsonc"
-	"$COMMON_DIR/opencode/tui.jsonc;$CONFIG_DIR/opencode/tui.jsonc"
 	"$COMMON_DIR/opencode/cli.json;$CONFIG_DIR/opencode/cli.json"
 	"$COMMON_DIR/opencode/opencode-quota/quota-toast.json;$CONFIG_DIR/opencode/opencode-quota/quota-toast.json"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"

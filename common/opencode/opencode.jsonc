@@ -1,12 +1,25 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "build",
+  "mcp": {
+    "servers": {
+      "exa": {
+        "type": "remote",
+        "url": "https://mcp.exa.ai/mcp"
+      },
+      "notion": {
+        "type": "remote",
+        "url": "https://mcp.notion.com/mcp",
+        "disabled": true
+      }
+    }
+  },
   "plugins": [
     "./plugins/opencode-memory-md/src/index.ts"
   ],
-  "agent": {
+  "agents": {
     "plan": {
-      "disable": true
+      "disabled": true
     },
     "build": {
       "color": "#a6e3a1"
@@ -14,10 +27,14 @@
     "explore": {
       "color": "#f9e2af",
       "model": "opencode-go/deepseek-v4-flash",
-      "reasoningEffort": "max"
+      "request": {
+        "body": {
+          "reasoningEffort": "max"
+        }
+      }
     }
   },
-  "provider": {
+  "providers": {
     "amazon-bedrock": {
       "models": {
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1": {
@@ -31,168 +48,464 @@
         },
         "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu": {
           "name": "Kimi K2.5"
+        },
+        "ai21.jamba-1-5-large-v1:0": {
+          "disabled": true
+        },
+        "ai21.jamba-1-5-mini-v1:0": {
+          "disabled": true
+        },
+        "amazon.nova-2-lite-v1:0": {
+          "disabled": true
+        },
+        "amazon.nova-lite-v1:0": {
+          "disabled": true
+        },
+        "amazon.nova-micro-v1:0": {
+          "disabled": true
+        },
+        "amazon.nova-premier-v1:0": {
+          "disabled": true
+        },
+        "amazon.nova-pro-v1:0": {
+          "disabled": true
+        },
+        "amazon.titan-text-express-v1": {
+          "disabled": true
+        },
+        "amazon.titan-text-express-v1:0:8k": {
+          "disabled": true
+        },
+        "anthropic.claude-3-5-haiku-20241022-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-5-sonnet-20240620-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-5-sonnet-20241022-v2:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-7-sonnet-20250219-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-haiku-20240307-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-opus-20240229-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-3-sonnet-20240229-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-fable-5": {
+          "disabled": true
+        },
+        "anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-instant-v1": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-1-20250805-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-5-20251101-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-6-v1": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-6-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-7": {
+          "disabled": true
+        },
+        "anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "anthropic.claude-sonnet-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "anthropic.claude-v2": {
+          "disabled": true
+        },
+        "anthropic.claude-v2:1": {
+          "disabled": true
+        },
+        "au.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "au.anthropic.claude-opus-4-6-v1": {
+          "disabled": true
+        },
+        "au.anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "au.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "au.anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "au.anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "cohere.command-light-text-v14": {
+          "disabled": true
+        },
+        "cohere.command-r-plus-v1:0": {
+          "disabled": true
+        },
+        "cohere.command-r-v1:0": {
+          "disabled": true
+        },
+        "cohere.command-text-v14": {
+          "disabled": true
+        },
+        "deepseek.r1-v1:0": {
+          "disabled": true
+        },
+        "deepseek.v3-v1:0": {
+          "disabled": true
+        },
+        "deepseek.v3.2": {
+          "disabled": true
+        },
+        "deepseek.v3.2-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-fable-5": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-opus-4-5-20251101-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-opus-4-6-v1": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-opus-4-6-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-opus-4-7": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-sonnet-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "eu.anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "global.anthropic.claude-fable-5": {
+          "disabled": true
+        },
+        "global.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "global.anthropic.claude-opus-4-5-20251101-v1:0": {
+          "disabled": true
+        },
+        "global.anthropic.claude-opus-4-6-v1": {
+          "disabled": true
+        },
+        "global.anthropic.claude-opus-4-6-v1:0": {
+          "disabled": true
+        },
+        "global.anthropic.claude-opus-4-7": {
+          "disabled": true
+        },
+        "global.anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "global.anthropic.claude-sonnet-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "global.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "global.anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "global.anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "google.gemma-3-12b-it": {
+          "disabled": true
+        },
+        "google.gemma-3-27b-it": {
+          "disabled": true
+        },
+        "google.gemma-3-4b-it": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-opus-4-7": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "jp.anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "meta.llama3-1-70b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-1-8b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-2-11b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-2-1b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-2-3b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-2-90b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-3-70b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-70b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama3-8b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama4-maverick-17b-instruct-v1:0": {
+          "disabled": true
+        },
+        "meta.llama4-scout-17b-instruct-v1:0": {
+          "disabled": true
+        },
+        "minimax.minimax-m2": {
+          "disabled": true
+        },
+        "minimax.minimax-m2.1": {
+          "disabled": true
+        },
+        "minimax.minimax-m2.5": {
+          "disabled": true
+        },
+        "mistral.devstral-2-123b": {
+          "disabled": true
+        },
+        "mistral.magistral-small-2509": {
+          "disabled": true
+        },
+        "mistral.ministral-3-14b-instruct": {
+          "disabled": true
+        },
+        "mistral.ministral-3-3b-instruct": {
+          "disabled": true
+        },
+        "mistral.ministral-3-8b-instruct": {
+          "disabled": true
+        },
+        "mistral.mistral-7b-instruct-v0:2": {
+          "disabled": true
+        },
+        "mistral.mistral-large-2402-v1:0": {
+          "disabled": true
+        },
+        "mistral.mistral-large-3-675b-instruct": {
+          "disabled": true
+        },
+        "mistral.mixtral-8x7b-instruct-v0:1": {
+          "disabled": true
+        },
+        "mistral.pixtral-large-2502-v1:0": {
+          "disabled": true
+        },
+        "mistral.voxtral-mini-3b-2507": {
+          "disabled": true
+        },
+        "mistral.voxtral-small-24b-2507": {
+          "disabled": true
+        },
+        "moonshot.kimi-k2-thinking": {
+          "disabled": true
+        },
+        "moonshotai.kimi-k2.5": {
+          "disabled": true
+        },
+        "nvidia.nemotron-nano-12b-v2": {
+          "disabled": true
+        },
+        "nvidia.nemotron-nano-3-30b": {
+          "disabled": true
+        },
+        "nvidia.nemotron-nano-9b-v2": {
+          "disabled": true
+        },
+        "nvidia.nemotron-super-3-120b": {
+          "disabled": true
+        },
+        "openai.gpt-5.4": {
+          "disabled": true
+        },
+        "openai.gpt-5.5": {
+          "disabled": true
+        },
+        "openai.gpt-5.6-luna": {
+          "disabled": true
+        },
+        "openai.gpt-5.6-sol": {
+          "disabled": true
+        },
+        "openai.gpt-5.6-terra": {
+          "disabled": true
+        },
+        "openai.gpt-oss-120b": {
+          "disabled": true
+        },
+        "openai.gpt-oss-120b-1:0": {
+          "disabled": true
+        },
+        "openai.gpt-oss-20b": {
+          "disabled": true
+        },
+        "openai.gpt-oss-20b-1:0": {
+          "disabled": true
+        },
+        "openai.gpt-oss-safeguard-120b": {
+          "disabled": true
+        },
+        "openai.gpt-oss-safeguard-20b": {
+          "disabled": true
+        },
+        "qwen.qwen3-235b-a22b-2507-v1:0": {
+          "disabled": true
+        },
+        "qwen.qwen3-32b-v1:0": {
+          "disabled": true
+        },
+        "qwen.qwen3-coder-30b-a3b-v1:0": {
+          "disabled": true
+        },
+        "qwen.qwen3-coder-480b-a35b-v1:0": {
+          "disabled": true
+        },
+        "qwen.qwen3-coder-next": {
+          "disabled": true
+        },
+        "qwen.qwen3-next-80b-a3b": {
+          "disabled": true
+        },
+        "qwen.qwen3-vl-235b-a22b": {
+          "disabled": true
+        },
+        "us.anthropic.claude-fable-5": {
+          "disabled": true
+        },
+        "us.anthropic.claude-haiku-4-5-20251001-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-1-20250805-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-5-20251101-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-6-v1": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-6-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-7": {
+          "disabled": true
+        },
+        "us.anthropic.claude-opus-4-8": {
+          "disabled": true
+        },
+        "us.anthropic.claude-sonnet-4-20250514-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true
+        },
+        "us.anthropic.claude-sonnet-4-6": {
+          "disabled": true
+        },
+        "us.anthropic.claude-sonnet-5": {
+          "disabled": true
+        },
+        "us.deepseek.r1-v1:0": {
+          "disabled": true
+        },
+        "us.meta.llama4-maverick-17b-instruct-v1:0": {
+          "disabled": true
+        },
+        "us.meta.llama4-scout-17b-instruct-v1:0": {
+          "disabled": true
+        },
+        "writer.palmyra-x4-v1:0": {
+          "disabled": true
+        },
+        "writer.palmyra-x5-v1:0": {
+          "disabled": true
+        },
+        "xai.grok-4.3": {
+          "disabled": true
+        },
+        "zai.glm-4.7": {
+          "disabled": true
+        },
+        "zai.glm-4.7-flash": {
+          "disabled": true
+        },
+        "zai.glm-5": {
+          "disabled": true
         }
       },
-      "blacklist": [
-        "ai21.jamba-1-5-large-v1:0",
-        "ai21.jamba-1-5-mini-v1:0",
-        "amazon.nova-2-lite-v1:0",
-        "amazon.nova-lite-v1:0",
-        "amazon.nova-micro-v1:0",
-        "amazon.nova-premier-v1:0",
-        "amazon.nova-pro-v1:0",
-        "amazon.titan-text-express-v1",
-        "amazon.titan-text-express-v1:0:8k",
-        "anthropic.claude-3-5-haiku-20241022-v1:0",
-        "anthropic.claude-3-5-sonnet-20240620-v1:0",
-        "anthropic.claude-3-5-sonnet-20241022-v2:0",
-        "anthropic.claude-3-7-sonnet-20250219-v1:0",
-        "anthropic.claude-3-haiku-20240307-v1:0",
-        "anthropic.claude-3-opus-20240229-v1:0",
-        "anthropic.claude-3-sonnet-20240229-v1:0",
-        "anthropic.claude-fable-5",
-        "anthropic.claude-haiku-4-5-20251001-v1:0",
-        "anthropic.claude-instant-v1",
-        "anthropic.claude-opus-4-1-20250805-v1:0",
-        "anthropic.claude-opus-4-20250514-v1:0",
-        "anthropic.claude-opus-4-5-20251101-v1:0",
-        "anthropic.claude-opus-4-6-v1",
-        "anthropic.claude-opus-4-6-v1:0",
-        "anthropic.claude-opus-4-7",
-        "anthropic.claude-opus-4-8",
-        "anthropic.claude-sonnet-4-20250514-v1:0",
-        "anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "anthropic.claude-sonnet-4-6",
-        "anthropic.claude-sonnet-5",
-        "anthropic.claude-v2",
-        "anthropic.claude-v2:1",
-        "au.anthropic.claude-haiku-4-5-20251001-v1:0",
-        "au.anthropic.claude-opus-4-6-v1",
-        "au.anthropic.claude-opus-4-8",
-        "au.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "au.anthropic.claude-sonnet-4-6",
-        "au.anthropic.claude-sonnet-5",
-        "cohere.command-light-text-v14",
-        "cohere.command-r-plus-v1:0",
-        "cohere.command-r-v1:0",
-        "cohere.command-text-v14",
-        "deepseek.r1-v1:0",
-        "deepseek.v3-v1:0",
-        "deepseek.v3.2",
-        "deepseek.v3.2-v1:0",
-        "eu.anthropic.claude-fable-5",
-        "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
-        "eu.anthropic.claude-opus-4-5-20251101-v1:0",
-        "eu.anthropic.claude-opus-4-6-v1",
-        "eu.anthropic.claude-opus-4-6-v1:0",
-        "eu.anthropic.claude-opus-4-7",
-        "eu.anthropic.claude-opus-4-8",
-        "eu.anthropic.claude-sonnet-4-20250514-v1:0",
-        "eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "eu.anthropic.claude-sonnet-4-6",
-        "eu.anthropic.claude-sonnet-5",
-        "global.anthropic.claude-fable-5",
-        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
-        "global.anthropic.claude-opus-4-5-20251101-v1:0",
-        "global.anthropic.claude-opus-4-6-v1",
-        "global.anthropic.claude-opus-4-6-v1:0",
-        "global.anthropic.claude-opus-4-7",
-        "global.anthropic.claude-opus-4-8",
-        "global.anthropic.claude-sonnet-4-20250514-v1:0",
-        "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "global.anthropic.claude-sonnet-4-6",
-        "global.anthropic.claude-sonnet-5",
-        "google.gemma-3-12b-it",
-        "google.gemma-3-27b-it",
-        "google.gemma-3-4b-it",
-        "jp.anthropic.claude-haiku-4-5-20251001-v1:0",
-        "jp.anthropic.claude-opus-4-7",
-        "jp.anthropic.claude-opus-4-8",
-        "jp.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "jp.anthropic.claude-sonnet-4-6",
-        "jp.anthropic.claude-sonnet-5",
-        "meta.llama3-1-70b-instruct-v1:0",
-        "meta.llama3-1-8b-instruct-v1:0",
-        "meta.llama3-2-11b-instruct-v1:0",
-        "meta.llama3-2-1b-instruct-v1:0",
-        "meta.llama3-2-3b-instruct-v1:0",
-        "meta.llama3-2-90b-instruct-v1:0",
-        "meta.llama3-3-70b-instruct-v1:0",
-        "meta.llama3-70b-instruct-v1:0",
-        "meta.llama3-8b-instruct-v1:0",
-        "meta.llama4-maverick-17b-instruct-v1:0",
-        "meta.llama4-scout-17b-instruct-v1:0",
-        "minimax.minimax-m2",
-        "minimax.minimax-m2.1",
-        "minimax.minimax-m2.5",
-        "mistral.devstral-2-123b",
-        "mistral.magistral-small-2509",
-        "mistral.ministral-3-14b-instruct",
-        "mistral.ministral-3-3b-instruct",
-        "mistral.ministral-3-8b-instruct",
-        "mistral.mistral-7b-instruct-v0:2",
-        "mistral.mistral-large-2402-v1:0",
-        "mistral.mistral-large-3-675b-instruct",
-        "mistral.mixtral-8x7b-instruct-v0:1",
-        "mistral.pixtral-large-2502-v1:0",
-        "mistral.voxtral-mini-3b-2507",
-        "mistral.voxtral-small-24b-2507",
-        "moonshot.kimi-k2-thinking",
-        "moonshotai.kimi-k2.5",
-        "nvidia.nemotron-nano-12b-v2",
-        "nvidia.nemotron-nano-3-30b",
-        "nvidia.nemotron-nano-9b-v2",
-        "nvidia.nemotron-super-3-120b",
-        "openai.gpt-5.4",
-        "openai.gpt-5.5",
-        "openai.gpt-5.6-luna",
-        "openai.gpt-5.6-sol",
-        "openai.gpt-5.6-terra",
-        "openai.gpt-oss-120b",
-        "openai.gpt-oss-120b-1:0",
-        "openai.gpt-oss-20b",
-        "openai.gpt-oss-20b-1:0",
-        "openai.gpt-oss-safeguard-120b",
-        "openai.gpt-oss-safeguard-20b",
-        "qwen.qwen3-235b-a22b-2507-v1:0",
-        "qwen.qwen3-32b-v1:0",
-        "qwen.qwen3-coder-30b-a3b-v1:0",
-        "qwen.qwen3-coder-480b-a35b-v1:0",
-        "qwen.qwen3-coder-next",
-        "qwen.qwen3-next-80b-a3b",
-        "qwen.qwen3-vl-235b-a22b",
-        "us.anthropic.claude-fable-5",
-        "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-        "us.anthropic.claude-opus-4-1-20250805-v1:0",
-        "us.anthropic.claude-opus-4-20250514-v1:0",
-        "us.anthropic.claude-opus-4-5-20251101-v1:0",
-        "us.anthropic.claude-opus-4-6-v1",
-        "us.anthropic.claude-opus-4-6-v1:0",
-        "us.anthropic.claude-opus-4-7",
-        "us.anthropic.claude-opus-4-8",
-        "us.anthropic.claude-sonnet-4-20250514-v1:0",
-        "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "us.anthropic.claude-sonnet-4-6",
-        "us.anthropic.claude-sonnet-5",
-        "us.deepseek.r1-v1:0",
-        "us.meta.llama4-maverick-17b-instruct-v1:0",
-        "us.meta.llama4-scout-17b-instruct-v1:0",
-        "writer.palmyra-x4-v1:0",
-        "writer.palmyra-x5-v1:0",
-        "xai.grok-4.3",
-        "zai.glm-4.7",
-        "zai.glm-4.7-flash",
-        "zai.glm-5"
-      ],
-      "options": {
+      "settings": {
         "region": "us-west-2",
         "profile": "bedrock"
       }
     },
     "hyper": {
-      "npm": "@ai-sdk/openai-compatible",
+      "package": "aisdk:@ai-sdk/openai-compatible",
       "name": "Charm Hyper",
-      "options": {
+      "settings": {
         "baseURL": "https://hyper.charm.land/v1",
         "apiKey": "{env:HYPER_API_KEY}"
       },
@@ -205,9 +518,8 @@
             "output": 384000
           },
           "reasoning": true,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -215,24 +527,32 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.2,
             "output": 0.4,
-            "cache_read": 0.04,
-            "cache_write": 0
+            "cache": {
+              "read": 0.04,
+              "write": 0
+            }
           },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
             },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
             },
-            "max": {
+            {
+              "id": "max",
               "disabled": true
             }
-          }
+          ]
         },
         "deepseek-v4-pro": {
           "name": "DeepSeek V4 Pro",
@@ -242,9 +562,8 @@
             "output": 384000
           },
           "reasoning": true,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -252,24 +571,32 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 2.4,
             "output": 4.8,
-            "cache_read": 0.2,
-            "cache_write": 0
+            "cache": {
+              "read": 0.2,
+              "write": 0
+            }
           },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
             },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
             },
-            "max": {
+            {
+              "id": "max",
               "disabled": true
             }
-          }
+          ]
         },
         "gemma-4-26b-a4b-it": {
           "name": "Gemma 4 26B A4B",
@@ -279,9 +606,8 @@
             "output": 25600
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -289,12 +615,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.13,
             "output": 0.424,
-            "cache_read": 0,
-            "cache_write": 0.065
+            "cache": {
+              "read": 0,
+              "write": 0.065
+            }
           }
         },
         "glm-5": {
@@ -305,9 +632,8 @@
             "output": 20275
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -315,12 +641,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.81,
             "output": 2.624,
-            "cache_read": 0,
-            "cache_write": 0.405
+            "cache": {
+              "read": 0,
+              "write": 0.405
+            }
           }
         },
         "glm-5.1": {
@@ -331,9 +658,8 @@
             "output": 131072
           },
           "reasoning": true,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -341,21 +667,28 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 1.52432,
             "output": 4.79072,
-            "cache_read": 0.283088,
-            "cache_write": 0
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "max": {
-              "reasoningEffort": "max"
+            "cache": {
+              "read": 0.283088,
+              "write": 0
             }
-          }
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
         },
         "glm-5.2": {
           "name": "GLM-5.2",
@@ -365,9 +698,8 @@
             "output": 128000
           },
           "reasoning": true,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -375,21 +707,28 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 1.4,
             "output": 4.4,
-            "cache_read": 0.28,
-            "cache_write": 0
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            "cache": {
+              "read": 0.28,
+              "write": 0
             }
-          }
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
         },
         "gpt-oss-120b": {
           "name": "gpt-oss-120b",
@@ -399,9 +738,8 @@
             "output": 13107
           },
           "reasoning": true,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -409,24 +747,34 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.176,
             "output": 0.652,
-            "cache_read": 0,
-            "cache_write": 0.088
-          },
-          "variants": {
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
+            "cache": {
+              "read": 0,
+              "write": 0.088
             }
-          }
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
         },
         "kimi-k2.5": {
           "name": "Kimi K2.5",
@@ -436,9 +784,8 @@
             "output": 26214
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -446,12 +793,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.528,
             "output": 2.79,
-            "cache_read": 0,
-            "cache_write": 0.264
+            "cache": {
+              "read": 0,
+              "write": 0.264
+            }
           }
         },
         "kimi-k2.6": {
@@ -462,9 +810,8 @@
             "output": 262000
           },
           "reasoning": true,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -474,24 +821,34 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.95,
             "output": 4,
-            "cache_read": 0,
-            "cache_write": 0.16
-          },
-          "variants": {
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
+            "cache": {
+              "read": 0,
+              "write": 0.16
             }
-          }
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
         },
         "kimi-k2.7-code": {
           "name": "Kimi K2.7 Code",
@@ -501,9 +858,8 @@
             "output": 16000
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -513,12 +869,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.95,
             "output": 4,
-            "cache_read": 0.19,
-            "cache_write": 0
+            "cache": {
+              "read": 0.19,
+              "write": 0
+            }
           }
         },
         "kimi-k3": {
@@ -529,9 +886,8 @@
             "output": 131072
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -541,12 +897,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 3.2664,
             "output": 16.332,
-            "cache_read": 0.32664,
-            "cache_write": 0
+            "cache": {
+              "read": 0.32664,
+              "write": 0
+            }
           }
         },
         "llama-3.3-70b-instruct": {
@@ -557,9 +914,8 @@
             "output": 12800
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -567,12 +923,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.6066,
             "output": 1.0386,
-            "cache_read": 0,
-            "cache_write": 0.3033
+            "cache": {
+              "read": 0,
+              "write": 0.3033
+            }
           }
         },
         "llama-4-maverick-17b-128e-instruct-fp8": {
@@ -583,9 +940,8 @@
             "output": 43000
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -593,12 +949,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.284,
             "output": 0.934,
-            "cache_read": 0,
-            "cache_write": 0.142
+            "cache": {
+              "read": 0,
+              "write": 0.142
+            }
           }
         },
         "minimax-m2.7": {
@@ -609,9 +966,8 @@
             "output": 20480
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -619,12 +975,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.348,
             "output": 1.332,
-            "cache_read": 0,
-            "cache_write": 0.174
+            "cache": {
+              "read": 0,
+              "write": 0.174
+            }
           }
         },
         "qwen3-coder-480b-a35b-instruct-int4-mixed-ar": {
@@ -635,9 +992,8 @@
             "output": 10600
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -645,12 +1001,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.569,
             "output": 2.135,
-            "cache_read": 0,
-            "cache_write": 0.2845
+            "cache": {
+              "read": 0,
+              "write": 0.2845
+            }
           }
         },
         "qwen3-next-80b-a3b-instruct": {
@@ -661,9 +1018,8 @@
             "output": 26214
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -671,12 +1027,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.1175,
             "output": 1.136,
-            "cache_read": 0,
-            "cache_write": 0.05875
+            "cache": {
+              "read": 0,
+              "write": 0.05875
+            }
           }
         },
         "qwen3.6-flash": {
@@ -687,9 +1044,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -699,12 +1055,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 1,
             "output": 4,
-            "cache_read": 0.1,
-            "cache_write": 1.25
+            "cache": {
+              "read": 0.1,
+              "write": 1.25
+            }
           }
         },
         "qwen3.6-max": {
@@ -715,9 +1072,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -725,12 +1081,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 2,
             "output": 12,
-            "cache_read": 0.2,
-            "cache_write": 2.5
+            "cache": {
+              "read": 0.2,
+              "write": 2.5
+            }
           }
         },
         "qwen3.6-plus": {
@@ -741,9 +1098,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -753,12 +1109,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 2,
             "output": 6,
-            "cache_read": 0.2,
-            "cache_write": 2.5
+            "cache": {
+              "read": 0.2,
+              "write": 2.5
+            }
           }
         },
         "qwen3.7-flash": {
@@ -769,9 +1126,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -781,12 +1137,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 0.2,
             "output": 0.8,
-            "cache_read": 0.04,
-            "cache_write": 0
+            "cache": {
+              "read": 0.04,
+              "write": 0
+            }
           }
         },
         "qwen3.7-max": {
@@ -797,9 +1154,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": false,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text"
             ],
@@ -807,12 +1163,13 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 2.5,
             "output": 7.5,
-            "cache_read": 0.5,
-            "cache_write": 0
+            "cache": {
+              "read": 0.5,
+              "write": 0
+            }
           }
         },
         "qwen3.7-plus": {
@@ -823,9 +1180,8 @@
             "output": 64000
           },
           "reasoning": false,
-          "attachment": true,
-          "tool_call": true,
-          "modalities": {
+          "capabilities": {
+            "tools": true,
             "input": [
               "text",
               "image",
@@ -835,26 +1191,16 @@
               "text"
             ]
           },
-          "status": "active",
           "cost": {
             "input": 1.2,
             "output": 4.8,
-            "cache_read": 0.24,
-            "cache_write": 0
+            "cache": {
+              "read": 0.24,
+              "write": 0
+            }
           }
         }
       }
-    }
-  },
-  "mcp": {
-    "exa": {
-      "type": "remote",
-      "url": "https://mcp.exa.ai/mcp"
-    },
-    "notion": {
-      "type": "remote",
-      "url": "https://mcp.notion.com/mcp",
-      "enabled": false
     }
   }
 }

@@ -10,7 +10,8 @@ Build agent: implement features, fix bugs, write code. Use subagents when needed
 2. **Understand** — read relevant files, understand the task
 3. **Implement** — make focused, minimal changes
 4. **Verify** — run tests, check for issues
-5. **Done** — summarize what was changed
+5. **Live Test** — Ask a user how to live test if such a skill does not exists. You can skip if it does not exists
+6. **Done** — summarize what was changed
 
 ## Output
 
@@ -24,16 +25,6 @@ Code first. Then at most three lines: what was skipped, when to add it.
 - `@reviewer` — second opinion on changes
 
 Subagents are weak — verify their output, don't trust it blindly.
-
-# context-mode
-
-Think in Code — analyze data via `ctx_execute`, never read raw data into context. Only stdout enters context.
-
-## Tests
-
-Run tests via `ctx_execute(language: "shell", code: "npm test")` or the project's equivalent. Only stdout enters context. If the test command is unknown or undocumented, **ask the user** how to run tests for this project.
-
-If anything about context-mode (the `ctx_*` tools, indexed knowledge, auto-memory) is unclear or misbehaving, **ask the user for help** — do not work around it silently.
 
 ## Output
 
