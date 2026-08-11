@@ -56,6 +56,22 @@
             }
           },
           {
+            "name": "DeepSeek V4 Flash 0731",
+            "max_tokens": 1048576,
+            "max_output_tokens": 384000,
+            "max_completion_tokens": 1048576,
+            "reasoning_effort": "none",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": true,
+              "max_tokens_parameter": true
+            }
+          },
+          {
             "name": "DeepSeek V4 Pro",
             "max_tokens": 1000000,
             "max_output_tokens": 384000,
@@ -88,25 +104,9 @@
             }
           },
           {
-            "name": "GLM-5",
-            "max_tokens": 202752,
-            "max_output_tokens": 20275,
-            "max_completion_tokens": 202752,
-            "reasoning_effort": "high",
-            "capabilities": {
-              "tools": true,
-              "images": false,
-              "parallel_tool_calls": true,
-              "prompt_cache_key": true,
-              "chat_completions": true,
-              "interleaved_reasoning": false,
-              "max_tokens_parameter": true
-            }
-          },
-          {
             "name": "GLM-5.1",
             "max_tokens": 202800,
-            "max_output_tokens": 131072,
+            "max_output_tokens": 3276,
             "max_completion_tokens": 202800,
             "reasoning_effort": "high",
             "capabilities": {
@@ -122,7 +122,7 @@
           {
             "name": "GLM-5.2",
             "max_tokens": 1000000,
-            "max_output_tokens": 128000,
+            "max_output_tokens": 32768,
             "max_completion_tokens": 1000000,
             "reasoning_effort": "high",
             "capabilities": {
@@ -170,7 +170,7 @@
           {
             "name": "Kimi K2.6",
             "max_tokens": 262000,
-            "max_output_tokens": 262000,
+            "max_output_tokens": 26214,
             "max_completion_tokens": 262000,
             "reasoning_effort": "low",
             "capabilities": {
@@ -204,14 +204,14 @@
             "max_tokens": 1048576,
             "max_output_tokens": 131072,
             "max_completion_tokens": 1048576,
-            "reasoning_effort": "high",
+            "reasoning_effort": "low",
             "capabilities": {
               "tools": true,
               "images": true,
               "parallel_tool_calls": true,
               "prompt_cache_key": true,
               "chat_completions": true,
-              "interleaved_reasoning": false,
+              "interleaved_reasoning": true,
               "max_tokens_parameter": true
             }
           },
@@ -249,9 +249,9 @@
           },
           {
             "name": "MiniMax M2.7",
-            "max_tokens": 204800,
-            "max_output_tokens": 20480,
-            "max_completion_tokens": 204800,
+            "max_tokens": 262100,
+            "max_output_tokens": 6553,
+            "max_completion_tokens": 262100,
             "reasoning_effort": "high",
             "capabilities": {
               "tools": true,
@@ -260,6 +260,22 @@
               "prompt_cache_key": true,
               "chat_completions": true,
               "interleaved_reasoning": false,
+              "max_tokens_parameter": true
+            }
+          },
+          {
+            "name": "MiniMax M3",
+            "max_tokens": 512000,
+            "max_output_tokens": 512000,
+            "max_completion_tokens": 512000,
+            "reasoning_effort": "low",
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": true,
               "max_tokens_parameter": true
             }
           },
@@ -379,6 +395,22 @@
             "name": "Qwen3.7-Plus",
             "max_tokens": 1000000,
             "max_output_tokens": 64000,
+            "max_completion_tokens": 1000000,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": false,
+              "max_tokens_parameter": true
+            }
+          },
+          {
+            "name": "Qwen3.8-Max",
+            "max_tokens": 1000000,
+            "max_output_tokens": 65536,
             "max_completion_tokens": 1000000,
             "reasoning_effort": "high",
             "capabilities": {
