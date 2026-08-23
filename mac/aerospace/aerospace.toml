@@ -73,11 +73,12 @@ inherit-env-vars = true
 [exec.env-vars]
 BROWSER = 'Zen'
 # Custom environment variables (examples):
-EDITOR = 'nvim'
+EDITOR = 'zed --wait'
 # Environment variables for executed commands
 # Supports ${VAR} interpolation for existing variables
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 TERMINAL = 'Ghostty'
+VISUAL = 'zed --wait'
 # Commands to run when focused monitor changes
 # Available variables: ${focused-monitor} ${workspace}
 # Example: Move mouse to center of newly focused monitor

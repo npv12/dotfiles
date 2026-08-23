@@ -4,7 +4,6 @@
 
 # Code
 alias code="cursor"
-alias zed="/Applications/Zed\ Dev.app/Contents/MacOS/cli ."
 
 # Eza
 if command -v eza &> /dev/null; then
