@@ -1,7 +1,8 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-	// TODO(plugins): port V1 plugins to the V2 plugin API before re-enabling.
-	// "plugins": ["@npv12/opencode-memory-md"],
+	"plugins": [
+		"@npv12/opencode-memory-md",
+	],
 	"default_agent": "build",
 	"agents": {
 		"plan": {
@@ -185,14 +186,9 @@
 	},
 	"mcp": {
 		"servers": {
-			"exa": {
-				"type": "remote",
-				"url": "https://mcp.exa.ai/mcp",
-			},
 			"notion": {
 				"type": "remote",
 				"url": "https://mcp.notion.com/mcp",
-				"disabled": true,
 			},
 		},
 	},

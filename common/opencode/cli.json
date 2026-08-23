@@ -17,5 +17,15 @@
   },
   "attention": {
     "enabled": true
-  }
+  },
+  "plugins": [
+    "@npv12/opencode-context-sidebar",
+    "@npv12/opencode-mini-session",
+    "@npv12/opencode-recap",
+    "@npv12/opencode-tps",
+    "@npv12/opencode-quota",
+    "@npv12/opencode-footer",
+    "-opencode.sidebar.context",
+    "-opencode.prompt.footer"
+  ]
 }

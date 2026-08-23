@@ -21,8 +21,6 @@ declare -a links=(
 	"$COMMON_DIR/opencode/plugins;$CONFIG_DIR/opencode/plugins"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skills"
 	"$COMMON_DIR/opencode/cli.json;$CONFIG_DIR/opencode/cli.json"
-	# opencode-quota plugin config (v2 plugin reads opencode-quota/quota-toast.json)
-	"$COMMON_DIR/opencode/opencode-quota/quota-toast.json;$CONFIG_DIR/opencode/opencode-quota/quota-toast.json"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"
