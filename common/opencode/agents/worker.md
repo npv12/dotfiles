@@ -4,8 +4,7 @@ description: >
   task description, relevant file paths, and any constraints. It will implement
   and return a precise report of every change made.
 mode: subagent
-model: opencode-go/deepseek-v4-flash
-reasoningEffort: max
+model: opencode-go/mimo-v2.5#max
 ---
 
 You are a focused execution subagent for this repository.

@@ -14,14 +14,15 @@ declare -a links=(
 	# Codex
 	"$COMMON_DIR/codex/AGENTS.md;$HOME/.codex/AGENTS.md"
 	"$COMMON_DIR/codex/config.toml;$HOME/.codex/config.toml"
-	# Opencode
+	# Opencode (V2 native config; V1 and V2 share ~/.config/opencode)
 	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode/opencode.jsonc"
-	"$COMMON_DIR/opencode/tui.jsonc;$CONFIG_DIR/opencode/tui.jsonc"
-	"$COMMON_DIR/opencode/opencode-quota/quota-toast.json;$CONFIG_DIR/opencode/opencode-quota/quota-toast.json"
-	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/AGENTS.md"
-	"$COMMON_DIR/opencode/agent;$CONFIG_DIR/opencode/agent"
-	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skill"
+	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/opencode/AGENTS.md"
+	"$COMMON_DIR/opencode/agents;$CONFIG_DIR/opencode/agents"
 	"$COMMON_DIR/opencode/plugins;$CONFIG_DIR/opencode/plugins"
+	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skills"
+	"$COMMON_DIR/opencode/cli.json;$CONFIG_DIR/opencode/cli.json"
+	# opencode-quota plugin config (v2 plugin reads opencode-quota/quota-toast.json)
+	"$COMMON_DIR/opencode/opencode-quota/quota-toast.json;$CONFIG_DIR/opencode/opencode-quota/quota-toast.json"
 	# Git
 	"$COMMON_DIR/git/gitconfig;$HOME/.gitconfig"
 	"$COMMON_DIR/git/gitignore;$HOME/.gitignore"

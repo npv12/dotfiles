@@ -1,0 +1,21 @@
+{
+  "theme": {
+    "name": "catppuccin"
+  },
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "hide",
+    "image_preview": true
+  },
+  "animations": true,
+  "tabs": {
+    "layout": "vertical"
+  },
+  "attention": {
+    "enabled": true
+  }
+}
