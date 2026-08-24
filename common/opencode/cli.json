@@ -3,13 +3,15 @@
     "name": "catppuccin"
   },
   "diffs": {
-    "wrap": "word"
+    "wrap": "word",
+    "single": true
   },
   "session": {
     "sidebar": "auto",
     "scrollbar": false,
     "thinking": "hide",
-    "image_preview": true
+    "image_preview": true,
+    "grouping": "auto"
   },
   "animations": true,
   "tabs": {
@@ -20,9 +22,9 @@
     "enabled": true
   },
   "keybinds": {
-    "prompt_stash": "<leader>p",
-    "prompt_stash_pop": "<leader>o",
-    "prompt_stash_list": "<leader>i"
+    "prompt.stash": "<leader>p",
+    "prompt.stash.pop": "<leader>o",
+    "prompt.stash.list": "<leader>i"
   },
   "plugins": [
     "@npv12/opencode-context-sidebar",
@@ -33,5 +35,15 @@
     "@npv12/opencode-footer",
     "-opencode.sidebar.context",
     "-opencode.prompt.footer"
-  ]
+  ],
+  "scroll": {
+    "acceleration": true
+  },
+  "prompt": {
+    "image_preview": true,
+    "paste": "compact"
+  },
+  "terminal": {
+    "copy": "manual"
+  }
 }
