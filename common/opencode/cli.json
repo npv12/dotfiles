@@ -13,7 +13,8 @@
   },
   "animations": true,
   "tabs": {
-    "layout": "vertical"
+    "layout": "vertical",
+    "scope": "global"
   },
   "attention": {
     "enabled": true
