@@ -15,7 +15,7 @@
 		},
 		"explore": {
 			"color": "#f9e2af",
-			"model": "opencode-go/mimo-v2.5#max",
+			"model": "commandcode/deepseek/deepseek-v4-flash#max",
 		},
 	},
 	"providers": {

@@ -93,7 +93,7 @@ main() {
       target=$(echo "$pick" | awk '{print $2}' | sed 's/(current)//')
       target=$(echo "$target" | xargs)  # trim
     else
-      # It's a dir entry — extract path (last field)
+      # It's a dir entry - extract path (last field)
       target_dir=$(echo "$pick" | awk '{print $NF}')
       target=$(basename "$target_dir")
     fi

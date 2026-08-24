@@ -1,6 +1,6 @@
 ---
 name: notion-commands
-description: Curated Notion workflows — search, create pages, manage tasks, query databases, and build from task boards. Bundles all slash commands from the official Notion Claude Code plugin as actionable agent prompts.
+description: Curated Notion workflows - search, create pages, manage tasks, query databases, and build from task boards. Bundles all slash commands from the official Notion Claude Code plugin as actionable agent prompts.
 ---
 
 # Notion Commands
@@ -87,9 +87,9 @@ Insert a new row into a specified Notion database using natural-language propert
 
 ```
 1. Parse input: target database (name/ID), key=value property pairs
-2. Resolve the database — if multiple matches, ask user
+2. Resolve the database - if multiple matches, ask user
 3. Map provided keys to actual property names (handle naming differences)
-4. Validate required properties — ask for missing values
+4. Validate required properties - ask for missing values
 5. Create the row and confirm with: database name, key properties, link
 ```
 
@@ -100,11 +100,11 @@ Insert a new row into a specified Notion database using natural-language propert
 Guide the user through setting up a Notion task board for task tracking.
 
 ```
-Option 1 — Use Template:
+Option 1 - Use Template:
   - Point user to duplicate: https://notion.notion.site/code-with-notion-board
   - Ask them to share the URL of their new board
 
-Option 2 — Use Existing Board:
+Option 2 - Use Existing Board:
   - Ask for the board URL
   - Inspect the board structure via Notion MCP
   - Ensure it has: Status property (Planning/In Progress/Done),
@@ -140,7 +140,7 @@ Communication Protocol: Same as Plan Task (comment + poll)
 Workflow:
 1. Fetch task details from Notion
 2. Set status to "In progress", agent status to 🤖 "Starting..."
-3. Implement per the specification — update agent status at each step:
+3. Implement per the specification - update agent status at each step:
    📂 Searching relevant files...
    🎨 Updating color scheme...
    🧪 Running tests...

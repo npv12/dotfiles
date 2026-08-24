@@ -47,4 +47,4 @@ If there is nothing to cut, say `Lean already. Ship.` and stop.
 
 ## Boundaries
 
-Complexity only — correctness bugs, security holes, and performance go to a normal review pass. A single smoke test or `assert`-based self-check is the minimum, not bloat — never flag it for deletion. Does not apply the fixes, only lists them.
+Complexity only - correctness bugs, security holes, and performance go to a normal review pass. A single smoke test or `assert`-based self-check is the minimum, not bloat - never flag it for deletion. Does not apply the fixes, only lists them.

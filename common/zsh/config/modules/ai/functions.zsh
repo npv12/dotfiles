@@ -1,4 +1,4 @@
-# AI module — wrapper around zsh-ai-cmd (loaded in ~/.zshrc via z4h load npv12/zsh-ai-cmd).
+# AI module - wrapper around zsh-ai-cmd (loaded in ~/.zshrc via z4h load npv12/zsh-ai-cmd).
 # generate_commit() lives in the git module.
 
 function ai() {

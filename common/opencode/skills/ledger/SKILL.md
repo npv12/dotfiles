@@ -44,17 +44,17 @@ For each finding, extract:
 
 Order by risk:
 
-1. **Hot** — shortcuts touching security, data integrity, money, or production reliability
-2. **Warm** — performance ceilings, missing pagination, missing validation, TODO-grade items
-3. **Cool** — style, naming, convenience shortcuts, known-but-acceptable limits
+1. **Hot** - shortcuts touching security, data integrity, money, or production reliability
+2. **Warm** - performance ceilings, missing pagination, missing validation, TODO-grade items
+3. **Cool** - style, naming, convenience shortcuts, known-but-acceptable limits
 
 ### 4. Report
 
 ```
-# Debt Ledger — {date}
+# Debt Ledger - {date}
 
 ## Hot ({count})
-- `{file}:L{line}` — {shortcut}. Ceiling: {ceiling}. Upgrade: {upgrade}.
+- `{file}:L{line}` - {shortcut}. Ceiling: {ceiling}. Upgrade: {upgrade}.
 
 ## Warm ({count})
 - ...
@@ -72,4 +72,4 @@ End with a recommendation: which 1-3 items to tackle next and why.
 
 ## Boundaries
 
-Read-only. Does not modify any files. If no `ponytail:` comments exist, report: `Clean ledger — no shortcuts deferred.`
+Read-only. Does not modify any files. If no `ponytail:` comments exist, report: `Clean ledger - no shortcuts deferred.`

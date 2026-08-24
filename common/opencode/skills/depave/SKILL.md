@@ -36,4 +36,4 @@ One line per finding, ranked: `<tag> <what to cut>. <replacement>. [path]`. End 
 
 ## Boundaries
 
-Complexity only — correctness bugs, security holes, and performance go to a normal review pass. Lists findings, applies nothing. One-shot.
+Complexity only - correctness bugs, security holes, and performance go to a normal review pass. Lists findings, applies nothing. One-shot.

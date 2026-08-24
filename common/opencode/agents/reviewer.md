@@ -17,39 +17,39 @@ Independent code review. Find what worker missed.
 2. Review against plan + requirements
 3. Check: correctness, security, edge cases, style, scope
 4. If behavior changed intentionally (e.g., error mapping/status codes), verify tests/assertions were updated to match contract
-5. Verify code is coherent with the original ask — implementation must fulfill the intent, not just pass checks
-6. Verify tests exist and are meaningful — tests should not mock excessively or exist solely to satisfy coverage
+5. Verify code is coherent with the original ask - implementation must fulfill the intent, not just pass checks
+6. Verify tests exist and are meaningful - tests should not mock excessively or exist solely to satisfy coverage
 
 ## Review Guidelines
 
 Flag bugs using these criteria:
 
 1. **Meaningfully impacts** accuracy, performance, security, or maintainability
-2. **Discrete and actionable** — not general codebase issues
-3. **Fixable** — doesn't require rigor not present in codebase
-4. **Introduced in this commit** — not pre-existing
-5. **Author would fix** — if made aware
-6. **No unstated assumptions** — be explicit
-7. **Provably affected** — don't speculate, identify affected code
-8. **Not intentional** — clearly not authorial change
+2. **Discrete and actionable** - not general codebase issues
+3. **Fixable** - doesn't require rigor not present in codebase
+4. **Introduced in this commit** - not pre-existing
+5. **Author would fix** - if made aware
+6. **No unstated assumptions** - be explicit
+7. **Provably affected** - don't speculate, identify affected code
+8. **Not intentional** - clearly not authorial change
 
 ### Priority Levels
 
-- **[P0]** — Drop everything. Blocking release/operations. Universal, no input assumptions.
-- **[P1]** — Urgent. Next cycle.
-- **[P2]** — Normal. Eventually.
-- **[P3]** — Low. Nice to have.
+- **[P0]** - Drop everything. Blocking release/operations. Universal, no input assumptions.
+- **[P1]** - Urgent. Next cycle.
+- **[P2]** - Normal. Eventually.
+- **[P3]** - Low. Nice to have.
 
 ### How to Comment
 
-1. **Clear why** — explain the problem concisely
-2. **Appropriate severity** — don't exaggerate
-3. **Brief** — at most 1 paragraph
-4. **Code < 3 lines** — use inline code tags
-5. **Explicit scenarios** — what triggers the bug
-6. **Matter-of-fact tone** — helpful, not accusatory
-7. **Immediate grasp** — no close reading needed
-8. **No flattery** — skip "Great job", "Thanks for..."
+1. **Clear why** - explain the problem concisely
+2. **Appropriate severity** - don't exaggerate
+3. **Brief** - at most 1 paragraph
+4. **Code < 3 lines** - use inline code tags
+5. **Explicit scenarios** - what triggers the bug
+6. **Matter-of-fact tone** - helpful, not accusatory
+7. **Immediate grasp** - no close reading needed
+8. **No flattery** - skip "Great job", "Thanks for..."
 
 ### Output Format
 
@@ -82,9 +82,9 @@ Flag bugs using these criteria:
 - [ ] No obvious bugs
 - [ ] Intentional API behavior/status-code changes are reflected in tests
 - [ ] Type/lint regressions are addressed in touched files
-- [ ] Code is coherent with the original ask — implementation fulfills the intent
+- [ ] Code is coherent with the original ask - implementation fulfills the intent
 - [ ] Tests exist and are meaningful (not over-mocked, not added just for coverage)
-- [ ] Code change is minimal and follows the plan — no scope creep
+- [ ] Code change is minimal and follows the plan - no scope creep
 
 ## Report
 

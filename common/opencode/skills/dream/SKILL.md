@@ -5,7 +5,7 @@ license: MIT
 compatibility: opencode
 ---
 
-# Dream — Cross-Session Memory Consolidation
+# Dream - Cross-Session Memory Consolidation
 
 Consolidates learnings across OpenCode sessions into durable memory. The skill reads session history from the opencode database, parallel-analyses each session for signals (corrections, decisions, preferences, failure modes, patterns), cross-references against existing memory, then proposes changes for approval.
 
@@ -33,7 +33,7 @@ All files under `~/.config/opencode/memory/`:
 
 ## Pipeline Overview
 
-Execute the following 6 phases **in order**. Do not skip phases. Only Phase 6 writes to disk — everything before is read-only.
+Execute the following 6 phases **in order**. Do not skip phases. Only Phase 6 writes to disk - everything before is read-only.
 
 ```
 AUDIT → GATHER (parallel workers) → CONSOLIDATE → ANALYZE → PROPOSE → APPLY
@@ -41,18 +41,18 @@ AUDIT → GATHER (parallel workers) → CONSOLIDATE → ANALYZE → PROPOSE → 
 
 ---
 
-## Phase 1: AUDIT — Validate Existing Memory
+## Phase 1: AUDIT - Validate Existing Memory
 
 **Goal**: Assess current memory health before making any changes. Read-only.
 
-### 1a — Read memory files
+### 1a - Read memory files
 
 Read these files and understand their current state:
 - `~/.config/opencode/memory/MEMORY.md`
 - `~/.config/opencode/memory/USER.md`
 - `~/.config/opencode/memory/IDENTITY.md`
 
-### 1b — Validate daily logs
+### 1b - Validate daily logs
 
 ```bash
 ls ~/.config/opencode/memory/daily/
@@ -62,7 +62,7 @@ For each day in the time range (default: last 7 days), check:
 - Does a `YYYY-MM-DD.md` file exist? If missing → flag as **gap**.
 - Does the file have meaningful content (task descriptions, decisions, not just headings)? If not → flag as **incomplete**.
 
-### 1c — Validate project logs
+### 1c - Validate project logs
 
 ```bash
 ls ~/.config/opencode/memory/project/
@@ -72,7 +72,7 @@ For each project file, check:
 - Does the referenced project directory still exist? If not → flag as **stale**.
 - Is the information current or outdated? Flag if >30 days since update.
 
-### 1d — Scan for coherence issues in MEMORY.md
+### 1d - Scan for coherence issues in MEMORY.md
 
 Look for:
 - **Contradictions**: Two entries stating opposite things
@@ -80,7 +80,7 @@ Look for:
 - **Orphaned references**: Links to files/entries that no longer exist
 - **Duplicates**: Same information repeated across sections
 
-### 1e — Write audit findings
+### 1e - Write audit findings
 
 Write output to `/tmp/dream-audit.md`:
 
@@ -100,21 +100,21 @@ Time range: {from} to {to}
 - Stale: {list}
 
 ## Coherence Issues
-- Contradictions: {count} — {details}
-- Relative dates: {count} — {details}
-- Orphaned refs: {count} — {details}
-- Duplicates: {count} — {details}
+- Contradictions: {count} - {details}
+- Relative dates: {count} - {details}
+- Orphaned refs: {count} - {details}
+- Duplicates: {count} - {details}
 ```
 
 This file is internal to the pipeline. Do not show to the user yet.
 
 ---
 
-## Phase 2: GATHER — Parallel Session Analysis
+## Phase 2: GATHER - Parallel Session Analysis
 
 **Goal**: Extract signals from every session in the time range using parallel subagents.
 
-### 2a — Determine time range
+### 2a - Determine time range
 
 Default: last 7 days.
 
@@ -130,7 +130,7 @@ FROM_EPOCH=$(echo "$(($(date -j -f "%Y-%m-%d" "2026-06-01" +%s) * 1000))")
 TO_EPOCH=$(echo "$(($(date -j -f "%Y-%m-%d" "2026-06-10" +%s) * 1000))")
 ```
 
-### 2b — Query sessions from opencode DB
+### 2b - Query sessions from opencode DB
 
 ```bash
 opencode db "
@@ -149,7 +149,7 @@ Filter out noise:
 - Skip sessions with no meaningful title ("New session - ...", "Greeting")
 - Keep everything else
 
-### 2c — Spawn parallel analysis subagents
+### 2c - Spawn parallel analysis subagents
 
 For each meaningful session, spawn a **general subagent** using the `task` tool. Launch all subagents **in a single message** so they run in parallel.
 
@@ -170,8 +170,8 @@ Model: {model_id}
    opencode db "SELECT data FROM message WHERE session_id = '{id}' ORDER BY time_created;"
 
 2. Parse each message's `data` JSON column. The `data` column contains JSON with fields like `role`, `content`, `tool_calls`. Focus on:
-   - `role: "user"` messages — these contain instructions, corrections, preferences
-   - `role: "assistant"` messages — these contain reasoning, decisions, summaries
+   - `role: "user"` messages - these contain instructions, corrections, preferences
+   - `role: "assistant"` messages - these contain reasoning, decisions, summaries
 
 3. Extract the following signal types:
 
@@ -211,13 +211,13 @@ Model: {model_id}
 If no meaningful signals found, return `{"session_id": "{id}", "findings": []}`.
 ```
 
-### 2d — Wait and collect
+### 2d - Wait and collect
 
-Wait for ALL subagents to complete. Collect all their outputs. If a subagent fails or times out, note the session ID and continue with the rest — do not abort the pipeline.
+Wait for ALL subagents to complete. Collect all their outputs. If a subagent fails or times out, note the session ID and continue with the rest - do not abort the pipeline.
 
 ---
 
-## Phase 3: CONSOLIDATE — Merge Findings
+## Phase 3: CONSOLIDATE - Merge Findings
 
 **Goal**: Merge all parallel worker outputs into a single structured file.
 
@@ -231,7 +231,7 @@ Wait for ALL subagents to complete. Collect all their outputs. If a subagent fai
 3. Write the consolidated file:
 
 ```markdown
-# Dream Findings — {date_range}
+# Dream Findings - {date_range}
 
 Generated: {timestamp}
 Sessions analyzed: {count}
@@ -267,7 +267,7 @@ This file is internal to the pipeline. Do not show to the user yet.
 
 ---
 
-## Phase 4: ANALYZE — Cross-Reference Against Memory
+## Phase 4: ANALYZE - Cross-Reference Against Memory
 
 **Goal**: Compare consolidated findings against current memory to identify gaps, contradictions, and stale entries.
 
@@ -294,24 +294,24 @@ This file is internal to the pipeline. Do not show to the user yet.
 # Dream Analysis
 
 ## New ({count})
-- {description} — source: session {title}
+- {description} - source: session {title}
 
 ## Updates ({count})
-- {existing} → {proposed} — reason: {finding}
+- {existing} → {proposed} - reason: {finding}
 
 ## Conflicts ({count})
 - Memory: "{existing}" ↔ Session: "{finding}"
   Proposed resolution: {resolution}
 
 ## Stale ({count})
-- {entry} — reason: not referenced in {time_range}
+- {entry} - reason: not referenced in {time_range}
 
 ## Matches ({count})
-- {description} — already in memory, no action
+- {description} - already in memory, no action
 ```
 ---
 
-## Phase 5: PROPOSE — Present Changes to User
+## Phase 5: PROPOSE - Present Changes to User
 
 **Goal**: Show the change list and get explicit approval before modifying anything.
 
@@ -350,11 +350,11 @@ If user asks to modify specific changes, update the plan accordingly and re-conf
 
 ---
 
-## Phase 6: APPLY — Write Approved Changes
+## Phase 6: APPLY - Write Approved Changes
 
 **Goal**: Modify memory files according to approved changes.
 
-### Before writing — Backup
+### Before writing - Backup
 
 ```bash
 cp -r ~/.config/opencode/memory ~/.config/opencode/memory.bak.$(date +%Y%m%d)
@@ -362,11 +362,11 @@ cp -r ~/.config/opencode/memory ~/.config/opencode/memory.bak.$(date +%Y%m%d)
 
 ### Writing rules
 
-1. **Use the Edit tool** — make targeted edits, never rewrite entire files
-2. **Match existing format** — preserve the style and conventions of each file
-3. **Add ISO dates** — new entries get a leading date: `(YYYY-MM-DD)`
-4. **Source attribution** — note origin: `(from: session "{title}")`
-5. **One edit per change** — make separate Edit tool calls for independent changes
+1. **Use the Edit tool** - make targeted edits, never rewrite entire files
+2. **Match existing format** - preserve the style and conventions of each file
+3. **Add ISO dates** - new entries get a leading date: `(YYYY-MM-DD)`
+4. **Source attribution** - note origin: `(from: session "{title}")`
+5. **One edit per change** - make separate Edit tool calls for independent changes
 
 ### Per-file rules
 
@@ -419,9 +419,9 @@ Backup saved to: ~/.config/opencode/memory.bak.{date}
 
 | Scenario | Handling |
 |----------|----------|
-| `opencode db` fails | Try `/opt/homebrew/bin/opencode db` — the CLI might not be in PATH |
-| No sessions found in time range | Report and stop — nothing to consolidate |
-| All sessions are noise (cost=0) | Report and stop — no meaningful signals to extract |
+| `opencode db` fails | Try `/opt/homebrew/bin/opencode db` - the CLI might not be in PATH |
+| No sessions found in time range | Report and stop - nothing to consolidate |
+| All sessions are noise (cost=0) | Report and stop - no meaningful signals to extract |
 | Subagent fails/times out | Note the failed session ID, continue with remaining sessions |
 | Memory files don't exist at expected paths | Ask the user for the correct path |
 | User rejects all changes | Report: "No changes applied. Backup not needed." |

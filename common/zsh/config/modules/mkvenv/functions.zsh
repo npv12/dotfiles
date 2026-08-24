@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# Python / mise — extend mise.toml via `mise config set` (https://mise.jdx.dev/cli/config/set.html).
+# Python / mise - extend mise.toml via `mise config set` (https://mise.jdx.dev/cli/config/set.html).
 # Loaded by modules/load.zsh. Skips defining mkvenv if an executable mkvenv is already on PATH.
 
 if ! command -v mkvenv &>/dev/null; then
@@ -60,7 +60,7 @@ if ! command -v mkvenv &>/dev/null; then
 
         if [[ "$write_pf" != true ]]; then
             if [[ ! -d "src/$proj" ]]; then
-                echo "mkvenv: hatchling expects a package at src/$proj/ — add it or set [tool.hatch.build.targets.wheel]." >&2
+                echo "mkvenv: hatchling expects a package at src/$proj/ - add it or set [tool.hatch.build.targets.wheel]." >&2
             fi
             return 0
         fi
@@ -100,7 +100,7 @@ EOF
 
         if [[ "$write_ri" == true ]]; then
             cat <<'EOF' >"$ri"
-# Direct dependencies — edit then run: mise run update
+# Direct dependencies - edit then run: mise run update
 EOF
             echo "mkvenv: wrote $ri"
         fi
