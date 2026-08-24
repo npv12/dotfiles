@@ -18,6 +18,11 @@
   "attention": {
     "enabled": true
   },
+  "keybinds": {
+    "prompt_stash": "<leader>p",
+    "prompt_stash_pop": "<leader>o",
+    "prompt_stash_list": "<leader>i"
+  },
   "plugins": [
     "@npv12/opencode-context-sidebar",
     "@npv12/opencode-mini-session",
