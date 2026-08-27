@@ -1,196 +1,596 @@
 {
-	"$schema": "https://opencode.ai/config.json",
-	"plugins": [
-		"@npv12/opencode-memory-md",
-		"@npv12/opencode-cmd-provider"
-	],
-	"default_agent": "build",
-	"agents": {
-		"plan": {
-			"hidden": true,
-			"mode": "all",
-		},
-		"build": {
-			"color": "#a6e3a1",
-		},
-		"explore": {
-			"color": "#f9e2af",
-			"model": "commandcode/deepseek/deepseek-v4-flash#max",
-		},
-	},
-	"providers": {
-		"amazon-bedrock": {
-			"settings": {
-				"region": "us-west-2",
-				"profile": "bedrock",
-			},
-			"models": {
-				// Friendly aliases for Bedrock application inference profiles.
-				"claude-opus-4-6": {
-					"modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1",
-					"name": "Claude Opus 4.6",
-				},
-				"claude-sonnet-4-6": {
-					"modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/nhvw1htngqgi",
-					"name": "Claude Sonnet 4.6",
-				},
-				"claude-haiku-4-5": {
-					"modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm",
-					"name": "Claude Haiku 4.5",
-				},
-				"kimi-k2-5": {
-					"modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu",
-					"name": "Kimi K2.5",
-				},
-				// V1 `blacklist` has no native V2 equivalent; hide each model instead.
-				"amazon.nova-2-lite-v1:0": { "disabled": true },
-				"amazon.nova-lite-v1:0": { "disabled": true },
-				"amazon.nova-micro-v1:0": { "disabled": true },
-				"amazon.nova-pro-v1:0": { "disabled": true },
-				"anthropic.claude-fable-5": { "disabled": true },
-				"anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
-				"anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
-				"anthropic.claude-opus-4-6-v1": { "disabled": true },
-				"anthropic.claude-opus-4-7": { "disabled": true },
-				"anthropic.claude-opus-4-8": { "disabled": true },
-				"anthropic.claude-opus-5": { "disabled": true },
-				"anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"anthropic.claude-sonnet-4-6": { "disabled": true },
-				"anthropic.claude-sonnet-5": { "disabled": true },
-				"au.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"au.anthropic.claude-opus-4-6-v1": { "disabled": true },
-				"au.anthropic.claude-opus-4-8": { "disabled": true },
-				"au.anthropic.claude-opus-5": { "disabled": true },
-				"au.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"au.anthropic.claude-sonnet-4-6": { "disabled": true },
-				"au.anthropic.claude-sonnet-5": { "disabled": true },
-				"deepseek.r1-v1:0": { "disabled": true },
-				"deepseek.v3-v1:0": { "disabled": true },
-				"deepseek.v3.2": { "disabled": true },
-				"eu.anthropic.claude-fable-5": { "disabled": true },
-				"eu.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"eu.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
-				"eu.anthropic.claude-opus-4-6-v1": { "disabled": true },
-				"eu.anthropic.claude-opus-4-7": { "disabled": true },
-				"eu.anthropic.claude-opus-4-8": { "disabled": true },
-				"eu.anthropic.claude-opus-5": { "disabled": true },
-				"eu.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"eu.anthropic.claude-sonnet-4-6": { "disabled": true },
-				"eu.anthropic.claude-sonnet-5": { "disabled": true },
-				"global.anthropic.claude-fable-5": { "disabled": true },
-				"global.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"global.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
-				"global.anthropic.claude-opus-4-6-v1": { "disabled": true },
-				"global.anthropic.claude-opus-4-7": { "disabled": true },
-				"global.anthropic.claude-opus-4-8": { "disabled": true },
-				"global.anthropic.claude-opus-5": { "disabled": true },
-				"global.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"global.anthropic.claude-sonnet-4-6": { "disabled": true },
-				"global.anthropic.claude-sonnet-5": { "disabled": true },
-				"global.openai.gpt-5.6-luna": { "disabled": true },
-				"global.openai.gpt-5.6-sol": { "disabled": true },
-				"global.openai.gpt-5.6-terra": { "disabled": true },
-				"google.gemma-3-12b-it": { "disabled": true },
-				"google.gemma-3-27b-it": { "disabled": true },
-				"google.gemma-3-4b-it": { "disabled": true },
-				"jp.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"jp.anthropic.claude-opus-4-7": { "disabled": true },
-				"jp.anthropic.claude-opus-4-8": { "disabled": true },
-				"jp.anthropic.claude-opus-5": { "disabled": true },
-				"jp.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"jp.anthropic.claude-sonnet-4-6": { "disabled": true },
-				"jp.anthropic.claude-sonnet-5": { "disabled": true },
-				"meta.llama3-1-70b-instruct-v1:0": { "disabled": true },
-				"meta.llama3-1-8b-instruct-v1:0": { "disabled": true },
-				"meta.llama3-3-70b-instruct-v1:0": { "disabled": true },
-				"meta.llama4-maverick-17b-instruct-v1:0": { "disabled": true },
-				"meta.llama4-scout-17b-instruct-v1:0": { "disabled": true },
-				"minimax.minimax-m2": { "disabled": true },
-				"minimax.minimax-m2.1": { "disabled": true },
-				"minimax.minimax-m2.5": { "disabled": true },
-				"mistral.devstral-2-123b": { "disabled": true },
-				"mistral.magistral-small-2509": { "disabled": true },
-				"mistral.ministral-3-14b-instruct": { "disabled": true },
-				"mistral.ministral-3-3b-instruct": { "disabled": true },
-				"mistral.ministral-3-8b-instruct": { "disabled": true },
-				"mistral.mistral-large-3-675b-instruct": { "disabled": true },
-				"mistral.pixtral-large-2502-v1:0": { "disabled": true },
-				"mistral.voxtral-mini-3b-2507": { "disabled": true },
-				"mistral.voxtral-small-24b-2507": { "disabled": true },
-				"moonshot.kimi-k2-thinking": { "disabled": true },
-				"moonshotai.kimi-k2.5": { "disabled": true },
-				"nvidia.nemotron-nano-12b-v2": { "disabled": true },
-				"nvidia.nemotron-nano-3-30b": { "disabled": true },
-				"nvidia.nemotron-nano-9b-v2": { "disabled": true },
-				"nvidia.nemotron-super-3-120b": { "disabled": true },
-				"openai.gpt-5.4": { "disabled": true },
-				"openai.gpt-5.5": { "disabled": true },
-				"openai.gpt-5.6-luna": { "disabled": true },
-				"openai.gpt-5.6-sol": { "disabled": true },
-				"openai.gpt-5.6-terra": { "disabled": true },
-				"openai.gpt-oss-120b": { "disabled": true },
-				"openai.gpt-oss-120b-1:0": { "disabled": true },
-				"openai.gpt-oss-20b": { "disabled": true },
-				"openai.gpt-oss-20b-1:0": { "disabled": true },
-				"openai.gpt-oss-safeguard-120b": { "disabled": true },
-				"openai.gpt-oss-safeguard-20b": { "disabled": true },
-				"qwen.qwen3-235b-a22b-2507-v1:0": { "disabled": true },
-				"qwen.qwen3-32b-v1:0": { "disabled": true },
-				"qwen.qwen3-coder-30b-a3b-v1:0": { "disabled": true },
-				"qwen.qwen3-coder-480b-a35b-v1:0": { "disabled": true },
-				"qwen.qwen3-coder-next": { "disabled": true },
-				"qwen.qwen3-next-80b-a3b": { "disabled": true },
-				"qwen.qwen3-vl-235b-a22b": { "disabled": true },
-				"us.anthropic.claude-fable-5": { "disabled": true },
-				"us.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
-				"us.anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
-				"us.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
-				"us.anthropic.claude-opus-4-6-v1": { "disabled": true },
-				"us.anthropic.claude-opus-4-7": { "disabled": true },
-				"us.anthropic.claude-opus-4-8": { "disabled": true },
-				"us.anthropic.claude-opus-5": { "disabled": true },
-				"us.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
-				"us.anthropic.claude-sonnet-4-6": { "disabled": true },
-				"us.anthropic.claude-sonnet-5": { "disabled": true },
-				"us.deepseek.r1-v1:0": { "disabled": true },
-				"us.meta.llama4-maverick-17b-instruct-v1:0": { "disabled": true },
-				"us.meta.llama4-scout-17b-instruct-v1:0": { "disabled": true },
-				"writer.palmyra-x4-v1:0": { "disabled": true },
-				"writer.palmyra-x5-v1:0": { "disabled": true },
-				"xai.grok-4.3": { "disabled": true },
-				"xai.grok-4.6": { "disabled": true },
-				"zai.glm-4.7": { "disabled": true },
-				"zai.glm-4.7-flash": { "disabled": true },
-				"zai.glm-5": { "disabled": true },
-			},
-		},
-		// Variants referenced by agent definitions (`provider/model#variant`).
-		"opencode-go": {
-			"models": {
-				"mimo-v2.5": {
-					"variants": [
-						{ "id": "max", "settings": { "reasoningEffort": "max" } },
-					],
-				},
-			},
-		},
-		"openai": {
-			"models": {
-				"gpt-5.6-luna": {
-					"variants": [
-						{ "id": "xhigh", "settings": { "reasoningEffort": "xhigh" } },
-					],
-				},
-			},
-		},
-	},
-	"mcp": {
-		"servers": {
-			"notion": {
-				"type": "remote",
-				"url": "https://mcp.notion.com/mcp",
-			},
-		},
-	},
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": ["@npv12/opencode-memory-md"],
+  "default_agent": "build",
+  "agents": {
+    "plan": {
+      "hidden": true,
+      "mode": "all",
+    },
+    "build": {
+      "color": "#a6e3a1",
+    },
+    "explore": {
+      "color": "#f9e2af",
+      "model": "commandcode/deepseek/deepseek-v4-flash#max",
+    },
+  },
+  "providers": {
+    "amazon-bedrock": {
+      "settings": {
+        "region": "us-west-2",
+        "profile": "bedrock",
+      },
+      "models": {
+        // Friendly aliases for Bedrock application inference profiles.
+        "claude-opus-4-6": {
+          "modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/7i2pxkh26ey1",
+          "name": "Claude Opus 4.6",
+        },
+        "claude-sonnet-4-6": {
+          "modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/nhvw1htngqgi",
+          "name": "Claude Sonnet 4.6",
+        },
+        "claude-haiku-4-5": {
+          "modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/xwg7ff729rdm",
+          "name": "Claude Haiku 4.5",
+        },
+        "kimi-k2-5": {
+          "modelID": "arn:aws:bedrock:us-west-2:823998119176:application-inference-profile/j3q38oylk8yu",
+          "name": "Kimi K2.5",
+        },
+        // V1 `blacklist` has no native V2 equivalent; hide each model instead.
+        "amazon.nova-2-lite-v1:0": { "disabled": true },
+        "amazon.nova-lite-v1:0": { "disabled": true },
+        "amazon.nova-micro-v1:0": { "disabled": true },
+        "amazon.nova-pro-v1:0": { "disabled": true },
+        "anthropic.claude-fable-5": { "disabled": true },
+        "anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
+        "anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
+        "anthropic.claude-opus-4-6-v1": { "disabled": true },
+        "anthropic.claude-opus-4-7": { "disabled": true },
+        "anthropic.claude-opus-4-8": { "disabled": true },
+        "anthropic.claude-opus-5": { "disabled": true },
+        "anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
+        "anthropic.claude-sonnet-4-6": { "disabled": true },
+        "anthropic.claude-sonnet-5": { "disabled": true },
+        "au.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "au.anthropic.claude-opus-4-6-v1": { "disabled": true },
+        "au.anthropic.claude-opus-4-8": { "disabled": true },
+        "au.anthropic.claude-opus-5": { "disabled": true },
+        "au.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
+        "au.anthropic.claude-sonnet-4-6": { "disabled": true },
+        "au.anthropic.claude-sonnet-5": { "disabled": true },
+        "deepseek.r1-v1:0": { "disabled": true },
+        "deepseek.v3-v1:0": { "disabled": true },
+        "deepseek.v3.2": { "disabled": true },
+        "eu.anthropic.claude-fable-5": { "disabled": true },
+        "eu.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "eu.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
+        "eu.anthropic.claude-opus-4-6-v1": { "disabled": true },
+        "eu.anthropic.claude-opus-4-7": { "disabled": true },
+        "eu.anthropic.claude-opus-4-8": { "disabled": true },
+        "eu.anthropic.claude-opus-5": { "disabled": true },
+        "eu.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
+        "eu.anthropic.claude-sonnet-4-6": { "disabled": true },
+        "eu.anthropic.claude-sonnet-5": { "disabled": true },
+        "global.anthropic.claude-fable-5": { "disabled": true },
+        "global.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "global.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
+        "global.anthropic.claude-opus-4-6-v1": { "disabled": true },
+        "global.anthropic.claude-opus-4-7": { "disabled": true },
+        "global.anthropic.claude-opus-4-8": { "disabled": true },
+        "global.anthropic.claude-opus-5": { "disabled": true },
+        "global.anthropic.claude-sonnet-4-5-20250929-v1:0": {
+          "disabled": true,
+        },
+        "global.anthropic.claude-sonnet-4-6": { "disabled": true },
+        "global.anthropic.claude-sonnet-5": { "disabled": true },
+        "global.openai.gpt-5.6-luna": { "disabled": true },
+        "global.openai.gpt-5.6-sol": { "disabled": true },
+        "global.openai.gpt-5.6-terra": { "disabled": true },
+        "google.gemma-3-12b-it": { "disabled": true },
+        "google.gemma-3-27b-it": { "disabled": true },
+        "google.gemma-3-4b-it": { "disabled": true },
+        "jp.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "jp.anthropic.claude-opus-4-7": { "disabled": true },
+        "jp.anthropic.claude-opus-4-8": { "disabled": true },
+        "jp.anthropic.claude-opus-5": { "disabled": true },
+        "jp.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
+        "jp.anthropic.claude-sonnet-4-6": { "disabled": true },
+        "jp.anthropic.claude-sonnet-5": { "disabled": true },
+        "meta.llama3-1-70b-instruct-v1:0": { "disabled": true },
+        "meta.llama3-1-8b-instruct-v1:0": { "disabled": true },
+        "meta.llama3-3-70b-instruct-v1:0": { "disabled": true },
+        "meta.llama4-maverick-17b-instruct-v1:0": { "disabled": true },
+        "meta.llama4-scout-17b-instruct-v1:0": { "disabled": true },
+        "minimax.minimax-m2": { "disabled": true },
+        "minimax.minimax-m2.1": { "disabled": true },
+        "minimax.minimax-m2.5": { "disabled": true },
+        "mistral.devstral-2-123b": { "disabled": true },
+        "mistral.magistral-small-2509": { "disabled": true },
+        "mistral.ministral-3-14b-instruct": { "disabled": true },
+        "mistral.ministral-3-3b-instruct": { "disabled": true },
+        "mistral.ministral-3-8b-instruct": { "disabled": true },
+        "mistral.mistral-large-3-675b-instruct": { "disabled": true },
+        "mistral.pixtral-large-2502-v1:0": { "disabled": true },
+        "mistral.voxtral-mini-3b-2507": { "disabled": true },
+        "mistral.voxtral-small-24b-2507": { "disabled": true },
+        "moonshot.kimi-k2-thinking": { "disabled": true },
+        "moonshotai.kimi-k2.5": { "disabled": true },
+        "nvidia.nemotron-nano-12b-v2": { "disabled": true },
+        "nvidia.nemotron-nano-3-30b": { "disabled": true },
+        "nvidia.nemotron-nano-9b-v2": { "disabled": true },
+        "nvidia.nemotron-super-3-120b": { "disabled": true },
+        "openai.gpt-5.4": { "disabled": true },
+        "openai.gpt-5.5": { "disabled": true },
+        "openai.gpt-5.6-luna": { "disabled": true },
+        "openai.gpt-5.6-sol": { "disabled": true },
+        "openai.gpt-5.6-terra": { "disabled": true },
+        "openai.gpt-oss-120b": { "disabled": true },
+        "openai.gpt-oss-120b-1:0": { "disabled": true },
+        "openai.gpt-oss-20b": { "disabled": true },
+        "openai.gpt-oss-20b-1:0": { "disabled": true },
+        "openai.gpt-oss-safeguard-120b": { "disabled": true },
+        "openai.gpt-oss-safeguard-20b": { "disabled": true },
+        "qwen.qwen3-235b-a22b-2507-v1:0": { "disabled": true },
+        "qwen.qwen3-32b-v1:0": { "disabled": true },
+        "qwen.qwen3-coder-30b-a3b-v1:0": { "disabled": true },
+        "qwen.qwen3-coder-480b-a35b-v1:0": { "disabled": true },
+        "qwen.qwen3-coder-next": { "disabled": true },
+        "qwen.qwen3-next-80b-a3b": { "disabled": true },
+        "qwen.qwen3-vl-235b-a22b": { "disabled": true },
+        "us.anthropic.claude-fable-5": { "disabled": true },
+        "us.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
+        "us.anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
+        "us.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
+        "us.anthropic.claude-opus-4-6-v1": { "disabled": true },
+        "us.anthropic.claude-opus-4-7": { "disabled": true },
+        "us.anthropic.claude-opus-4-8": { "disabled": true },
+        "us.anthropic.claude-opus-5": { "disabled": true },
+        "us.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
+        "us.anthropic.claude-sonnet-4-6": { "disabled": true },
+        "us.anthropic.claude-sonnet-5": { "disabled": true },
+        "us.deepseek.r1-v1:0": { "disabled": true },
+        "us.meta.llama4-maverick-17b-instruct-v1:0": { "disabled": true },
+        "us.meta.llama4-scout-17b-instruct-v1:0": { "disabled": true },
+        "writer.palmyra-x4-v1:0": { "disabled": true },
+        "writer.palmyra-x5-v1:0": { "disabled": true },
+        "xai.grok-4.3": { "disabled": true },
+        "xai.grok-4.6": { "disabled": true },
+        "zai.glm-4.7": { "disabled": true },
+        "zai.glm-4.7-flash": { "disabled": true },
+        "zai.glm-5": { "disabled": true },
+      },
+    },
+    "commandcode": {
+      "name": "Command Code",
+      "package": "@opencode-ai/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "https://api.commandcode.ai/provider/v1",
+      },
+      "models": {
+        "MiniMaxAI/MiniMax-M2.5": {
+          "name": "MiniMax M2.5",
+          "modelID": "MiniMaxAI/MiniMax-M2.5",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "MiniMaxAI/MiniMax-M2.7": {
+          "name": "MiniMax M2.7",
+          "modelID": "MiniMaxAI/MiniMax-M2.7",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "MiniMaxAI/MiniMax-M3": {
+          "name": "MiniMax M3",
+          "modelID": "MiniMaxAI/MiniMax-M3",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "Qwen/Qwen3.6-Max-Preview": {
+          "name": "Qwen 3.6 Max Preview",
+          "modelID": "Qwen/Qwen3.6-Max-Preview",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "Qwen/Qwen3.6-Plus": {
+          "name": "Qwen 3.6 Plus",
+          "modelID": "Qwen/Qwen3.6-Plus",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "Qwen/Qwen3.7-Flash": {
+          "name": "Qwen 3.7 Flash",
+          "modelID": "Qwen/Qwen3.7-Flash",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "Qwen/Qwen3.7-Max": {
+          "name": "Qwen 3.7 Max",
+          "modelID": "Qwen/Qwen3.7-Max",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "Qwen/Qwen3.7-Plus": {
+          "name": "Qwen 3.7 Plus",
+          "modelID": "Qwen/Qwen3.7-Plus",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "Qwen/Qwen3.8-27B": {
+          "name": "Qwen 3.8 27B",
+          "modelID": "Qwen/Qwen3.8-27B",
+          "limit": {
+            "context": 262144,
+          },
+        },
+        "Qwen/Qwen3.8-Flash": {
+          "name": "Qwen 3.8 Flash",
+          "modelID": "Qwen/Qwen3.8-Flash",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "Qwen/Qwen3.8-Max": {
+          "name": "Qwen 3.8 Max",
+          "modelID": "Qwen/Qwen3.8-Max",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "deepseek/deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash (latest)",
+          "modelID": "deepseek/deepseek-v4-flash",
+          "limit": {
+            "context": 1000000,
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high",
+              },
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max",
+              },
+            },
+          ],
+        },
+        "deepseek/deepseek-v4-flash-vision-exp": {
+          "name": "DeepSeek V4 Flash Vision (exp)",
+          "modelID": "deepseek/deepseek-v4-flash-vision-exp",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "deepseek/deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro (latest)",
+          "modelID": "deepseek/deepseek-v4-pro",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "google/gemini-3.1-flash-lite": {
+          "name": "Gemini 3.1 Flash Lite",
+          "modelID": "google/gemini-3.1-flash-lite",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "google/gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash",
+          "modelID": "google/gemini-3.5-flash",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "google/gemini-3.5-flash-lite": {
+          "name": "Gemini 3.5 Flash Lite",
+          "modelID": "google/gemini-3.5-flash-lite",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "google/gemini-3.6-flash": {
+          "name": "Gemini 3.6 Flash",
+          "modelID": "google/gemini-3.6-flash",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "google/gemini-3.7-flash": {
+          "name": "Gemini 3.7 Flash",
+          "modelID": "google/gemini-3.7-flash",
+          "limit": {
+            "context": 1048576,
+          },
+        },
+        "gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex",
+          "modelID": "gpt-5.3-codex",
+          "limit": {
+            "context": 400000,
+          },
+        },
+        "gpt-5.4": {
+          "name": "GPT-5.4",
+          "modelID": "gpt-5.4",
+          "limit": {
+            "context": 400000,
+          },
+        },
+        "gpt-5.4-mini": {
+          "name": "GPT-5.4 Mini",
+          "modelID": "gpt-5.4-mini",
+          "limit": {
+            "context": 400000,
+          },
+        },
+        "gpt-5.5": {
+          "name": "GPT-5.5",
+          "modelID": "gpt-5.5",
+          "limit": {
+            "context": 400000,
+          },
+        },
+        "gpt-5.6-luna": {
+          "name": "GPT-5.6 Luna",
+          "modelID": "gpt-5.6-luna",
+          "limit": {
+            "context": 1050000,
+          },
+        },
+        "gpt-5.6-sol": {
+          "name": "GPT-5.6 Sol",
+          "modelID": "gpt-5.6-sol",
+          "limit": {
+            "context": 1050000,
+          },
+        },
+        "gpt-5.6-terra": {
+          "name": "GPT-5.6 Terra",
+          "modelID": "gpt-5.6-terra",
+          "limit": {
+            "context": 1050000,
+          },
+        },
+        "meta/muse-spark-1.1": {
+          "name": "Muse Spark 1.1",
+          "modelID": "meta/muse-spark-1.1",
+          "limit": {
+            "context": 1048576,
+          },
+        },
+        "meta/muse-spark-1.2": {
+          "name": "Muse Spark 1.2",
+          "modelID": "meta/muse-spark-1.2",
+          "limit": {
+            "context": 1048576,
+          },
+        },
+        "meta/muse-spark-1.2-contributor": {
+          "name": "Muse Spark 1.2 Contributor",
+          "modelID": "meta/muse-spark-1.2-contributor",
+          "limit": {
+            "context": 1048576,
+          },
+        },
+        "minimax/minimax-m2.7-free": {
+          "name": "MiniMax M2.7",
+          "modelID": "minimax/minimax-m2.7-free",
+          "limit": {
+            "context": 197000,
+          },
+        },
+        "minimax/minimax-m3-free": {
+          "name": "MiniMax M3",
+          "modelID": "minimax/minimax-m3-free",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "Kimi K2.5",
+          "modelID": "moonshotai/Kimi-K2.5",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "Kimi K2.6",
+          "modelID": "moonshotai/Kimi-K2.6",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "moonshotai/Kimi-K2.7-Code": {
+          "name": "Kimi K2.7 Code",
+          "modelID": "moonshotai/Kimi-K2.7-Code",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "moonshotai/Kimi-K2.7-Code-Highspeed": {
+          "name": "Kimi K2.7 Code HighSpeed",
+          "modelID": "moonshotai/Kimi-K2.7-Code-Highspeed",
+          "limit": {
+            "context": 262000,
+          },
+        },
+        "moonshotai/Kimi-K3": {
+          "name": "Kimi K3",
+          "modelID": "moonshotai/Kimi-K3",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "nvidia/nemotron-3-ultra-550b-a55b": {
+          "name": "Nemotron 3 Ultra",
+          "modelID": "nvidia/nemotron-3-ultra-550b-a55b",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "poolside/laguna-s-2.1-free": {
+          "name": "Laguna S 2.1",
+          "modelID": "poolside/laguna-s-2.1-free",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "sakana/fugu-ultra": {
+          "name": "Fugu Ultra",
+          "modelID": "sakana/fugu-ultra",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "stepfun/Step-3.5-Flash": {
+          "name": "Step 3.5 Flash",
+          "modelID": "stepfun/Step-3.5-Flash",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "stepfun/Step-3.7-Flash": {
+          "name": "Step 3.7 Flash",
+          "modelID": "stepfun/Step-3.7-Flash",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "tencent/hy3-paid": {
+          "name": "Tencent Hy3",
+          "modelID": "tencent/hy3-paid",
+          "limit": {
+            "context": 262144,
+          },
+        },
+        "thinkingmachines/inkling": {
+          "name": "Inkling",
+          "modelID": "thinkingmachines/inkling",
+          "limit": {
+            "context": 256000,
+          },
+        },
+        "thinkingmachines/inkling-small": {
+          "name": "Inkling Small",
+          "modelID": "thinkingmachines/inkling-small",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "xai/grok-4.5": {
+          "name": "Grok 4.5",
+          "modelID": "xai/grok-4.5",
+          "limit": {
+            "context": 500000,
+          },
+        },
+        "xai/grok-4.6": {
+          "name": "Grok 4.6",
+          "modelID": "xai/grok-4.6",
+          "limit": {
+            "context": 500000,
+          },
+        },
+        "xiaomi/mimo-v2.5": {
+          "name": "MiMo V2.5",
+          "modelID": "xiaomi/mimo-v2.5",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "xiaomi/mimo-v2.5-pro": {
+          "name": "MiMo V2.5 Pro",
+          "modelID": "xiaomi/mimo-v2.5-pro",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "z-ai/glm-5.3-flash": {
+          "name": "GLM-5.3 Flash",
+          "modelID": "z-ai/glm-5.3-flash",
+          "limit": {
+            "context": 1048576,
+          },
+        },
+        "zai-org/GLM-5": {
+          "name": "GLM-5",
+          "modelID": "zai-org/GLM-5",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "zai-org/GLM-5.1": {
+          "name": "GLM-5.1",
+          "modelID": "zai-org/GLM-5.1",
+          "limit": {
+            "context": 200000,
+          },
+        },
+        "zai-org/GLM-5.2": {
+          "name": "GLM-5.2",
+          "modelID": "zai-org/GLM-5.2",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "zai-org/GLM-5.2-Fast": {
+          "name": "GLM-5.2 Fast",
+          "modelID": "zai-org/GLM-5.2-Fast",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+        "zai-org/GLM-5.3": {
+          "name": "GLM-5.3",
+          "modelID": "zai-org/GLM-5.3",
+          "limit": {
+            "context": 1000000,
+          },
+        },
+      },
+    },
+    // Variants referenced by agent definitions (`provider/model#variant`).
+    "opencode-go": {
+      "models": {
+        "mimo-v2.5": {
+          "variants": [
+            { "id": "max", "settings": { "reasoningEffort": "max" } },
+          ],
+        },
+      },
+    },
+    "openai": {
+      "models": {
+        "gpt-5.6-luna": {
+          "variants": [
+            { "id": "xhigh", "settings": { "reasoningEffort": "xhigh" } },
+          ],
+        },
+      },
+    },
+  },
+  "mcp": {
+    "servers": {
+      "notion": {
+        "type": "remote",
+        "url": "https://mcp.notion.com/mcp",
+      },
+    },
+  },
 }
