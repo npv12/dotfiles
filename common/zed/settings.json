@@ -451,17 +451,11 @@
       }
     },
     "default_model": {
-      "effort": "high",
-      "enable_thinking": true,
-      "provider": "opencode",
-      "model": "go/mimo-v2.5"
+      "enable_thinking": false,
+      "provider": "zed.dev",
+      "model": "claude-haiku-4-5"
     },
     "favorite_models": [
-      {
-        "provider": "zed.dev",
-        "model": "claude-sonnet-4-6",
-        "enable_thinking": false
-      },
       {
         "provider": "zed.dev",
         "model": "claude-haiku-4-5",
@@ -478,6 +472,12 @@
         "model": "go/deepseek-v4-flash",
         "enable_thinking": true,
         "effort": "max"
+      },
+      {
+        "provider": "zed.dev",
+        "model": "claude-sonnet-5",
+        "enable_thinking": true,
+        "effort": "high"
       }
     ],
     "model_parameters": []
