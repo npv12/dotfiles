@@ -12,7 +12,7 @@
     },
     "explore": {
       "color": "#f9e2af",
-      "model": "commandcode/deepseek/deepseek-v4-flash#max",
+      "model": "synthetic/hf:zai-org/GLM-5.3-Flash",
     },
   },
   // Destructive-command guardrails. V2 shell default for `build` is allow-all,
