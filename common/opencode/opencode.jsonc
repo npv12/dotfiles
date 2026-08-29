@@ -15,6 +15,68 @@
       "model": "commandcode/deepseek/deepseek-v4-flash#max",
     },
   },
+  // Destructive-command guardrails. V2 shell default for `build` is allow-all,
+  // so every rule here is net-new. Last matching rule wins: broad `ask` rules
+  // first, the narrow `deny` floor last. `foo *` also matches bare `foo`.
+  "permissions": [
+    // filesystem
+    { "action": "shell", "resource": "rm *", "effect": "ask" }, // every spelling: -rf, -fr, -r -f, --recursive
+    { "action": "shell", "resource": "rm -rf /*", "effect": "ask" }, // absolute paths: /tmp/x etc. ask, not deny
+    { "action": "shell", "resource": "find * -delete *", "effect": "ask" },
+    { "action": "shell", "resource": "truncate *", "effect": "ask" },
+    { "action": "shell", "resource": "chmod -R *", "effect": "ask" },
+    { "action": "shell", "resource": "chmod 777 *", "effect": "ask" },
+    { "action": "shell", "resource": "chown -R *", "effect": "ask" },
+    { "action": "shell", "resource": "sed -i *", "effect": "ask" }, // in-place shell edits bypass the diff flow
+    { "action": "shell", "resource": "perl -pi *", "effect": "ask" },
+    // git
+    { "action": "shell", "resource": "git push *", "effect": "ask" },
+    { "action": "shell", "resource": "git reset --hard *", "effect": "ask" },
+    { "action": "shell", "resource": "git clean *", "effect": "ask" },
+    { "action": "shell", "resource": "git checkout * -- *", "effect": "ask" }, // discard forms only; branch switches stay allow
+    { "action": "shell", "resource": "git checkout .", "effect": "ask" },
+    { "action": "shell", "resource": "git restore *", "effect": "ask" },
+    { "action": "shell", "resource": "git restore --staged *", "effect": "allow" }, // unstaging is safe
+    { "action": "shell", "resource": "git switch --discard-changes *", "effect": "ask" },
+    { "action": "shell", "resource": "git branch -D *", "effect": "ask" },
+    { "action": "shell", "resource": "git stash drop *", "effect": "ask" },
+    { "action": "shell", "resource": "git stash clear *", "effect": "ask" },
+    { "action": "shell", "resource": "git reflog expire *", "effect": "ask" },
+    { "action": "shell", "resource": "git gc --prune *", "effect": "ask" },
+    { "action": "shell", "resource": "git filter-branch *", "effect": "ask" },
+    { "action": "shell", "resource": "git filter-repo *", "effect": "ask" },
+    // system / privilege
+    { "action": "shell", "resource": "sudo *", "effect": "ask" },
+    { "action": "shell", "resource": "shutdown *", "effect": "ask" },
+    { "action": "shell", "resource": "reboot *", "effect": "ask" },
+    { "action": "shell", "resource": "pkill *", "effect": "ask" },
+    { "action": "shell", "resource": "killall *", "effect": "ask" },
+    { "action": "shell", "resource": "diskutil *", "effect": "ask" },
+    // network / remote execution
+    { "action": "shell", "resource": "curl * | *", "effect": "ask" }, // pipe-to-shell
+    { "action": "shell", "resource": "wget * | *", "effect": "ask" },
+    // publishing / infrastructure
+    { "action": "shell", "resource": "npm publish *", "effect": "ask" },
+    { "action": "shell", "resource": "pnpm publish *", "effect": "ask" },
+    { "action": "shell", "resource": "gh pr merge *", "effect": "ask" },
+    { "action": "shell", "resource": "gh release create *", "effect": "ask" },
+    { "action": "shell", "resource": "gh release delete *", "effect": "ask" },
+    { "action": "shell", "resource": "docker push *", "effect": "ask" },
+    { "action": "shell", "resource": "docker system prune *", "effect": "ask" },
+    { "action": "shell", "resource": "docker volume rm *", "effect": "ask" },
+    { "action": "shell", "resource": "terraform apply *", "effect": "ask" },
+    { "action": "shell", "resource": "terraform destroy *", "effect": "ask" },
+    { "action": "shell", "resource": "kubectl delete *", "effect": "ask" },
+    { "action": "shell", "resource": "aws s3 rm *", "effect": "ask" },
+    // catastrophic floor: deny (saved approvals can never override a deny)
+    { "action": "shell", "resource": "rm -rf /", "effect": "deny" },
+    { "action": "shell", "resource": "rm -rf ~", "effect": "deny" },
+    { "action": "shell", "resource": "sudo rm *", "effect": "deny" },
+    { "action": "shell", "resource": "mkfs*", "effect": "deny" },
+    { "action": "shell", "resource": "newfs_*", "effect": "deny" },
+    { "action": "shell", "resource": "dd *of=/dev/*", "effect": "deny" }, // raw device write
+    { "action": "shell", "resource": "gh repo delete *", "effect": "deny" },
+  ],
   "providers": {
     "amazon-bedrock": {
       "settings": {
