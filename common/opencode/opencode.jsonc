@@ -36,8 +36,16 @@
     { "action": "shell", "resource": "git checkout * -- *", "effect": "ask" }, // discard forms only; branch switches stay allow
     { "action": "shell", "resource": "git checkout .", "effect": "ask" },
     { "action": "shell", "resource": "git restore *", "effect": "ask" },
-    { "action": "shell", "resource": "git restore --staged *", "effect": "allow" }, // unstaging is safe
-    { "action": "shell", "resource": "git switch --discard-changes *", "effect": "ask" },
+    {
+      "action": "shell",
+      "resource": "git restore --staged *",
+      "effect": "allow",
+    }, // unstaging is safe
+    {
+      "action": "shell",
+      "resource": "git switch --discard-changes *",
+      "effect": "ask",
+    },
     { "action": "shell", "resource": "git branch -D *", "effect": "ask" },
     { "action": "shell", "resource": "git stash drop *", "effect": "ask" },
     { "action": "shell", "resource": "git stash clear *", "effect": "ask" },
@@ -107,6 +115,7 @@
         "amazon.nova-micro-v1:0": { "disabled": true },
         "amazon.nova-pro-v1:0": { "disabled": true },
         "anthropic.claude-fable-5": { "disabled": true },
+        "anthropic.claude-fable-5-1": { "disabled": true },
         "anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
         "anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
         "anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
@@ -138,15 +147,14 @@
         "eu.anthropic.claude-sonnet-4-6": { "disabled": true },
         "eu.anthropic.claude-sonnet-5": { "disabled": true },
         "global.anthropic.claude-fable-5": { "disabled": true },
+        "global.anthropic.claude-fable-5-1": { "disabled": true },
         "global.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
         "global.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
         "global.anthropic.claude-opus-4-6-v1": { "disabled": true },
         "global.anthropic.claude-opus-4-7": { "disabled": true },
         "global.anthropic.claude-opus-4-8": { "disabled": true },
         "global.anthropic.claude-opus-5": { "disabled": true },
-        "global.anthropic.claude-sonnet-4-5-20250929-v1:0": {
-          "disabled": true,
-        },
+        "global.anthropic.claude-sonnet-4-5-20250929-v1:0": { "disabled": true },
         "global.anthropic.claude-sonnet-4-6": { "disabled": true },
         "global.anthropic.claude-sonnet-5": { "disabled": true },
         "global.openai.gpt-5.6-luna": { "disabled": true },
@@ -204,6 +212,7 @@
         "qwen.qwen3-next-80b-a3b": { "disabled": true },
         "qwen.qwen3-vl-235b-a22b": { "disabled": true },
         "us.anthropic.claude-fable-5": { "disabled": true },
+        "us.anthropic.claude-fable-5-1": { "disabled": true },
         "us.anthropic.claude-haiku-4-5-20251001-v1:0": { "disabled": true },
         "us.anthropic.claude-opus-4-1-20250805-v1:0": { "disabled": true },
         "us.anthropic.claude-opus-4-5-20251101-v1:0": { "disabled": true },
@@ -331,6 +340,13 @@
             },
           ],
         },
+        "deepseek/deepseek-v4-flash-fast": {
+          "name": "DeepSeek V4 Flash Fast",
+          "modelID": "deepseek/deepseek-v4-flash-fast",
+          "limit": {
+            "context": 1000000,
+          },
+        },
         "deepseek/deepseek-v4-flash-vision-exp": {
           "name": "DeepSeek V4 Flash Vision (exp)",
           "modelID": "deepseek/deepseek-v4-flash-vision-exp",
@@ -450,20 +466,6 @@
             "context": 1048576,
           },
         },
-        "minimax/minimax-m2.7-free": {
-          "name": "MiniMax M2.7",
-          "modelID": "minimax/minimax-m2.7-free",
-          "limit": {
-            "context": 197000,
-          },
-        },
-        "minimax/minimax-m3-free": {
-          "name": "MiniMax M3",
-          "modelID": "minimax/minimax-m3-free",
-          "limit": {
-            "context": 1000000,
-          },
-        },
         "moonshotai/Kimi-K2.5": {
           "name": "Kimi K2.5",
           "modelID": "moonshotai/Kimi-K2.5",
@@ -539,6 +541,13 @@
           "modelID": "tencent/hy3-paid",
           "limit": {
             "context": 262144,
+          },
+        },
+        "tencent/hy4-preview": {
+          "name": "Tencent Hy4 Preview",
+          "modelID": "tencent/hy4-preview",
+          "limit": {
+            "context": 1048576,
           },
         },
         "thinkingmachines/inkling": {
@@ -624,25 +633,6 @@
           "limit": {
             "context": 1000000,
           },
-        },
-      },
-    },
-    // Variants referenced by agent definitions (`provider/model#variant`).
-    "opencode-go": {
-      "models": {
-        "mimo-v2.5": {
-          "variants": [
-            { "id": "max", "settings": { "reasoningEffort": "max" } },
-          ],
-        },
-      },
-    },
-    "openai": {
-      "models": {
-        "gpt-5.6-luna": {
-          "variants": [
-            { "id": "xhigh", "settings": { "reasoningEffort": "xhigh" } },
-          ],
         },
       },
     },
