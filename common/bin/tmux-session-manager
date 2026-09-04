@@ -3,9 +3,8 @@
 # Dependencies: fzf, zoxide
 # Usage: bind in .tmux.conf with:
 #   bind s display-popup -E -w 80% -h 60% "tmux-session-manager"
-# CLAUDE generated and not reviewed by a human
 
-set -euo pipefail
+set -eu
 
 # ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -26,21 +25,32 @@ switch_to() {
 #   value → session name or directory path
 
 candidates() {
-  # Active tmux sessions first
-  if tmux list-sessions -F "#{session_name}" 2>/dev/null | while read -r s; do
-    current=""
-    [ "$(tmux display-message -p '#S' 2>/dev/null)" = "$s" ] && current=" (current)"
-    printf "\033[1;32m[session]\033[0m  %-30s%s\n" "$s" "$current"
-  done; then :; fi
+  local current_session="" sessions=""
+  current_session=$(tmux display-message -p '#S' 2>/dev/null || true)
+  sessions=$(tmux list-sessions -F "#{session_name}" 2>/dev/null || true)
 
-  # Zoxide directories (skip those already open as sessions)
-  zoxide query --list 2>/dev/null | while read -r dir; do
-    name=$(basename "$dir")
+  # Active tmux sessions first
+  if [ -n "$sessions" ]; then
+    while IFS= read -r s; do
+      [ -z "$s" ] && continue
+      local current=""
+      [ "$s" = "$current_session" ] && current=" (current)"
+      printf "\033[1;32m[session]\033[0m  %-30s%s\n" "$s" "$current" || return 0
+    done <<< "$sessions"
+  fi
+
+  local session_list=$'\n'"$sessions"$'\n'
+
+  # Zoxide directories
+  zoxide query --list 2>/dev/null | while IFS= read -r dir; do
+    [ -z "$dir" ] && continue
+    local clean="${dir%/}"
+    local name="${clean##*/}"
     # dim if session already exists for this dir name
-    if session_exists "$name"; then
-      printf "\033[2;34m[dir]\033[0m      \033[2m%-30s\033[0m  %s\n" "$name" "$dir"
+    if [[ "$session_list" == *$'\n'"$name"$'\n'* ]]; then
+      printf "\033[2;34m[dir]\033[0m      \033[2m%-30s\033[0m  %s\n" "$name" "$dir" || exit 0
     else
-      printf "\033[1;34m[dir]\033[0m      %-30s  %s\n" "$name" "$dir"
+      printf "\033[1;34m[dir]\033[0m      %-30s  %s\n" "$name" "$dir" || exit 0
     fi
   done
 }
@@ -50,9 +60,11 @@ candidates() {
 do_kill() {
   # $1 = selected line from fzf
   local pick="$1"
+  local clean_pick
+  clean_pick=$(echo "$pick" | sed -E 's/\x1b\[[0-9;]*[a-zA-Z]//g')
   local name=""
-  if echo "$pick" | grep -q '\[session\]'; then
-    name=$(echo "$pick" | awk '{print $2}' | sed 's/(current)//' | xargs)
+  if echo "$clean_pick" | grep -q '^\[session\]'; then
+    name=$(echo "$clean_pick" | sed -E 's|^\[session\][[:space:]]+([^ ]+).*|\1|')
   fi
   [ -n "$name" ] && tmux kill-session -t "$name" 2>/dev/null || true
 }
@@ -61,8 +73,9 @@ do_kill() {
 
 main() {
   local selected
+  set +o pipefail
   selected=$(
-    candidates \
+    candidates 2>/dev/null \
       | fzf \
           --ansi \
           --reverse \
@@ -74,7 +87,7 @@ main() {
           --print-query \
           --expect=enter \
           --no-multi
-  ) || exit 0
+  ) || true
 
   # fzf --print-query outputs: line1=query, line2=key, line3=selection
   local query key pick
@@ -82,20 +95,25 @@ main() {
   key=$(echo "$selected"   | sed -n '2p')
   pick=$(echo "$selected"  | sed -n '3p')
 
+  # If Enter was not pressed (e.g. Esc or Ctrl-C), exit cleanly
+  [ "$key" != "enter" ] && exit 0
+
   # Determine what to act on
   local target=""
   local target_dir=""
 
   if [ -n "$pick" ]; then
     # User selected an existing entry
-    if echo "$pick" | grep -q '^\[session\]\|session\]'; then
-      # Extract session name (first word-like token after the tag)
-      target=$(echo "$pick" | awk '{print $2}' | sed 's/(current)//')
-      target=$(echo "$target" | xargs)  # trim
+    local clean_pick
+    clean_pick=$(echo "$pick" | sed -E 's/\x1b\[[0-9;]*[a-zA-Z]//g')
+    if echo "$clean_pick" | grep -q '^\[session\]'; then
+      # Extract session name
+      target=$(echo "$clean_pick" | sed -E 's|^\[session\][[:space:]]+([^ ]+).*|\1|')
     else
-      # It's a dir entry - extract path (last field)
-      target_dir=$(echo "$pick" | awk '{print $NF}')
-      target=$(basename "$target_dir")
+      # It's a dir entry - extract directory path (starts with /)
+      target_dir=$(echo "$clean_pick" | sed -E 's|^.*[[:space:]](/[^[:space:]].*)$|\1|')
+      target="${target_dir%/}"
+      target="${target##*/}"
     fi
   elif [ -n "$query" ]; then
     # Free-text: treat as new session name
