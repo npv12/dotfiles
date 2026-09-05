@@ -2,7 +2,7 @@
   "command_aliases": {
     "gd": "git::Diff",
     "gb": "git::Branch",
-    "gbd": "git::BranchDiff",
+    "gbd": "git::DiffBranch",
     "gp": "git::Push",
     "gcp": "git::CreatePullRequest",
     "tsd": "editor::ToggleSplitDiff",
