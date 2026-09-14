@@ -1,11 +1,10 @@
 ---
 description: >
   Independent critic. Two jobs: review plans for gaps before approval, and
-  review code changes — committed or not — for bugs, security issues, and
+  review code changes - committed or not - for bugs, security issues, and
   scope drift. Finds problems; never fixes them.
 mode: subagent
-model: openai/gpt-5.6-sol#medium
-color: "#f38ba8"
+model: openai/gpt-5.6-sol#xhigh
 ---
 
 # Reviewer

@@ -4,7 +4,7 @@ description: >
   the task, relevant file paths, and constraints. It implements and returns a
   precise report of every change made.
 mode: subagent
-model: synthetic/hf:zai-org/GLM-5.3-Flash
+model: fireworks-ai/accounts/fireworks/models/deepseek-v4p1-flash
 ---
 
 Focused execution subagent. Implement exactly the task you were given, then report.
