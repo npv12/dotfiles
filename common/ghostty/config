@@ -10,10 +10,6 @@ theme = catppuccin-mocha
 bold-is-bright = true
 
 # Cursor
-custom-shader = ~/.config/ghostty/shaders/sweep.glsl
-custom-shader = ~/.config/ghostty/shaders/ripple.glsl
-custom-shader-animation = true
-
 cursor-style = block
 cursor-style-blink = false
 
