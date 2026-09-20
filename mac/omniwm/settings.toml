@@ -25,7 +25,7 @@ minWidth = 500.0
 
 [[appRules]]
 assignToWorkspace = "12"
-bundleId = "dev.zed.Zed"
+bundleId = "dev.zed.Zed-Dev"
 id = "979F05F4-FFA2-4EDD-B23F-08A9944C759F"
 minHeight = 240.0
 minWidth = 360.0
