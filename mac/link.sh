@@ -7,7 +7,6 @@ CONFIG_DIR="$HOME/.config"
 # Unconditional links specific to macOS
 # Format: "source;destination"
 declare -a links=(
-	"$MAC_DIR/sketchybar;$CONFIG_DIR/sketchybar"
 )
 
 # --- Define conditional links (based on command existence) ---
@@ -15,9 +14,11 @@ declare -a links=(
 declare -a conditional_links=(
 	"aerospace;$MAC_DIR/aerospace;$CONFIG_DIR/aerospace"
 	"aerospace;$MAC_DIR/aerospace-swipe;$CONFIG_DIR/aerospace-swipe"
+	"alacritty;$MAC_DIR/alacritty;$CONFIG_DIR/alacritty"
+	"omniwmctl;$MAC_DIR/omniwm;$CONFIG_DIR/omniwm"
+	"sketchybar;$MAC_DIR/sketchybar;$CONFIG_DIR/sketchybar"
 	"yabai;$MAC_DIR/yabai;$CONFIG_DIR/yabai"
 	"yabai;$MAC_DIR/skhd;$CONFIG_DIR/skhd"
-	"alacritty;$MAC_DIR/alacritty;$CONFIG_DIR/alacritty"
 )
 
 # --- Common function to process a link ---

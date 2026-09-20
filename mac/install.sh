@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
 
-brew install --cask nikitabobko/tap/aerospace
-
-brew tap FelixKratz/formulae
-brew install sketchybar borders
-
-brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight mise gpg maccy pass zoxide podman \
-	kubernetes-cli kubectx visual-studio-code@insiders font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font \
-	fzf gitmux opencode staffreview/tap/staff
-brew install --cask zed@preview ghostty scroll-reverser
+brew install bat bottom micro tmux ripgrep fd git-delta eza duf gdu zen@twilight mise gpg pass zoxide colima \
+	kubernetes-cli kubectx font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font \
+	fzf gitmux opencode staffreview/tap/staff omniwm
+brew install --cask ghostty scroll-reverser
 
 # Make it linux initiative
 brew install bash # Default bash is old
