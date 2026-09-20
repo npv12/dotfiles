@@ -69,5 +69,4 @@ if command -v podman &> /dev/null; then
 fi
 
 # OpenCode Go
-alias opencode="opencode2"
-alias oc="opencode2"
+alias oc="opencode"
