@@ -427,7 +427,6 @@
       }
     },
     "opencode": {
-      "show_free_models": false,
       "show_zen_models": false
     }
   },
@@ -516,7 +515,7 @@
   "completion_menu_item_kind": "symbol",
   "theme": {
     "mode": "system",
-    "light": "Sapphire Haze Light",
-    "dark": "Sapphire Haze Dark"
+    "light": "Matcha Haze Light",
+    "dark": "Matcha Haze Dark"
   }
 }

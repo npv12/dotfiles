@@ -113,30 +113,30 @@ width = 5.0
 
 [borders.color]
 alpha = 1.0
-blue = 0.5294117647058824
-green = 0.7019607843137254
-red = 0.9803921568627451
+blue = 0.659
+green = 0.545
+red = 0.953
 
 [borders.glow]
-enabled = false
-opacity = 0.6
-radius = 8.0
+enabled = true
+opacity = 0.0
+radius = 32.0
 
 [borders.gradient]
-direction = "topLeftToBottomRight"
+direction = "topRightToBottomLeft"
 enabled = true
 
 [borders.gradient.end]
 alpha = 1.0
-blue = 0.6588235294117647
-green = 0.5450980392156862
-red = 0.9529411764705882
+blue = 0.969
+green = 0.651
+red = 0.792
 
 [borders.gradient.start]
 alpha = 1.0
-blue = 0.5294117647058824
-green = 0.7019607843137254
-red = 0.9803921568627451
+blue = 0.659
+green = 0.545
+red = 0.953
 
 [clipboard]
 historyEnabled = false

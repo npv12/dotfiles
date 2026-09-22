@@ -2,7 +2,7 @@
 font-size = 16
 font-family = MesloLGS NF
 
-background-opacity = 0.9
+background-opacity = 0.96
 background-blur = true
 
 theme = catppuccin-mocha
@@ -10,8 +10,8 @@ theme = catppuccin-mocha
 bold-is-bright = true
 
 # Cursor
-cursor-style = block
-cursor-style-blink = false
+cursor-style = underline
+cursor-style-blink = true
 
 # Prevent Ghostty's shell integration from changing the prompt cursor to a bar
 shell-integration-features = no-cursor
