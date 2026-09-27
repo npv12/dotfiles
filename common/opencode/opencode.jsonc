@@ -1,6 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugins": ["@npv12/opencode-memory-md"],
+  "plugins": [
+    "@npv12/opencode-memory-md",
+    "@anthonyhaussman/opencode-agy-auth@alpha",
+    "opencode-claude-auth-v2@latest"
+  ],
   "default_agent": "build",
   "agents": {
     "plan": {
@@ -98,9 +102,9 @@
   },
   "mcp": {
     "servers": {
-      "notion": {
+      "linear": {
         "type": "remote",
-        "url": "https://mcp.notion.com/mcp",
+        "url": "https://mcp.linear.app/mcp",
       },
     },
   },

@@ -11,15 +11,19 @@
     "scrollbar": false,
     "thinking": "hide",
     "image_preview": true,
-    "grouping": "auto"
+    "grouping": "auto",
+    "verbosity": "low",
+    "permissions": "prompt"
   },
   "animations": true,
   "tabs": {
     "layout": "vertical",
-    "scope": "global"
+    "scope": "global",
+    "indicators": "status"
   },
   "attention": {
-    "enabled": true
+    "enabled": true,
+    "notifications": true
   },
   "keybinds": {
     "prompt.stash": "<leader>p",
@@ -30,10 +34,12 @@
     "@npv12/opencode-context-sidebar",
     "@npv12/opencode-recap",
     "@npv12/opencode-quota",
+    "opencode-quick-quote",
     "-opencode.sidebar.context"
   ],
   "scroll": {
-    "acceleration": true
+    "acceleration": true,
+    "speed": 3.5
   },
   "prompt": {
     "image_preview": true,
@@ -41,5 +47,8 @@
   },
   "terminal": {
     "copy": "manual"
+  },
+  "debug": {
+    "devtools": false
   }
 }
