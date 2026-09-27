@@ -56,6 +56,11 @@ minHeight = 420.0
 minWidth = 500.0
 
 [[appRules]]
+assignToWorkspace = "11"
+bundleId = "company.thebrowser.Browser"
+id = "83FD7FA4-7FED-4AA2-B164-0F8E8FF6EF36"
+
+[[appRules]]
 bundleId = "com.spotify.client"
 id = "2DE9390B-0DB4-4D0C-9ABA-06F76F1D4EA9"
 minHeight = 600.0
@@ -87,7 +92,7 @@ minHeight = 320.0
 minWidth = 660.0
 
 [[appRules]]
-assignToWorkspace = "9"
+assignToWorkspace = "8"
 bundleId = "com.microsoft.teams2"
 id = "64306A27-324C-491B-ADE9-1FB2B83F2CC5"
 layout = "tile"
