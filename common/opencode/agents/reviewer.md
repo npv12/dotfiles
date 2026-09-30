@@ -4,7 +4,7 @@ description: >
   review code changes - committed or not - for bugs, security issues, and
   scope drift. Finds problems; never fixes them.
 mode: subagent
-model: openai/gpt-6-sol#xhigh
+model: openai/gpt-6.1-sol#max
 ---
 
 # Reviewer
