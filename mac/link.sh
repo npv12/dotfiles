@@ -7,6 +7,7 @@ CONFIG_DIR="$HOME/.config"
 # Unconditional links specific to macOS
 # Format: "source;destination"
 declare -a links=(
+	"$MAC_DIR/tinycast;$CONFIG_DIR/tinycast-beta"
 )
 
 # --- Define conditional links (based on command existence) ---
