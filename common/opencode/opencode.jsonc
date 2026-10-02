@@ -16,7 +16,7 @@
     },
     "explore": {
       "color": "#f9e2af",
-      "model": "fireworks-ai/accounts/fireworks/models/deepseek-v4p1-flash",
+      "model": "opencode-go/deepseek-v4.1-flash",
     },
   },
   "compaction": {
