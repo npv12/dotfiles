@@ -33,7 +33,6 @@
   "plugins": [
     "@npv12/opencode-context-sidebar",
     "@npv12/opencode-recap",
-    "@npv12/opencode-quota",
     "opencode-quick-quote",
     "-opencode.sidebar.context"
   ],
