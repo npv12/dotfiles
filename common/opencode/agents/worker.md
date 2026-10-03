@@ -4,7 +4,7 @@ description: >
   the task, relevant file paths, and constraints. It implements and returns a
   precise report of every change made.
 mode: subagent
-model: opencode-go/deepseek-v4.1-flash
+model: opencode-go/deepseek-v4.1-flash#max
 ---
 
 Focused execution subagent. Implement exactly the task you were given, then report.
