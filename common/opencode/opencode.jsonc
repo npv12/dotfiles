@@ -23,6 +23,10 @@
     "auto": true,
   },
   "permissions": [
+    { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/var/folders/*/*/T/tmp.*/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/var/folders/*/*/T/tmp.*/*", "effect": "allow" },
     { "action": "shell", "resource": "*", "effect": "allow" }, // Allow all access and then blacklist
     { "action": "shell", "resource": "rm *", "effect": "ask" }, // every spelling: -rf, -fr, -r -f, --recursive
     { "action": "shell", "resource": "rm -rf /*", "effect": "ask" }, // absolute paths: /tmp/x etc. ask, not deny
