@@ -13,7 +13,6 @@ npv12_*
 npv12/
 opencode.json
 .opencode/
-!common/opencode/opencode.json
 .pi/
 
 .worktrees

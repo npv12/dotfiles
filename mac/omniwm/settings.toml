@@ -365,6 +365,46 @@ binding = "Option+Shift+9"
 id = "moveToWorkspace.8"
 
 [[hotkeys]]
+binding = "Option+A"
+id = "switchWorkspace.10"
+
+[[hotkeys]]
+binding = "Option+Shift+A"
+id = "moveToWorkspace.10"
+
+[[hotkeys]]
+binding = "Option+B"
+id = "switchWorkspace.11"
+
+[[hotkeys]]
+binding = "Option+Shift+B"
+id = "moveToWorkspace.11"
+
+[[hotkeys]]
+binding = "Option+C"
+id = "switchWorkspace.12"
+
+[[hotkeys]]
+binding = "Option+Shift+C"
+id = "moveToWorkspace.12"
+
+[[hotkeys]]
+binding = "Control+Option+D"
+id = "switchWorkspace.13"
+
+[[hotkeys]]
+binding = "Option+Shift+D"
+id = "moveToWorkspace.13"
+
+[[hotkeys]]
+binding = "Option+E"
+id = "switchWorkspace.14"
+
+[[hotkeys]]
+binding = "Option+Shift+E"
+id = "moveToWorkspace.14"
+
+[[hotkeys]]
 binding = "Unassigned"
 id = "switchWorkspaceSlot.1"
 
@@ -559,6 +599,26 @@ id = "moveColumnToWorkspace.7"
 [[hotkeys]]
 binding = "Unassigned"
 id = "moveColumnToWorkspace.8"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToWorkspace.10"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToWorkspace.11"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToWorkspace.12"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToWorkspace.13"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToWorkspace.14"
 
 [[hotkeys]]
 binding = "Option+Shift+Left Arrow"
@@ -984,6 +1044,7 @@ containerPrimarySpanPresets = [0.3333333333333333, 0.5, 0.6666666666666666]
 defaultContainerPrimarySpan = 0.5
 edgeGaps = true
 infiniteLoop = false
+resizeStepPercent = 5
 singleWindowFit = "fill"
 visibleContainerCount = 2
 
