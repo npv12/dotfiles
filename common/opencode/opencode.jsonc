@@ -2,7 +2,6 @@
   "plugins": [
     "@npv12/opencode-memory-md",
     "@npv12/opencode-quota",
-    "@anthonyhaussman/opencode-agy-auth@alpha",
     "opencode-claude-auth-v2@latest"
   ],
   "default_agent": "build",
