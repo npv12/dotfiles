@@ -18,6 +18,9 @@ zstyle ':z4h:bindkey' keyboard  'pc'
 # Use brew installed fzf
 zstyle ':z4h:*' fzf-command fzf
 
+# Disable tmux
+zstyle ':z4h:' start-tmux no
+
 # Linux keybindings
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
@@ -146,6 +149,7 @@ zsh_defer_add 'z4h load hlissner/zsh-autopair bigH/git-fuzzy'
 z4h load npv12/zsh-ai-cmd
 
 # Define key bindings.
+z4h bindkey z4h-clear-screen-soft-bottom Ctrl+L
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
 z4h bindkey z4h-cd-back    Shift+Left   # cd into the previous directory
 z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
@@ -169,3 +173,5 @@ if [[ "${ZSH_BENCHMARK:-}" == "1" ]]; then
     _zsh_run_deferred_queue
     _benchmark_report
 fi
+
+zsh_defer_add 'z4h-clear-screen-soft-bottom'

@@ -15,7 +15,7 @@
     },
     "explore": {
       "color": "#f9e2af",
-      "model": "opencode-go/deepseek-v4.1-flash#max",
+      "model": "opencode-go/deepseek-v4.1-flash",
     },
   },
   "compaction": {

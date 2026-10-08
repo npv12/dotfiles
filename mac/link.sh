@@ -18,6 +18,7 @@ declare -a conditional_links=(
 	"alacritty;$MAC_DIR/alacritty;$CONFIG_DIR/alacritty"
 	"omniwmctl;$MAC_DIR/omniwm;$CONFIG_DIR/omniwm"
 	"sketchybar;$MAC_DIR/sketchybar;$CONFIG_DIR/sketchybar"
+	"tern;$MAC_DIR/tern/settings.json;$HOME/Library/Application Support/Tern/settings.json"
 	"yabai;$MAC_DIR/yabai;$CONFIG_DIR/yabai"
 	"yabai;$MAC_DIR/skhd;$CONFIG_DIR/skhd"
 )

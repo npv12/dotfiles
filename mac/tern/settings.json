@@ -1,0 +1,31 @@
+{
+  "theme": "System",
+  "theme_dark": "dark-catppuccin",
+  "cursor": {
+    "shape": "soft",
+    "smooth_blink": true,
+    "trail": "warp",
+    "pulse": "ripple"
+  },
+  "pointer_shape": "arrow",
+  "link_target": "Browser",
+  "font_size": 16,
+  "font_family": "MesloLGS NF",
+  "font_family_bold": "MesloLGS NF Bold",
+  "font_family_italic": "MesloLGS NF Italic",
+  "font_family_bold_italic": "MesloLGS NF Bold Italic",
+  "ui_font": "Inter",
+  "code_font": "JetBrainsMono Nerd Font Mono",
+  "agent_command": "opencode",
+  "opacity": 70,
+  "git": {
+    "diff_split": true
+  },
+  "keybinds": {
+    "shift+cmd+,": "reload_config",
+    "shift+enter": "text:\\e[13;2u",
+    "ctrl+l": "text:\\x0c",
+    "cmd+k": "text:\\x0c",
+    "cmd+shift+k": "text:\\x0c"
+  }
+}
