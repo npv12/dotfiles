@@ -160,7 +160,7 @@ useGlobalGaps = true
 
 [focus]
 crossesMonitorAtEdge = false
-followsMouse = false
+followsMouse = true
 followsWindowToMonitor = true
 lockModifier = "off"
 moveCrossesMonitorAtEdge = false
@@ -178,6 +178,7 @@ right = 4.0
 top = 0.0
 
 [general]
+animationSpeed = 1.0
 animationsEnabled = true
 defaultLayoutType = "dwindle"
 hotkeysEnabled = true
@@ -208,8 +209,8 @@ workspaceSwipeEnabled = false
 workspaceSwipeFingerCount = 3
 
 [hiddenBar]
-enabled = true
-hiddenBundleIDs = []
+enabled = false
+hiddenBundleIDs = ["com.nordvpn.macos", "com.apple.campo", "com.microsoft.teams2"]
 rehideIntervalSeconds = 5.0
 
 [[hotkeys]]
@@ -1131,6 +1132,8 @@ hideInNativeFullscreen = false
 hoverPreviewsEnabled = true
 notchActiveZoneWidth = 180.0
 notchMode = "moveBelowMenuBar"
+notificationBadgeRefreshIntervalSeconds = 5.0
+notificationBadges = "off"
 position = "overlappingMenuBar"
 reserveLayoutSpace = false
 revealHoldMilliseconds = 200.0
