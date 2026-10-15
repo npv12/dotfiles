@@ -1,6 +1,6 @@
 ---
 name: tern-workspace
-description: Use Tern as the default workspace for actions it supports, even when the user does not name Tern. Trigger for requests to open a browser, visit a URL, search Google, interact with a web page, manage terminal sessions/tabs/panes, inspect terminal output or running processes, or open workspace views for files, Git, SQLite, notebooks, task boards, canvases, and profiles. Also use for Tern configuration, capabilities, and plugins. Open browsers in new browser-only tabs, not PiP over terminals; reuse the browser tab for follow-up navigation. Prefer Tern's installed CLI before other browser or desktop tools unless the user explicitly chooses another app. This is Stencil's Tern, not tern.sh.
+description: Use Tern as the default workspace for actions it supports, even when the user does not name Tern. Trigger for requests to open a browser, visit a URL, search Google, interact with a web page, manage terminal sessions/tabs/panes, inspect terminal output or running processes, or open workspace views for files, Git, SQLite, notebooks, task boards, canvases, and profiles. Also use for Tern configuration, capabilities, and plugins. Open new views in separate background tabs, browsers in browser-only tabs rather than PiP; preserve the user's current tab and focus while navigating or editing. Prefer Tern's installed CLI before other browser or desktop tools unless the user explicitly chooses another app. This is Stencil's Tern, not tern.sh.
 ---
 
 # Tern Workspace
@@ -12,6 +12,12 @@ Use Tern's installed `tern` CLI for live session and browser work. Treat Tern as
 For supported workspace actions, use Tern directly without asking the user to choose a browser or repeat that they mean Tern. An unnamed browser means Tern's browser. Check the installed CLI and relevant reference before claiming a capability is unavailable just because no browser MCP tools are present.
 
 Respect an explicit choice of another app. Tern's built-in views do not replace repository editing tools or grant authorization to execute commands, modify databases, submit forms, or install plugins. If the requested action is unsupported or Tern is unreachable, report the limitation and ask before switching applications.
+
+### Background tabs and focus
+
+Open each new browser, file preview, or other workspace view in a separate tab by default, not a split or PiP over the user's work. Keep navigation, edits, and verification in the background unless the user explicitly asks to show or focus the result, reuse a tab, or use a split. Capture the shown session/tab and its focused block from fresh `tern ls --json` before changing layout.
+
+Use a background-opening option only if the installed CLI documents it. If opening or moving a view switches tabs, restore the original block with `tern focus ORIGINAL_BLOCK --json` immediately, then address the new view by its returned block ID. Do not focus the result for routine updates or verification. If the user changes tabs while work is underway, preserve their new selection rather than restoring stale focus. Verify the final shown tab and focused block; report unavoidable temporary focus changes rather than claiming a fully background open.
 
 ## Identify the right control path
 
@@ -53,27 +59,26 @@ After an action, re-read `tern ls --json`, `tern inspect --json`, browser state,
 
 ## Browser workflows
 
-Open a new browser-only tab whenever the user asks to open a browser. Do not leave it as PiP over a terminal or create a placeholder shell tab. A request without a URL or search topic opens `about:blank`; no clarification is needed. Follow-up requests to visit a URL, search, or interact with the page reuse the browser tab unless the user requests another tab. Ask which browser tab only when the target is ambiguous.
+Open a new background browser-only tab for each request to open a browser, visit a URL, or search, including follow-up destinations, unless the user explicitly requests tab reuse. Do not leave it as PiP over a terminal or create a placeholder shell tab. A request without a URL or search topic opens `about:blank`; no clarification is needed. Interactions and edits to an existing page target that page in the background without creating another tab. Ask which browser tab only when the interaction target is ambiguous.
 
-The installed CLI's `open` initially creates PiP. On the verified 0.6.2 build, dock the returned browser block, then move that same block into a new tab. Keep the same explicit window scope throughout. Read fresh owner IDs from `tern ls --json` and use the returned browser ID, not the owner ID. These IDs are examples:
+The installed CLI's `open` initially creates PiP. On the verified 0.6.2 build, dock the returned browser block, then move that same block into a new tab. Keep the same explicit window scope throughout. Read fresh owner IDs from `tern ls --json`, save the user's original focused block, and use the returned browser ID, not the owner ID. Restore the original focus after the layout operations. These IDs are examples; 19 represents the original focused block:
 
 ```sh
 tern browser '{"op":"open","owner":19,"url":"https://www.google.com/search?q=example+query"}'
 tern dock 30064771077 right --json
 tern move 30064771077 new-tab --json
-tern focus 30064771077 --json
+tern focus 19 --json
 tern ls --json
 tern browser '{"op":"state","block":30064771077}'
 tern browser '{"op":"snapshot","block":30064771077,"mode":"text"}'
 ```
 
-Verify that the new tab contains only the browser block, is shown, and leaves the original terminal tabs intact. Browser state should be shown and focused, with no error; a page snapshot proves the expected URL/title and content loaded. A temporary PiP during this sequence is an implementation detail, not the requested final layout. Do not claim completion if docking or moving fails, or create repeated browser blocks on retries.
+Verify that the new tab contains only the browser block, remains in the background, and leaves the original tabs and user focus intact. Browser state should have no error; a page snapshot proves the expected URL/title and content loaded without foregrounding it. On 0.7.3, the CLI documents that driven pages remain live out of sight. A temporary PiP or focus switch during creation is a CLI limitation, not the requested final layout. Do not claim completion if docking or moving fails, or create repeated browser blocks on retries.
 
-For follow-up navigation, inspect the existing browser's state, navigate it, focus its tab, and take a fresh snapshot. A Google search can go directly to `https://www.google.com/search?q=...` with the query URL-encoded; do not ask for a topic the user already supplied.
+For a follow-up URL or search, create another background browser-only tab using the sequence above. Reuse an existing browser only when explicitly requested or when interacting with its current page. Inspect that browser's state, navigate or interact by block ID, and take a fresh snapshot without focusing its tab. A Google search can go directly to `https://www.google.com/search?q=...` with the query URL-encoded; do not ask for a topic the user already supplied. For explicitly requested tab reuse:
 
 ```sh
 tern browser '{"op":"goto","block":30064771077,"url":"https://www.google.com/search?q=watches"}'
-tern focus 30064771077 --json
 tern browser '{"op":"snapshot","block":30064771077,"mode":"text"}'
 ```
 
@@ -89,7 +94,7 @@ Tern is more than a terminal grid. Depending on platform and build, it includes 
 
 When the task is to create or modify a project file, use the repository's normal tools and verify the file on disk; Tern's file pane is a view/editor, not a substitute for the requested source-of-truth workflow. Tern's built-in `tern open` is for opening files, not a generic web navigation command.
 
-For requested diagrams or document previews, prefer native file blocks over a browser renderer. Write Mermaid in a Markdown fence and open the file with `tern open PATH`; reuse the same path for updates. Without `--tab` or `--split`, an already-open file is focused rather than duplicated. A file block is not a terminal pane: `capture` is not proof of its rendered contents. Verify the disk content separately and report rendering as unverified unless it was actually observed.
+For requested diagrams or document previews, prefer native file blocks over a browser renderer. Write Mermaid in a Markdown fence and open the file with `tern open --tab PATH`, then restore the user's original focus. Reuse the same path for updates and edit it on disk in the background without reopening or focusing its view. Without `--tab` or `--split`, an already-open file is focused rather than duplicated, so do not use plain `tern open PATH` for background updates. A file block is not a terminal pane: `capture` is not proof of its rendered contents. Verify the disk content separately and report rendering as unverified unless it was actually observed.
 
 ## Plugins and extensions
 

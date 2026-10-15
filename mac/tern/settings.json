@@ -17,15 +17,20 @@
   "ui_font": "Inter",
   "code_font": "JetBrainsMono Nerd Font Mono",
   "agent_command": "opencode",
-  "opacity": 70,
+  "opacity": 65,
   "git": {
+    "sidebar_folded": [
+      "remotes",
+      "tags"
+    ],
+    "ref_column_width": 100.0,
     "diff_split": true
   },
   "keybinds": {
-    "shift+cmd+,": "reload_config",
-    "shift+enter": "text:\\e[13;2u",
-    "ctrl+l": "text:\\x0c",
     "cmd+k": "text:\\x0c",
-    "cmd+shift+k": "text:\\x0c"
+    "cmd+shift+k": "text:\\x0c",
+    "ctrl+l": "text:\\x0c",
+    "shift+cmd+,": "reload_config",
+    "shift+enter": "text:\\e[13;2u"
   }
 }
