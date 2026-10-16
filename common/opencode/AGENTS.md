@@ -25,6 +25,11 @@
 * Before finishing, remove generated-code residue: dead code, unused imports, debug output, unnecessary comments, duplicate helpers, speculative logic, and unrelated changes.
 
 
+## Search tools
+
+- Prefer modern search tools: `fd` for finding files and directories, and `rg` (ripgrep) for searching file contents, rather than `find` or `grep` when available.
+- Use dedicated search tools when the harness provides them; otherwise use these CLI tools. Scope searches to relevant paths and file types.
+
 ## Verification
 
 - Nothing is done until you ran it: tests via `just` / `mise` / Makefile (not raw pytest), typecheck, or a live run.
