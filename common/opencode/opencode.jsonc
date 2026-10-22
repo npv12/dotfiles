@@ -2,7 +2,20 @@
   "plugins": [
     "@npv12/opencode-memory-md",
     "@npv12/opencode-quota",
-    "opencode-claude-auth-v2@latest"
+    {
+      "package": "@npv12/opencode-jev-router",
+      "options": {
+        "models": {
+          "opencode-go/deepseek-v4.1-flash": "Cheapest tier. Routine edits, lookups, one-liners, narrow questions.",
+          "opencode-go/glm-5.3-flash": "Cheap, with more thinking than deepseek. Small multi-file work, straightforward debugging, ordinary explanations.",
+          "openai/gpt-6-sol": "Expensive tier, only for heavy work: code review, larger refactors, cross-file reasoning.",
+          "anthropic/claude-opus-5-5": "Most expensive tier, last resort: architecture, subtle bugs, work the cheaper tiers are unlikely to handle."
+        },
+        "default": "opencode-go/deepseek-v4.1-flash",
+        "decider": "openrouter/typesafe/jev-1.14"
+      }
+    },
+    "@openchamber/opencode-claude@1.5.0"
   ],
   "default_agent": "build",
   "agents": {

@@ -18,7 +18,6 @@ declare -a links=(
 	"$COMMON_DIR/opencode/opencode.jsonc;$CONFIG_DIR/opencode/opencode.jsonc"
 	"$COMMON_DIR/opencode/AGENTS.md;$CONFIG_DIR/opencode/AGENTS.md"
 	"$COMMON_DIR/opencode/agents;$CONFIG_DIR/opencode/agents"
-	"$COMMON_DIR/opencode/plugins;$CONFIG_DIR/opencode/plugins"
 	"$COMMON_DIR/opencode/skills;$CONFIG_DIR/opencode/skills"
 	"$COMMON_DIR/opencode/commands;$CONFIG_DIR/opencode/commands"
 	"$COMMON_DIR/opencode/cli.json;$CONFIG_DIR/opencode/cli.json"
