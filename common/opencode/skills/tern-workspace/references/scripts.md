@@ -26,7 +26,7 @@ run "ls"
 shot split-status
 ```
 
-Commands settle before the next command; waits that depend on real work time out after 20 seconds. Use feature-specific waits such as `ready`, `file wait`, `git wait`, or `notebook wait`, not generic time delays, when asserting results. `wait MS` advances app/test time; it does not prove shell or network work completed.
+Commands settle before the next command; waits that depend on real work time out after 20 seconds. Use feature-specific waits such as `ready`, `file wait`, `git wait`, `notebook wait`, or `media wait`, not generic time delays, when asserting results. `wait MS` advances app/test time; it does not prove shell or network work completed.
 
 The harness also supports keyboard, pointer, drag/drop, gestures, accessibility actions, window sizing, animation time control, screenshots and menu/dialog responses. These can drive real UI in a controlled window; use them only for the requested window and verify the visible state afterward.
 

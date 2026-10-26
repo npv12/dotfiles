@@ -10,7 +10,7 @@ The window API also has object-specific surfaces for sessions, files/docs, board
 
 ## Carly's built-in capabilities
 
-The Carly guide documents tools to inspect sessions, hosts, tabs, panes, agents and processes; inspect/read blocks; inspect or configure settings; switch/create/close sessions; arrange tabs; discover and run actions; signal processes; run commands; send input; and execute Lua. Window-side plugin context (`cx`) has additional APIs for the feature families above.
+The Carly guide documents tools to inspect sessions, hosts, tabs, panes, agents and processes; inspect/read blocks; inspect or configure settings; switch/create/close sessions; arrange tabs; discover and run actions; signal processes; run commands; send input; chain agents; and execute Lua. Window-side plugin context (`cx`) has additional APIs for the feature families above.
 
 Treat actions as real operations, not chat-only suggestions. Prefer inspect/read tools first. Ask before closing sessions, changing settings, signaling processes, running commands, sending shell input, modifying files/database/Git state, or controlling screens when user intent does not explicitly cover the effect.
 
@@ -20,9 +20,9 @@ Window plugins can export functions and context into Carly with `tern.carly.expo
 
 ## Security and availability
 
-Plugin APIs run with the user's Tern account rights and do not provide a per-capability permission gate. Carly and Window API availability can vary by Tern build, platform, and plugin configuration. This reference describes documented features, not proof they are enabled in the current live window. Confirm with the installed version and local API typings before relying on an operation.
+Plugin APIs run with the user's Tern account rights and do not provide a per-capability permission gate. Carly and Window API availability can vary by Tern build, platform, and plugin configuration; Carly runs in the desktop app, the web client, and on iOS. This reference describes documented features, not proof they are enabled in the current live window. Confirm with the installed version and local API typings before relying on an operation.
 
-The pi-tern extension reaches these APIs through a separate pi-bridge mailbox plugin. Its document, board, database, and Carly tools are not public CLI commands and are not available merely because `tern ls` succeeds. Do not install that bridge or copy its tool names into shell commands to fill a capability gap.
+Other agent integrations' tools are not public CLI commands and are not available merely because `tern ls` succeeds. Do not install a bridge or copy another tool's names into shell commands to fill a capability gap.
 
 A document read through the window API may include unsaved edits absent from the disk file. Read the live block before overwriting its backing file. Keep database queries read-only unless writes were requested, and do not inspect credential stores or secret columns as a discovery shortcut. Treat Carly as potentially using remote model providers; do not forward vault contents, credentials, or private captures without explicit authorization.
 

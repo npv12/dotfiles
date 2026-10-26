@@ -24,7 +24,7 @@ Use a background-opening option only if the installed CLI documents it. If openi
 There are three related interfaces. Do not confuse them:
 
 1. **Installed Tern CLI**: `tern --help` lists live commands such as `ls`, `inspect`, `new`, `split`, `run`, `send`, `capture`, `process`, `events`, and `browser`. This is the normal route for controlling this user's running Tern.
-2. **Browser automation CLI**: `tern browser '<JSON>'` controls a Tern browser view. Its `open` operation creates a browser picture-in-picture over an owner block; `snapshot` and `act` inspect and interact with the page. It is not the same as opening a standalone Chromium app.
+2. **Browser automation CLI**: `tern browser '<JSON>'` controls a Tern browser block. `open` creates a browser picture-in-picture over an owner block; `blocks` lists the window's browser blocks, including the user's; `snapshot` and `act` inspect and interact with the page; `release` hands a driven block back. It is not the same as opening a standalone Chromium app.
 3. **Script/control endpoint**: `tern ctl` and `tern serve` execute Tern's scenario/control protocol. Use them only when a control endpoint is actually running or the user explicitly asks for a test/headless scenario. Do not assume a development endpoint exists in an ordinary session.
 
 The Window API and Carly provide richer typed block reads and app actions, but they are not automatically available to this OpenCode session. See [Window API and Carly](references/window-api-and-carly.md) before relying on those surfaces.
@@ -33,9 +33,9 @@ Tern also has a plugin SDK. A plugin is Luau code that extends Tern; it is not a
 
 ### Check capabilities, not just installation
 
-A working `tern --version` proves the binary exists, not that a window, browser driver, control endpoint, or plugin API is reachable. Use the smallest relevant read to establish availability: `ls --json` for workspace access, browser `state`/`snapshot` for an existing page, and `plugin list --json` for the host plugin catalog. Plugin catalog readiness does not prove its window entry loaded. Report the missing prerequisite instead of installing a bridge or starting infrastructure automatically.
+A working `tern --version` proves the binary exists, not that a window, browser driver, control endpoint, or plugin API is reachable. Use the smallest relevant read to establish availability: `ls --json` for workspace access, browser `blocks`/`state`/`snapshot` for existing pages, and `plugin list --json` for the host plugin catalog. Plugin catalog readiness does not prove its window entry loaded. Report the missing prerequisite instead of installing a bridge or starting infrastructure automatically.
 
-Ordinary CLI control can work from outside a Tern pane when a Tern window is running. A missing pane identity or TSP handshake does not by itself disable browser or session control. The [pi-tern integration](https://github.com/Ghost-9/pi-tern) is useful implementation evidence, not a tool catalog for this session: its `tern_*` tools, mailbox bridge, and native pi launcher are extension features, not installed `tern` subcommands.
+Ordinary CLI control can work from outside a Tern pane when a Tern window is running. A missing pane identity or TSP handshake does not by itself disable browser or session control. Third-party agent integrations expose their own tool names; only the `tern` subcommands listed by `tern help` exist here. Do not infer commands or bridges from another integration.
 
 ## Live-control loop
 
@@ -59,9 +59,9 @@ After an action, re-read `tern ls --json`, `tern inspect --json`, browser state,
 
 ## Browser workflows
 
-Open a new background browser-only tab for each request to open a browser, visit a URL, or search, including follow-up destinations, unless the user explicitly requests tab reuse. Do not leave it as PiP over a terminal or create a placeholder shell tab. A request without a URL or search topic opens `about:blank`; no clarification is needed. Interactions and edits to an existing page target that page in the background without creating another tab. Ask which browser tab only when the interaction target is ambiguous.
+Open a new background browser-only tab for each request to open a browser, visit a URL, or search, including follow-up destinations, unless the user explicitly requests tab reuse. Do not leave it as PiP over a terminal or create a placeholder shell tab. A request without a URL or search topic opens `about:blank`; no clarification is needed. Interactions and edits to an existing page target that page in the background without creating another tab. Use `{"op":"blocks"}` to resolve an ambiguous target; ask which browser tab only when it is still ambiguous.
 
-The installed CLI's `open` initially creates PiP. On the verified 0.6.2 build, dock the returned browser block, then move that same block into a new tab. Keep the same explicit window scope throughout. Read fresh owner IDs from `tern ls --json`, save the user's original focused block, and use the returned browser ID, not the owner ID. Restore the original focus after the layout operations. These IDs are examples; 19 represents the original focused block:
+The installed CLI's `open` initially creates PiP. Dock the returned browser block, then move that same block into a new tab. Keep the same explicit window scope throughout. Read fresh owner IDs from `tern ls --json`, save the user's original focused block, and use the returned browser ID, not the owner ID. Restore the original focus after the layout operations. These IDs are examples; 19 represents the original focused block:
 
 ```sh
 tern browser '{"op":"open","owner":19,"url":"https://www.google.com/search?q=example+query"}'
@@ -73,7 +73,9 @@ tern browser '{"op":"state","block":30064771077}'
 tern browser '{"op":"snapshot","block":30064771077,"mode":"text"}'
 ```
 
-Verify that the new tab contains only the browser block, remains in the background, and leaves the original tabs and user focus intact. Browser state should have no error; a page snapshot proves the expected URL/title and content loaded without foregrounding it. On 0.7.3, the CLI documents that driven pages remain live out of sight. A temporary PiP or focus switch during creation is a CLI limitation, not the requested final layout. Do not claim completion if docking or moving fails, or create repeated browser blocks on retries.
+Verify that the new tab contains only the browser block, remains in the background, and leaves the original tabs and user focus intact. Browser state should have no error; a page snapshot proves the expected URL/title and content loaded without foregrounding it. A driven page out of sight stays live at its page size. A temporary PiP or focus switch during creation is a CLI limitation, not the requested final layout. Do not claim completion if docking or moving fails, or create repeated browser blocks on retries.
+
+When the request may refer to an existing page, run `{"op":"blocks"}` to see every block in the window with its `driven` state. Do not take over, navigate, release, or close a user-owned block unless asked. `{"op":"release","block":ID}` hands a driven block back with its settings reset and leaves the block itself in place.
 
 For a follow-up URL or search, create another background browser-only tab using the sequence above. Reuse an existing browser only when explicitly requested or when interacting with its current page. Inspect that browser's state, navigate or interact by block ID, and take a fresh snapshot without focusing its tab. A Google search can go directly to `https://www.google.com/search?q=...` with the query URL-encoded; do not ask for a topic the user already supplied. For explicitly requested tab reuse:
 
@@ -90,11 +92,11 @@ The Tern script/control protocol also has a native browser-block command (`brows
 
 ## Built-in workspace capabilities
 
-Tern is more than a terminal grid. Depending on platform and build, it includes persistent sessions, tabs/splits, file blocks, Git views, browser blocks and PiP, SQLite tools, Markdown task boards, notebooks, canvases, task manager and profiles, screen sharing/control, remote hosts, and web/iOS clients. Use the matching existing block before inventing shell scripts or a plugin. See [block map](references/blocks.md).
+Tern is more than a terminal grid. Depending on platform and build, it includes persistent sessions, tabs/splits, file blocks and media viewers, Git views, browser blocks and PiP, SQLite tools, Markdown task boards, notebooks, canvases, task manager and profiles, screen sharing/control, remote hosts and remote blocks, and web/iOS/Android clients. Use the matching existing block before inventing shell scripts or a plugin. See [block map](references/blocks.md).
 
 When the task is to create or modify a project file, use the repository's normal tools and verify the file on disk; Tern's file pane is a view/editor, not a substitute for the requested source-of-truth workflow. Tern's built-in `tern open` is for opening files, not a generic web navigation command.
 
-For requested diagrams or document previews, prefer native file blocks over a browser renderer. Write Mermaid in a Markdown fence and open the file with `tern open --tab PATH`, then restore the user's original focus. Reuse the same path for updates and edit it on disk in the background without reopening or focusing its view. Without `--tab` or `--split`, an already-open file is focused rather than duplicated, so do not use plain `tern open PATH` for background updates. A file block is not a terminal pane: `capture` is not proof of its rendered contents. Verify the disk content separately and report rendering as unverified unless it was actually observed.
+For requested diagrams or document previews, prefer native file blocks over a browser renderer. Write Mermaid in a Markdown fence and open the file with `tern open --tab PATH`, then restore the user's original focus. Reuse the same path for updates and edit it on disk in the background without reopening or focusing its view. Without `--tab` or `--split`, an already-open file is focused rather than duplicated, so do not use plain `tern open PATH` for background updates. `--preview` puts one file in the tab's preview block without taking focus. `--wait` returns when the opened blocks close, 0 when saved or clean and 1 when changes were discarded, which is what `EDITOR='tern open --wait'` uses. A file block is not a terminal pane: `capture` is not proof of its rendered contents. Verify the disk content separately and report rendering as unverified unless it was actually observed.
 
 ## Plugins and extensions
 
@@ -115,7 +117,7 @@ For plugin work, read [plugin reference](references/plugins.md), then the exact 
 
 ## Scope and compatibility
 
-Tern's ordinary CLI, desktop blocks, script runner, plugin APIs, web client, and iOS client have different support. Check the feature's support notes before asserting it works on the current platform. The script runner's simulated/headless examples are not proof of live behavior. Prefer a small live verification when the user's actual window is available.
+Tern's ordinary CLI, desktop blocks, remote blocks, script runner, plugin APIs, and web, iOS, and Android clients have different support. Check the feature's support notes before asserting it works on the current platform. The script runner's simulated/headless examples are not proof of live behavior. Prefer a small live verification when the user's actual window is available.
 
 Read only the relevant bundled reference for the current task:
 
