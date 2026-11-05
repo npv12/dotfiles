@@ -2,20 +2,6 @@
   "plugins": [
     "@npv12/opencode-memory-md",
     "@npv12/opencode-quota",
-    {
-      "package": "@npv12/opencode-jev-router",
-      "options": {
-        "models": {
-          "opencode-go/deepseek-v4.1-flash": "Cheapest tier. Routine edits, lookups, one-liners, narrow questions.",
-          "opencode-go/glm-5.3-flash": "Cheap, with more thinking than deepseek. Small multi-file work, straightforward debugging, ordinary explanations.",
-          "openai/gpt-6-sol": "Expensive tier, only for heavy work: code review, larger refactors, cross-file reasoning.",
-          "anthropic/claude-opus-5-5": "Most expensive tier, last resort: architecture, subtle bugs, work the cheaper tiers are unlikely to handle."
-        },
-        "default": "opencode-go/deepseek-v4.1-flash",
-        "decider": "openrouter/typesafe/jev-1.14"
-      }
-    },
-    "@openchamber/opencode-claude@1.5.0"
   ],
   "default_agent": "build",
   "agents": {
@@ -34,12 +20,19 @@
   "compaction": {
     "auto": true,
   },
+  "experimental": {
+    "background_compaction": true,
+  },
   "permissions": [
     { "action": "external_directory", "resource": "*", "effect": "ask" },
     { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
     { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" },
     { "action": "external_directory", "resource": "/var/folders/*/*/T/*", "effect": "allow" },
     { "action": "external_directory", "resource": "/private/var/folders/*/*/T/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "$HOME/.config/opencode/memory", "effect": "allow" },
+    { "action": "external_directory", "resource": "$HOME/.config/opencode/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "$HOME/.local/share/opencode/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "$HOME/.cache/opencode/*", "effect": "allow" },
     { "action": "shell", "resource": "*", "effect": "allow" }, // Allow all access and then blacklist
     { "action": "shell", "resource": "rm *", "effect": "ask" }, // every spelling: -rf, -fr, -r -f, --recursive
     { "action": "shell", "resource": "rm -rf /*", "effect": "ask" }, // absolute paths: /tmp/x etc. ask, not deny

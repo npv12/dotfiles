@@ -41,6 +41,7 @@
 
 - Code first. Then at most three lines: what was skipped, when to add it.
 - Write artifacts (plans, reports, scripts, lists) to files. Reply with path + one-line description.
+- Format local file references as Markdown links: `[file name](/full/path/to/file)`, so only the file name is visible.
 - Plan docs contain only what is pending, with reasoning inline.
 - Commit messages: `type:` subject, then why it changed, how, and the files touched.
 

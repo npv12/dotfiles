@@ -6,12 +6,6 @@ monitorOrientationOverrides = []
 schemaVersion = 4
 
 [[appRules]]
-bundleId = "com.openai.codex"
-id = "6A31F08A-4051-4354-B439-42F4C71894A3"
-minHeight = 600.0
-minWidth = 800.0
-
-[[appRules]]
 bundleId = "com.eltima.cmd1.pro.mas"
 id = "4BA546DA-2875-4BEF-B13F-1539E833B1A0"
 minHeight = 550.0
@@ -38,10 +32,8 @@ minWidth = 574.0
 
 [[appRules]]
 assignToWorkspace = "11"
-bundleId = "app.zen-browser.zen"
-id = "1CF39647-F30D-4E76-9686-79B551F1B094"
-minHeight = 495.0
-minWidth = 500.0
+bundleId = "company.thebrowser.dia"
+id = "6358293B-8408-4C9B-A819-645F4A8E7E0B"
 
 [[appRules]]
 bundleId = "org.mozilla.firefox"
